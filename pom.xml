@@ -127,48 +127,12 @@
                 <version>2.18.1</version>
                 <configuration>
                     <testFailureIgnore>true</testFailureIgnore>
-                    <argLine>
-                        -javaagent:"${settings.localRepository}/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar"
-                    </argLine>
                     <systemProperties>
                         <property>
                             <name>allure.results.directory</name>
                             <value>${allure.results.directory}</value>
                         </property>
                     </systemProperties>
-                </configuration>
-            </plugin>
-
-            <plugin>
-                <artifactId>maven-clean-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>Deleting all unnecessary files before lint analysis</id>
-                        <phase>verify</phase>
-                        <goals>
-                            <goal>clean</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <excludeDefaultDirectories>true</excludeDefaultDirectories>
-                    <filesets>
-                        <fileset>
-                            <directory>target/unpack</directory>
-                            <followSymlinks>false</followSymlinks>
-                            <excludes>
-                                <exclude>*</exclude>
-                            </excludes>
-                        </fileset>
-                        <fileset>
-                            <directory>gen-external-apklibs</directory>
-                            <followSymlinks>false</followSymlinks>
-                            <excludes>
-                                <exclude>*</exclude>
-                            </excludes>
-                        </fileset>
-                    </filesets>
-                    <verbose>true</verbose>
                 </configuration>
             </plugin>
         </plugins>
@@ -186,15 +150,6 @@
                     <suiteXmlFiles>
                         <suiteXmlFile>src\test\resources\${suiteName}.xml</suiteXmlFile>
                     </suiteXmlFiles>
-                </configuration>
-            </plugin>
-
-            <plugin>
-                <groupId>io.qameta.allure</groupId>
-                <artifactId>allure-maven</artifactId>
-                <version>2.25.0</version>
-                <configuration>
-                    <allureResultsDirectory>${allure.results.directory}</allureResultsDirectory>
                 </configuration>
             </plugin>
         </plugins>
