@@ -1,0 +1,10 @@
+<suite name="MySuite">
+    <test name="MyTests">
+        <listeners>
+            <listener class-name="com.example.selenium.TestEnablerListener" />
+        </listeners>
+        <classes>
+            <class name="com.example.selenium.ExampleTest" />
+        </classes>
+    </test>
+</suite>
