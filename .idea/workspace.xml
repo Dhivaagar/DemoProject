@@ -4,7 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d5491b4c-bc33-4b46-bd7a-bc0d20e184dc" name="Changes" comment="push local code to master" />
+    <list default="true" id="d5491b4c-bc33-4b46-bd7a-bc0d20e184dc" name="Changes" comment="push local code to master">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -36,23 +38,42 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "Application.CharCount.executor": "Run",
+    "Maven.selenium-pratice [clean].executor": "Run",
+    "Maven.selenium-pratice [install].executor": "Run",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "TestNG.PipelineTest2.executor": "Run",
     "dart.analysis.tool.window.visible": "false",
     "git-widget-placeholder": "main",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "D:/Project_Workspace/LocalDemoProject",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
     "settings.editor.selected.configurable": "org.jetbrains.plugins.github.ui.GithubSettingsConfigurable"
   }
 }]]></component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\Project_Workspace\LocalDemoProject\src\main\resources" />
       <recent name="D:\Project_Workspace\LocalDemoProject\src\test\resources" />
     </key>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Application.CharCount">
+    <configuration name="CharCount" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="pratice.CharCount" />
+      <module name="LocalDemoProject" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="pratice.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="PipelineTest2" type="TestNG" temporary="true" nameIsGenerated="true">
       <module name="LocalDemoProject" />
       <extension name="coverage">
@@ -72,6 +93,7 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.CharCount" />
         <item itemvalue="TestNG.PipelineTest2" />
       </list>
     </recent_temporary>
@@ -108,7 +130,15 @@
       <option name="project" value="LOCAL" />
       <updated>1710763151432</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="push local code to master">
+      <option name="closed" value="true" />
+      <created>1710763240506</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1710763240506</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
