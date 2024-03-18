@@ -22,7 +22,6 @@ jobs:
       - name: Run tests
         run: |
           ls
-          cd selenium-pratice
           mvn test -DsuiteName=${{ github.event.inputs.suiteName }}
 
       - name: Load test report history
