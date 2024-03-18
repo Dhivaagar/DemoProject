@@ -12,7 +12,8 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: github-pages
-      url: https://dhivaagar.github.io/DemoProject/12/
+#      url: https://dhivaagar.github.io/DemoProject/12/
+      url: ${{ github.repositoryUrl }}/${{ github.run_id }}
     steps:
       - uses: actions/checkout@v3
 
