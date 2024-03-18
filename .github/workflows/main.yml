@@ -1,0 +1,63 @@
+name: GitHub Actions Demo
+on:
+  workflow_dispatch:
+    inputs:
+      runenv:
+        type: choice
+        default: none
+        options:
+          - yes
+          - no
+        description: "Confirmation to run"
+        required: true
+#  schedule:
+#    - cron: '45,51 12 * * *'
+#    - cron: '47,53 12 * * *'
+#    - cron: '45,53 12 * * *'
+
+jobs:
+  Explore-GitHub-Actions:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Set value to Variable
+        id: set-value
+        run: |
+#          if [ "${{ github.event_name }}" == "schedule" ]; then
+#            if [ "${{ github.event.schedule }}" == "45,51 12 * * *" ]; then
+#              echo "num=Three" >> $GITHUB_OUTPUT
+#              echo "to=dpipremkumar@gmail.com prem.kumar,gbg1297@gmail.com Ranjith,  dhivaagar02@gmail.com dhivaagar" >> $GITHUB_OUTPUT
+#            elif [ "${{ github.event.schedule }}" == "47,53 12 * * *" ]; then
+#              echo "num=Two" >> $GITHUB_OUTPUT
+#              echo "to=gbg1297@gmail.com Ranjith,  dhivaagar02@gmail.com dhivaagar" >> $GITHUB_OUTPUT
+#            elif [ "${{ github.event.schedule }}" == "45,53 12 * * *" ]; then
+#              echo "num=One" >> $GITHUB_OUTPUT
+#              echo "to=dhivaagar02@gmail.com dhivaagar" >> $GITHUB_OUTPUT
+#            fi
+#          fi
+
+      - name: Read HTML File
+        id: read-html
+        run: |
+          CONTENT=$(cat selenium-pratice/Test-Data/CoverageReport.html)
+          echo "content=$CONTENT" >> "$GITHUB_OUTPUT"
+
+      - name: Send email
+        uses: dawidd6/action-send-mail@v3.9.0
+        with:
+          server_address: smtp.gmail.com
+          server_port: 587
+          username: ''
+          password: ''
+
+          subject: Test mail from GitHub action to ${{ steps.set-value.outputs.num }}
+          to: |
+            ${{ steps.set-value.outputs.to }} : ${{ github.event.schedule }}
+#            gbg1297@gmail.com
+#            Ranjith, dhivaagar02@gmail.com
+#            Dhivaagar, dpipremkumar@gmail.com
+#            Prem.Kumar
+          from: notificsunpower@gmail.com
+          html_body: ${{ steps.read-html.outputs.content }}
