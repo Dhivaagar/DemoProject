@@ -1,0 +1,6 @@
+"Status","Start Time","Stop Time","Duration in ms","Parent Suite","Suite","Sub Suite","Test Class","Test Method","Name","Description"
+"passed","Tue Mar 19 04:31:57 GMT 2024","Tue Mar 19 04:31:57 GMT 2024","2","Surefire suite","Surefire test","com.example.selenium.PipelineTest","com.example.selenium.PipelineTest","test1","test1",""
+"passed","Tue Mar 19 04:31:57 GMT 2024","Tue Mar 19 04:31:57 GMT 2024","2","Surefire suite","Surefire test","com.example.selenium.ExampleTest","com.example.selenium.ExampleTest","exampleTestMethod2","exampleTestMethod2",""
+"passed","Tue Mar 19 04:31:57 GMT 2024","Tue Mar 19 04:31:57 GMT 2024","1","Surefire suite","Surefire test","com.example.selenium.PipelineTest","com.example.selenium.PipelineTest","test2","test2",""
+"failed","Tue Mar 19 04:31:57 GMT 2024","Tue Mar 19 04:31:57 GMT 2024","2","Surefire suite","Surefire test","com.example.selenium.PipelineTest","com.example.selenium.PipelineTest","test3","test3",""
+"skipped","Tue Mar 19 04:31:57 GMT 2024","Tue Mar 19 04:31:57 GMT 2024","5","Surefire suite","Surefire test","com.example.selenium.ExampleTest","com.example.selenium.ExampleTest","exampleTestMethod","exampleTestMethod",""
