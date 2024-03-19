@@ -44,30 +44,10 @@ jobs:
           allure_history: allure-history
           allure_results: allure-results
 
-      - name: Generate timestamp
-        id: timestamp
-        run: echo "timestamp=$(date +%Y%m%d%H%M%S)" >> $GITHUB_OUTPUT
-
-      - name: Create reports directory
-        run: mkdir -p uiReports/${{ steps.timestamp.outputs.timestamp }}
-
-      - name: Copy Allure report
-        run: |
-          mkdir -p uiReports/${{ steps.timestamp.outputs.timestamp }}
-          cp -R allure-report/. uiReports/${{ steps.timestamp.outputs.timestamp }}
-
-      - name: Deploy to GitHub Pages
+      - name: Publish test report
         uses: peaceiris/actions-gh-pages@v3
+        if: always()
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: uiReports/${{ steps.timestamp.outputs.timestamp }}
           publish_branch: gh-pages
-          force_orphan: true
-
-#      - name: Publish test report
-#        uses: peaceiris/actions-gh-pages@v3
-#        if: always()
-#        with:
-#          github_token: ${{ secrets.GITHUB_TOKEN }}
-#          publish_branch: gh-pages
-#          publish_dir: allure-history
+          publish_dir: allure-history

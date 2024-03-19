@@ -5,7 +5,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d5491b4c-bc33-4b46-bd7a-bc0d20e184dc" name="Changes" comment="push local code to master">
-      <change beforePath="$PROJECT_DIR$/.github/workflows/allureReport.yml" beforeDir="false" afterPath="$PROJECT_DIR$/.github/workflows/allureReport.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -259,7 +258,15 @@
       <option name="project" value="LOCAL" />
       <updated>1710773300285</updated>
     </task>
-    <option name="localTasksCounter" value="19" />
+    <task id="LOCAL-00019" summary="push local code to master">
+      <option name="closed" value="true" />
+      <created>1710822669087</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1710822669087</updated>
+    </task>
+    <option name="localTasksCounter" value="20" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
