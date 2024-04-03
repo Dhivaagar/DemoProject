@@ -5,7 +5,7 @@ on:
 
 jobs:
   build:
-    runs-on: self-hosted
+    runs-on: DESKTOP-7GPKF5M
 
     steps:
       - name: Checkout code
@@ -21,6 +21,4 @@ jobs:
       # Rest of your workflow steps...
 
       - name: Build and Test
-        run: |
-          ls -al
-          mvn test -Dtest=selenium.ExampleTest
+        run: mvn test -Dtest=selenium.ExampleTest
