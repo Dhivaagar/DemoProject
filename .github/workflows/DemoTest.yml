@@ -5,7 +5,7 @@ on:
 
 jobs:
   build:
-    runs-on: DESKTOP-7GPKF5M
+    runs-on: self-hosted
 
     steps:
       - name: Checkout code
