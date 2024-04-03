@@ -1,10 +1,13 @@
 package selenium.test;
 
+import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.By;
 import org.openqa.selenium.chrome.ChromeDriver;
 
 public class AlertHandling {
     public static void main(String[] args) {
+
+        WebDriverManager.chromedriver().setup();
         ChromeDriver driver = new ChromeDriver();
         driver.manage().window().maximize();
         driver.get("https://letcode.in/alert");
@@ -22,11 +25,6 @@ public class AlertHandling {
         driver.switchTo().alert().sendKeys("Dhivaagar");
         driver.switchTo().alert().accept();
         System.out.println("prompt MyName alert text : " +driver.findElement(By.id("myName")).getText());
-
-        driver.findElement(By.id("modern")).click();
-        System.out.println("Dismiss alert text : " +driver.findElement(By.xpath("(//div[@class='card-content']//child::p)[2]")).getText());
-        driver.findElement(By.xpath("//button[@aria-label='close']")).click();
-
         driver.quit();
     }
 }

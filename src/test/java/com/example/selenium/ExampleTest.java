@@ -3,23 +3,22 @@ package com.example.selenium;
 import org.testng.annotations.CustomAttribute;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
+import org.testng.xml.XmlClass;
+import org.testng.xml.XmlSuite;
+import org.testng.xml.XmlTest;
+import selenium.test.AlertHandling;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Arrays;
+import java.util.List;
 
-@Listeners(TestEnablerListener.class)
 public class ExampleTest {
-
-
-    @Test
-    @Deprecated
-    public void exampleTestMethod() {
-//        System.out.println(Arrays.toString(method.getAnnotations()));
-        System.out.println("Test method executed.");
-    }
 
     @Test
     public void exampleTestMethod2() {
         // Your test logic here
-        System.out.println("Test method 2 executed.");
+        System.out.println("Test method executed.");
+        AlertHandling.main(null);
     }
 }

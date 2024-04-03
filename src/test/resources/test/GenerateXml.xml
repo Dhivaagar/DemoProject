@@ -1,9 +1,9 @@
 <!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd" >
 
-<suite name="ExampleTest">
-    <test name="ExampleTest">
+<suite name="GenerateXml">
+    <test name="GenerateXml">
         <classes>
-            <class name="com.example.selenium.ExampleTest"/>
+            <class name="com.example.selenium.GenerateXml"/>
         </classes>
     </test>
 </suite>
