@@ -5,11 +5,27 @@ on:
 
 jobs:
   build:
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+
+      - name: Download ChromeDriver
+        run: |
+          CHROMEDRIVER_VERSION=$(curl -sS chromedriver.storage.googleapis.com/LATEST_RELEASE)
+          wget -q -O /tmp/chromedriver.zip https://chromedriver.storage.googleapis.com/$CHROMEDRIVER_VERSION/chromedriver_linux64.zip
+          unzip -q /tmp/chromedriver.zip -d /tmp
+          chmod +x /tmp/chromedriver
+        # Change permissions to executable
+
+      - name: Set up ChromeDriver
+        run: echo "::add-path::/tmp"
+        # Add ChromeDriver path to PATH
+
+      - name: Verify ChromeDriver
+        run: chromedriver --version
+          # Verify ChromeDriver installation
 
       - name: Setup JDK
         uses: actions/setup-java@v1
