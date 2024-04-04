@@ -16,20 +16,6 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-      - name: Download ChromeDriver
-        run: |
-          CHROMEDRIVER_VERSION=$(curl -sS chromedriver.storage.googleapis.com/LATEST_RELEASE)
-          wget -q -O /tmp/chromedriver.zip https://chromedriver.storage.googleapis.com/$CHROMEDRIVER_VERSION/chromedriver_linux64.zip
-          unzip -q /tmp/chromedriver.zip -d /opt
-          CHROMEDRIVER_PATH="/opt/chromedriver"
-          echo "ChromeDriver Path: $CHROMEDRIVER_PATH"
-          chmod +x $CHROMEDRIVER_PATH
-        # Download and set ChromeDriver path to a variable, then print it
-
-      - name: Verify ChromeDriver
-        run: $CHROMEDRIVER_PATH --version
-          # Verify the ChromeDriver installation by running it
-
 #      - name: Set Execution Policy (Not Recommended)
 #        run: |
 #          Set-ExecutionPolicy RemoteSigned -Scope CurrentUser  # Replace with the desired policy if needed
