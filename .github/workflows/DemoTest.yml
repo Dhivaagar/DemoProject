@@ -15,7 +15,7 @@ jobs:
         run: |
           CHROMEDRIVER_VERSION=$(curl -sS chromedriver.storage.googleapis.com/LATEST_RELEASE)
           wget -q -O /tmp/chromedriver.zip https://chromedriver.storage.googleapis.com/$CHROMEDRIVER_VERSION/chromedriver_linux64.zip
-          unzip -q /tmp/chromedriver.zip -d ./
+          unzip -q /tmp/chromedriver.zip -d /tmp
           echo "CHROMEDRIVER_PATH=/tmp/chromedriver" >> $GITHUB_ENV
           chmod +x /tmp/chromedriver
         # Download and set ChromeDriver path to an environment variable
