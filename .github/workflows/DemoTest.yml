@@ -28,7 +28,7 @@ jobs:
           cd ../..
           ls
           echo "Second path"
-          cd _actions/_temp
+          cd _temp
           ls
         # Print the ChromeDriver path
 
