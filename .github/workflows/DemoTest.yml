@@ -5,46 +5,19 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Download ChromeDriver
-        run: |
-          CHROMEDRIVER_VERSION=$(curl -sS chromedriver.storage.googleapis.com/LATEST_RELEASE)
-          wget -q -O /tmp/chromedriver.zip https://chromedriver.storage.googleapis.com/$CHROMEDRIVER_VERSION/chromedriver_linux64.zip
-          unzip -q /tmp/chromedriver.zip -d $HOME
-          echo "CHROMEDRIVER_PATH=$HOME/chromedriver" >> $GITHUB_ENV
-          echo "ChromeDriver Path: $CHROMEDRIVER_PATH"
-          chmod +x $CHROMEDRIVER_PATH
-        # Download and set ChromeDriver path to an environment variable
-
-      - name: Show ChromeDriver Path
-        run: |
-          echo "ChromeDriver Path: $CHROMEDRIVER_PATH"
-          ls
-          echo "first path"
-          cd ../..
-          ls
-          echo "Second path"
-          cd _temp
-          ls
-        # Print the ChromeDriver path
-
-      - name: Verify ChromeDriver
-        run: chromedriver --version
-          # Verify ChromeDriver installation
-
       - name: Setup JDK
         uses: actions/setup-java@v1
         with:
           java-version: 17
-
-#      - name: Set Execution Policy (Not Recommended)
-#        run: |
-#          Set-ExecutionPolicy RemoteSigned -Scope CurrentUser  # Replace with the desired policy if needed
+      - name: Set Execution Policy (Not Recommended)
+        run: |
+          Set-ExecutionPolicy RemoteSigned -Scope CurrentUser  # Replace with the desired policy if needed
       # Rest of your workflow steps...
 
       - name: Build and Test
