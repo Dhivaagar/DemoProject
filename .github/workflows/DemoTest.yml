@@ -23,6 +23,7 @@ jobs:
       - name: Show ChromeDriver Path
         run: |
           echo "ChromeDriver Path: $CHROMEDRIVER_PATH"
+          ls
         # Print the ChromeDriver path
 
       - name: Verify ChromeDriver
@@ -33,9 +34,10 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 17
-      - name: Set Execution Policy (Not Recommended)
-        run: |
-          Set-ExecutionPolicy RemoteSigned -Scope CurrentUser  # Replace with the desired policy if needed
+
+#      - name: Set Execution Policy (Not Recommended)
+#        run: |
+#          Set-ExecutionPolicy RemoteSigned -Scope CurrentUser  # Replace with the desired policy if needed
       # Rest of your workflow steps...
 
       - name: Build and Test
