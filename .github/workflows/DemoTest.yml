@@ -24,6 +24,8 @@ jobs:
         run: |
           echo "ChromeDriver Path: $CHROMEDRIVER_PATH"
           ls
+          cd ../..
+          ls
           cd ..
           ls
         # Print the ChromeDriver path
