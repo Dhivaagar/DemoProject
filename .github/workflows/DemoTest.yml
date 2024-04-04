@@ -10,11 +10,16 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-
-      - name: Setup JDK
-        uses: actions/setup-java@v1
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
         with:
-          java-version: 17
+          java-version: '17'
+          distribution: 'temurin'
+          cache: maven
+
+      - uses: browser-actions/setup-chrome@latest
+      - run: chrome --version
+
 #      - name: Set Execution Policy (Not Recommended)
 #        run: |
 #          Set-ExecutionPolicy RemoteSigned -Scope CurrentUser  # Replace with the desired policy if needed
