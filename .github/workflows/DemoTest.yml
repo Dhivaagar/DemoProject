@@ -24,6 +24,8 @@ jobs:
         run: |
           echo "ChromeDriver Path: $CHROMEDRIVER_PATH"
           ls
+          cd $CHROMEDRIVER_PATH
+          ls
         # Print the ChromeDriver path
 
       - name: Verify ChromeDriver
