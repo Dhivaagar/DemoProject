@@ -124,6 +124,19 @@
             <version>5.7.0</version>
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient -->
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+            <version>4.5.14</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.googlecode.json-simple</groupId>
+            <artifactId>json-simple</artifactId>
+            <version>1.1.1</version>
+        </dependency>
+
     </dependencies>
 
     <build>
@@ -167,7 +180,7 @@
                 <configuration>
                     <reportsDirectory>${project.basedir}/reports</reportsDirectory>
                     <suiteXmlFiles>
-                        <suiteXmlFile>src\test\resources\${suiteName}.xml</suiteXmlFile>
+                        <suiteXmlFile>src\test\resources\${suite}.xml</suiteXmlFile>
                     </suiteXmlFiles>
                 </configuration>
             </plugin>
