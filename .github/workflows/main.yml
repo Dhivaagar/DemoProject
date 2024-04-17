@@ -33,7 +33,7 @@ jobs:
         id: read-html
         run: |
           ls
-          CONTENT=$(cat newReport.html)
+          CONTENT=$(cat teamCoverageReport.html)
           echo "content=$CONTENT" >> "$GITHUB_OUTPUT"
 
       - name: Send email
@@ -45,6 +45,6 @@ jobs:
           password: 'hepu rwof zeaf rylz'
 
           subject: Test mail from GitHub action
-          to: gbg1297@gmail.com, dhivaagar02@gmail.com
+          to: dhivaagar02@gmail.com, dhivaagar.b@aximsoft.com, ranjith.g@aximsoft.com
           from: Madmani2127@gmail.com
           html_body: ${{ steps.read-html.outputs.content }}
