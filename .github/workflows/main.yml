@@ -41,8 +41,8 @@ jobs:
         with:
           server_address: smtp.gmail.com
           server_port: 587
-          username: ''
-          password: ''
+          username: 'Madmani2127@gmail.com'
+          password: 'hepu rwof zeaf rylz'
 
           subject: Test mail from GitHub action
           to: |
