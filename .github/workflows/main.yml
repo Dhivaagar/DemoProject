@@ -1,15 +1,6 @@
 name: GitHub Actions Demo
 on:
   workflow_dispatch:
-    inputs:
-      runenv:
-        type: choice
-        default: none
-        options:
-          - yes
-          - no
-        description: "Confirmation to run"
-        required: true
 #  schedule:
 #    - cron: '45,51 12 * * *'
 #    - cron: '47,53 12 * * *'
@@ -41,7 +32,8 @@ jobs:
       - name: Read HTML File
         id: read-html
         run: |
-          CONTENT=$(cat selenium-pratice/Test-Data/CoverageReport.html)
+          ls
+          CONTENT=$(cat newReport.html)
           echo "content=$CONTENT" >> "$GITHUB_OUTPUT"
 
       - name: Send email
@@ -52,12 +44,11 @@ jobs:
           username: ''
           password: ''
 
-          subject: Test mail from GitHub action to ${{ steps.set-value.outputs.num }}
+          subject: Test mail from GitHub action
           to: |
-            ${{ steps.set-value.outputs.to }} : ${{ github.event.schedule }}
-#            gbg1297@gmail.com
-#            Ranjith, dhivaagar02@gmail.com
-#            Dhivaagar, dpipremkumar@gmail.com
-#            Prem.Kumar
+#            ${{ steps.set-value.outputs.to }} : ${{ github.event.schedule }}
+            gbg1297@gmail.com
+            Ranjith, dhivaagar02@gmail.com
+            Dhivaagar
           from: notificsunpower@gmail.com
           html_body: ${{ steps.read-html.outputs.content }}
