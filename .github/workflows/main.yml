@@ -45,10 +45,6 @@ jobs:
           password: 'hepu rwof zeaf rylz'
 
           subject: Test mail from GitHub action
-          to: |
-#            ${{ steps.set-value.outputs.to }} : ${{ github.event.schedule }}
-            gbg1297@gmail.com
-            Ranjith, dhivaagar02@gmail.com
-            Dhivaagar
-          from: notificsunpower@gmail.com
+          to: gbg1297@gmail.com, dhivaagar02@gmail.com
+          from: Madmani2127@gmail.com
           html_body: ${{ steps.read-html.outputs.content }}
