@@ -1,0 +1,46 @@
+name: Automation API Trigger Test
+
+on:
+  repository_dispatch:
+    types: Sample
+  workflow_dispatch:
+    inputs:
+      browser:
+        type: choice
+        description: Which browser to test
+        required: true
+        options:
+          - chrome
+          - firefox
+          - edge
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    services:
+      selenium:
+        image: selenium/standalone-${{ github.event.inputs.browser }}
+        options: --shm-size=2gb
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: maven
+
+      - name: Build and Test
+        run: |
+          mvn clean install
+          mvn test -Dsuite=selenium.ExampleTest
+
+      - uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: screenshots
+          path: screenshots/
