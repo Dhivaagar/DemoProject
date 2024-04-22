@@ -45,4 +45,4 @@ jobs:
       - name: Build and Test
         run: |
               mvn clean install
-              mvn test -Dsuite=selenium.ExampleTest
+              mvn test -Dsuite=selenium.SimpleTest
