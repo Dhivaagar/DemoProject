@@ -31,7 +31,7 @@ jobs:
 
     steps:
       - name: Print Parameter
-        run: echo "My parameter is ${{ github.event.inputs.myParam }}, ${{ github.event.client_payload.param1 }} and my browser is ${{ github.event.inputs.browser }}, ${{ github.event.client_payload.param2 }}"
+        run: echo "My parameter is ${{ github.event.client_payload.param1 }} and my browser is ${{ github.event.client_payload.browser1 }}"
 
 
       - name: Checkout code
@@ -55,7 +55,7 @@ jobs:
             -H "Accept: application/vnd.github.v3+json" \
             -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
             https://api.github.com/repos/Dhivaagar/DemoProject/dispatches \
-             -d '{"event_type": "ApiTrigger", "client_payload": {"param1": "${{ github.event.inputs.myParam }}", "param2": "${{ github.event.inputs.browser }}"}}'
+             -d '{"event_type": "ApiTrigger", "client_payload": {"param1": "${{ github.event.inputs.myParam }}", "browser1": "${{ github.event.inputs.browser }}"}}'
 
       - uses: actions/upload-artifact@v3
         if: always()
