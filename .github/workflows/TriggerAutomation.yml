@@ -16,6 +16,7 @@ on:
           - firefox
           - edge
       myParam:
+        type: choice
         description: 'Example parameter'
         required: true
         default: params
@@ -30,7 +31,7 @@ jobs:
 
     steps:
       - name: Print Parameter
-        run: echo "My parameter is ${{ github.event.inputs.myParam }}"
+        run: echo "My parameter is ${{ github.event.inputs.myParam }} and my browser is ${{ github.event.inputs.browser }"
 
       - name: Checkout code
         uses: actions/checkout@v2
