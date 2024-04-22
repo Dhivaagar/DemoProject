@@ -33,15 +33,16 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
+      - name: Debug Branch Name
+        run: echo "My branch is ${{ github.event.client_payload.branch }}"
 
-      - name: Checkout code
-        uses: actions/checkout@v2
-        shell: bash -e
-        run: git checkout ${{ github.event.client_payload.branch }} # Set the shell for this step to bash with the -e option
+      - name: Change branch
+        run: git checkout ${{ github.event.client_payload.branch }}
 
-      - name: Change branch and Print Parameter
-        shell: bash -e  # Set the shell for this step to bash with the -e option
+
+      - name: Print Parameter
         run: echo "My parameter is ${{ github.event.client_payload.param1 }} branch ${{ github.event.client_payload.branch }} and my browser is ${{ github.event.client_payload.browser1 }}"
+
 #      - name: Set up JDK 17
 #        uses: actions/setup-java@v3
 #        with:
