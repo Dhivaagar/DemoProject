@@ -2,7 +2,7 @@ name: Automation API Trigger Test
 
 on:
   repository_dispatch:
-    types: Sample
+    types: ApiTrigger
 
   workflow_dispatch:
     inputs:
