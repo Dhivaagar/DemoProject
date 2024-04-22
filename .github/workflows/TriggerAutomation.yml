@@ -3,6 +3,7 @@ name: Automation API Trigger Test
 on:
   repository_dispatch:
     types: Sample
+
   workflow_dispatch:
     inputs:
       browser:
