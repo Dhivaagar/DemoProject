@@ -31,7 +31,8 @@ jobs:
 
     steps:
       - name: Print Parameter
-        run: echo "My parameter is ${{ github.event.inputs.myParam }} and my browser is ${{ github.event.inputs.browser }}"
+        run: echo "My parameter is ${{ github.event.inputs.myParam }}, ${{ github.event.client_payload.param1 }} and my browser is ${{ github.event.inputs.browser }}, ${{ github.event.client_payload.param2 }"
+
 
       - name: Checkout code
         uses: actions/checkout@v2
@@ -47,6 +48,14 @@ jobs:
         run: |
           mvn clean install
           mvn test -Dsuite=selenium.ExampleTest
+
+      - name: Trigger Workflow with Parameters
+        run: |
+          curl -X POST \
+            -H "Accept: application/vnd.github.v3+json" \
+            -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+            https://api.github.com/repos/Dhivaagar/DemoProject/dispatches \
+             -d '{"event_type": "ApiTrigger", "client_payload": {"param1": "${{ github.event.inputs.myParam }}", "param2": "${{ github.event.inputs.browser }}"}}'
 
       - uses: actions/upload-artifact@v3
         if: always()
