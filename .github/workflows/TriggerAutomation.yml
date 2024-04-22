@@ -33,8 +33,13 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Set shell
-        shell: bash -e  # Set shell to /usr/bin/bash -e
+
+      - name: Checkout code
+        uses: actions/checkout@v2
+        shell: bash -e  # Set the shell for this step to bash with the -e option
+
+      - name: Change branch and Print Parameter
+        shell: bash -e  # Set the shell for this step to bash with the -e option
         run: |
             git checkout ${{ github.event.client_payload.branch }}
             echo "My parameter is ${{ github.event.client_payload.param1 }} branch ${{ github.event.client_payload.branch }} and my browser is ${{ github.event.client_payload.browser1 }}"
