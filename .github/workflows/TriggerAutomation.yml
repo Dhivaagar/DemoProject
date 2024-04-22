@@ -58,15 +58,3 @@ jobs:
         with:
           name: screenshots
           path: screenshots/
-
-  trigger_alternative_params:
-    needs: test
-    runs-on: ubuntu-latest
-    steps:
-      - name: Trigger Workflow with Alternative Parameters
-        run: |
-          curl -X POST \
-            -H "Accept: application/vnd.github.v3+json" \
-            -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
-            https://api.github.com/repos/Dhivaagar/DemoProject/dispatches \
-            -d '{"event_type": "ApiTrigger", "client_payload": {"browser": "firefox", "myParam": "args"}}'
