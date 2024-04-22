@@ -35,6 +35,7 @@ jobs:
 
       - name: Fetch all branches
         run: git fetch --all
-
+      - name: Change branch
+        run: git checkout ${{ github.event.client_payload.branch }}
       - name: Print Parameter
         run: echo "My parameter is ${{ github.event.client_payload.param1 }} branch ${{ github.event.client_payload.branch }} and my browser is ${{ github.event.client_payload.browser1 }}"
