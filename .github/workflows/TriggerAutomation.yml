@@ -17,13 +17,11 @@ on:
       myParam:
         description: 'Example parameter'
         required: true
+        options:
+          - param
+          - args
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Print Parameter
-        run: echo "My parameter is ${{ inputs.myParam }}"
 
   test:
     runs-on: ubuntu-latest
@@ -34,6 +32,9 @@ jobs:
         options: --shm-size=2gb
 
     steps:
+      - name: Print Parameter
+        run: ${{ inputs.myParam }}
+
       - name: Checkout code
         uses: actions/checkout@v2
 
