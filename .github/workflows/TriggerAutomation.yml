@@ -17,8 +17,9 @@ on:
       myParam:
         description: 'Example parameter'
         required: true
+        default: params
         options:
-          - param
+          - params
           - args
 
 jobs:
@@ -33,7 +34,7 @@ jobs:
 
     steps:
       - name: Print Parameter
-        run: ${{ inputs.myParam }}
+        run: echo "My parameter is ${{ inputs.myParam }}"
 
       - name: Checkout code
         uses: actions/checkout@v2
