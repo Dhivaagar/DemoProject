@@ -1,6 +1,7 @@
 name: Browser SetUp Test
 
 on:
+  repository_dispatch:
   workflow_dispatch:
     inputs:
       browser:
