@@ -31,7 +31,7 @@ jobs:
 
     steps:
       - name: Print Parameter
-        run: echo "My parameter is ${{ github.event.inputs.myParam }}, ${{ github.event.client_payload.param1 }} and my browser is ${{ github.event.inputs.browser }}, ${{ github.event.client_payload.param2 }"
+        run: echo "My parameter is ${{ github.event.inputs.myParam }}, ${{ github.event.client_payload.param1 }} and my browser is ${{ github.event.inputs.browser }}, ${{ github.event.client_payload.param2 }}"
 
 
       - name: Checkout code
