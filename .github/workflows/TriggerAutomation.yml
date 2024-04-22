@@ -30,7 +30,7 @@ jobs:
 
     steps:
       - name: Print Parameter
-        run: echo "My parameter is ${{ inputs.myParam }}"
+        run: echo "My parameter is ${{ github.event.inputs.myParam }}"
 
       - name: Checkout code
         uses: actions/checkout@v2
