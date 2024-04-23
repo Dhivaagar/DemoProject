@@ -1,8 +1,10 @@
 package com.example.selenium;
 
-public class SimpleTest {
+import org.testng.annotations.Test;
 
-    public static void main(String[] args) {
+public class SimpleTest {
+    @Test
+    public void message() {
         System.out.println("This is Branch ranjithG_AX");
     }
 }
