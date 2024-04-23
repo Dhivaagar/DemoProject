@@ -51,4 +51,5 @@ jobs:
       - name: Build and Test
         run: |
               mvn clean install -Dmaven.test.skip=true -Dskipjar=true
-              mvn test -Dsuite=selenium.SimpleTest
+              mvn test '-Dtest=SimpleTest'
+
