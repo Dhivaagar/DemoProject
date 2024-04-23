@@ -5,6 +5,6 @@ import org.testng.annotations.Test;
 public class SimpleTest {
     @Test
     public void message() {
-        System.out.println("This is Branch: Dhivaagar J B");
+        System.out.println("This is Branch: main");
     }
 }
