@@ -34,7 +34,7 @@ public class ExampleTest {
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--remote-allow-origins=*");
         options.addArguments("--remote-debugging-pipe");
-//        options.addArguments("--headless");
+        options.addArguments("--headless");
         ChromeDriver driver = new ChromeDriver(options);
         driver.manage().window().maximize();
         driver.get("https://letcode.in/alert");
