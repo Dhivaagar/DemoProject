@@ -30,12 +30,13 @@ public class ExampleTest {
 
     @Test
     public void exampleTestMethod2() {
-        WebDriverManager.chromedriver().setup();
+        System.setProperty("webdriver.chrome.driver", "src/main/resources/Test-Data/drivers/chromedriver.exe");
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--remote-allow-origins=*");
-        options.addArguments("--remote-debugging-pipe");
-        options.addArguments("--headless");
-        ChromeDriver driver = new ChromeDriver();
+        options.addArguments("--no-sandbox");
+        options.addArguments("--disable-dev-shm-usage");
+//        options.addArguments("--headless");
+        ChromeDriver driver = new ChromeDriver(options);
         driver.manage().window().maximize();
         driver.get("https://letcode.in/alert");
 
