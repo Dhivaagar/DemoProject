@@ -32,7 +32,9 @@ public class ExampleTest {
     public void exampleTestMethod2() {
         WebDriverManager.chromedriver().setup();
         ChromeOptions options = new ChromeOptions();
-        options.addArguments("--headless");
+        options.addArguments("--remote-allow-origins=*");
+        options.addArguments("--remote-debugging-pipe");
+//        options.addArguments("--headless");
         ChromeDriver driver = new ChromeDriver(options);
         driver.manage().window().maximize();
         driver.get("https://letcode.in/alert");
