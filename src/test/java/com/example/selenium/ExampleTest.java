@@ -30,7 +30,8 @@ public class ExampleTest {
 
     @Test
     public void exampleTestMethod2() {
-        System.setProperty("webdriver.chrome.driver", "src/main/resources/Test-Data/drivers/chromedriver.exe");
+//        System.setProperty("webdriver.chrome.driver", "src/main/resources/Test-Data/drivers/chromedriver.exe");
+        WebDriverManager.chromedriver().setup();
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--remote-allow-origins=*");
         options.addArguments("--no-sandbox");
