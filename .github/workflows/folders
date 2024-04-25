@@ -1,0 +1,8 @@
+.github/
+|-- workflows/
+    |-- folder1/
+    |   |-- DemoTest.yml
+    |   |-- bat.yml
+    |-- folder2/
+        |-- main.yml
+        |-- pipeline.yml
