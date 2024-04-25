@@ -31,10 +31,8 @@ jobs:
 #          sudo apt-get update
 #          sudo apt-get install -y chromium-chromedriver maven
 
-      - name: Set up Chrome WebDriver
-        run: |
-          sudo ln -sf /usr/lib/chromium-browser/chromedriver /usr/bin/chromedriver
-          
+      - uses: browser-actions/setup-chrome@latest
+      - run: chrome --version
           
 #      - uses: browser-actions/setup-chrome@latest
 #        with:
