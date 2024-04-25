@@ -36,6 +36,8 @@ public class ExampleTest {
         options.addArguments("--remote-allow-origins=*");
         options.addArguments("--no-sandbox");
         options.addArguments("--disable-dev-shm-usage");
+        options.addArguments("--ignore-ssl-errors=yes");
+        options.addArguments("--ignore-certificate-errors");
 //        options.addArguments("--headless");
         ChromeDriver driver = new ChromeDriver(options);
         driver.manage().window().maximize();
