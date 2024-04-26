@@ -2,6 +2,7 @@ package com.example.selenium;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.apache.commons.io.FileUtils;
+import org.jetbrains.annotations.NotNull;
 import org.openqa.selenium.By;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
@@ -32,14 +33,7 @@ public class ExampleTest {
     public void exampleTestMethod2() {
 //        System.setProperty("webdriver.chrome.driver", "src/main/resources/Test-Data/drivers/chromedriver.exe");
         WebDriverManager.chromedriver().setup();
-        ChromeOptions options = new ChromeOptions();
-        options.addArguments("--remote-allow-origins=*");
-        options.addArguments("--no-sandbox");
-        options.addArguments("--disable-dev-shm-usage");
-        options.addArguments("--ignore-ssl-errors=yes");
-        options.addArguments("--ignore-certificate-errors");
-//        options.addArguments("--headless");
-        ChromeDriver driver = new ChromeDriver(options);
+        ChromeDriver driver = getChromeDriver();
         driver.manage().window().maximize();
         driver.get("https://letcode.in/alert");
 
@@ -62,6 +56,19 @@ public class ExampleTest {
         driver.switchTo().alert().accept();
         System.out.println("prompt MyName alert text : " +driver.findElement(By.id("myName")).getText());
         driver.quit();
+    }
+
+    private static @NotNull ChromeDriver getChromeDriver() {
+        ChromeOptions options = new ChromeOptions();
+        options.addArguments("window-size=1400,1500");
+        options.addArguments("--disable-gpu");
+//        options.addArguments("--no-sandbox");
+        options.addArguments("start-maximized");
+        options.addArguments("enable-automation");
+        options.addArguments("--disable-infobars");
+        options.addArguments("--disable-dev-shm-usage");
+//        options.addArguments("--headless");
+        return new ChromeDriver(options);
     }
 
     private static void captureScreen(WebDriver driver){
