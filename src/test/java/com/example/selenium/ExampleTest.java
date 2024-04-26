@@ -2,7 +2,6 @@ package com.example.selenium;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.apache.commons.io.FileUtils;
-import org.jetbrains.annotations.NotNull;
 import org.openqa.selenium.By;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
@@ -21,6 +20,7 @@ public class ExampleTest {
 
     @Test
     public void exampleTestMethod2() {
+//        System.setProperty("webdriver.chrome.driver", "src/main/resources/Test-Data/drivers/chromedriver.exe");
         WebDriverManager.chromedriver().setup();
         ChromeDriver driver = getChromeDriver();
         driver.manage().window().maximize();
@@ -47,16 +47,16 @@ public class ExampleTest {
         driver.quit();
     }
 
-    private static @NotNull ChromeDriver getChromeDriver() {
+    private static ChromeDriver getChromeDriver() {
         ChromeOptions options = new ChromeOptions();
+//        options.addArguments("--headless");
         options.addArguments("window-size=1400,1500");
         options.addArguments("--disable-gpu");
-//        options.addArguments("--no-sandbox");
+        options.addArguments("--no-sandbox");
         options.addArguments("start-maximized");
         options.addArguments("enable-automation");
         options.addArguments("--disable-infobars");
         options.addArguments("--disable-dev-shm-usage");
-//        options.addArguments("--headless");
         return new ChromeDriver(options);
     }
 
@@ -65,8 +65,12 @@ public class ExampleTest {
         //String tcName = "screen";
         try {
             File source = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
+            //File source = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
             String now = "";
             path = "./screenshots/screenshot.jpeg";
+
+            //  path = "./screenshots/" + tcName + "  " +source.getName();
+            // Now you can do whatever you need to do with it, for example copy somewhere
 
             FileUtils.copyFile(source, new File(path));
         } catch (IOException e) {
