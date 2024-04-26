@@ -17,9 +17,7 @@ jobs:
       - name: Build and Test
         run: |
           mvn clean install -Dmaven.test.skip=true -Dskipjar=true
-          google-chrome --version
-          google-chrome
-#          mvn test -Dtest=selenium.ExampleTest
+          mvn test -Dtest=selenium.ExampleTest
 
       - uses: actions/upload-artifact@v3
         if: always()
