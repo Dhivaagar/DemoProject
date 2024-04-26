@@ -30,8 +30,8 @@ jobs:
 
       - name: Build and Test
         run: |
-          mvn clean install -Dmaven.test.skip=true -Dskipjar=true
-          mvn test -Dtest=selenium.ExampleTest
+          sudo mvn clean install -Dmaven.test.skip=true -Dskipjar=true
+          sudo mvn test -Dtest=selenium.ExampleTest
 
       - uses: actions/upload-artifact@v3
         if: always()
