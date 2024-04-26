@@ -11,27 +11,16 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.testng.annotations.CustomAttribute;
-import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
-import org.testng.xml.XmlClass;
-import org.testng.xml.XmlSuite;
-import org.testng.xml.XmlTest;
-import selenium.test.AlertHandling;
 
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.time.Duration;
-import java.util.Arrays;
-import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 public class ExampleTest {
 
     @Test
     public void exampleTestMethod2() {
-//        System.setProperty("webdriver.chrome.driver", "src/main/resources/Test-Data/drivers/chromedriver.exe");
         WebDriverManager.chromedriver().setup();
         ChromeDriver driver = getChromeDriver();
         driver.manage().window().maximize();
@@ -76,12 +65,8 @@ public class ExampleTest {
         //String tcName = "screen";
         try {
             File source = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
-            //File source = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
             String now = "";
             path = "./screenshots/screenshot.jpeg";
-
-            //  path = "./screenshots/" + tcName + "  " +source.getName();
-            // Now you can do whatever you need to do with it, for example copy somewhere
 
             FileUtils.copyFile(source, new File(path));
         } catch (IOException e) {
