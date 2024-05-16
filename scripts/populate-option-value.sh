@@ -1,5 +1,3 @@
-#!/bin/bash
-
 SCRIPT_DIR=$(dirname "$0")
 SOURCE_YAML_FILE="$SCRIPT_DIR/../.github/workflows/target-action.yml"
 
