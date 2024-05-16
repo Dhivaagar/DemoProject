@@ -15,7 +15,7 @@ jobs:
           token: ${{ secrets.GH_TOKEN }}
 
       - name: Run Populator
-        run: ./scripts/populate-option-value.sh
+        run: sh ./scripts/populate-option-value.sh
 
 
       - name: Commit Changes
