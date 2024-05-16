@@ -15,7 +15,10 @@ jobs:
           token: ${{ secrets.GH_TOKEN }}
 
       - name: Run Populator
-        run: sh ./scripts/populate-option-value.sh
+        run: |
+          sudo snap install yq
+          chmod +x ./scripts/populate-option-value.sh
+          sh ./scripts/populate-option-value.sh
 
 
       - name: Commit Changes
