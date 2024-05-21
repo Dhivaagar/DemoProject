@@ -6,6 +6,8 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.read-yaml.outputs.result }}
 
     steps:
       - name: Checkout repository
@@ -33,10 +35,6 @@ jobs:
             const data = yaml.load(fileContents);
             return JSON.stringify(data.items);
 
-      - name: Set output
-        id: set-matrix
-        run: echo "::set-output name=matrix::${{ steps.read-yaml.outputs.result }}"
-
   test:
     needs: build
     runs-on: ubuntu-latest
@@ -50,4 +48,6 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Run tests
-        run: echo "Running tests for ${{ matrix.item }}"
+        run: |
+          echo "${{ needs.build.outputs.matrix }}"
+          echo "Running tests for ${{ matrix.item }}"
