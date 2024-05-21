@@ -12,6 +12,17 @@ name: IntegrationTest
           multiple suite run format: ['suiteName1', 'suiteName2']"
         required: true
         type: string
+  workflow_dispatch:
+    inputs:
+      portalName:
+        description: suite to run
+        required: true
+        type: string
+      suitesToRun:
+        description: "The suites which needs to be run i.e., for single suite run format: ['suiteName'],
+          multiple suite run format: ['suiteName1', 'suiteName2']"
+        required: true
+        type: string
 
 jobs:
   test:
