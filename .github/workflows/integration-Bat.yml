@@ -1,6 +1,6 @@
 name: IntegrationTest
 
-'on':
+on:
   workflow_call:
     inputs:
       portalName:
@@ -19,49 +19,27 @@ name: IntegrationTest
         type: string
 
 jobs:
-  build:
+  metadata:
     runs-on: ubuntu-latest
     outputs:
-      suitesToRun: ${{ steps.read-yaml.outputs.result }}
-
+      matrix: ${{ steps.generate-matrix.outputs.matrix }}
     steps:
-      - name: Checkout repository
+      - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '14'
-
-      - name: Install dependencies
+      - name: generate matrix
+        id: generate-matrix
         run: |
-          npm install
-          npm install js-yaml
-          npm install fs
-
-      - name: Read list from YAML
-        id: read-yaml
-        uses: actions/github-script@v6
-        with:
-          script: |
-            const fs = require('fs');
-            const yaml = require('js-yaml');
-            const fileContents = fs.readFileSync('list.yml', 'utf8');
-            const data = yaml.load(fileContents).items;
-            console.log("Data: ", data);
-            console.log(typeof data);
-            return JSON.stringify(data);
-
-      - name: Output
-        run: echo "Suites to run = ${{ steps.read-yaml.outputs.result }}"
+          file_name="list.yml"
+          echo "matrix=$(yq e ".suites" "$file_name" | sed 's/^- //; s/^/'\''/; s/$/'\''/' | paste -sd, - | sed 's/^/[ /; s/$/ ]/')" >> $GITHUB_OUTPUT
+          
 
   test:
-    needs: build
+    needs: metadata
     runs-on: ubuntu-latest
     strategy:
-      fail-fast: false
       matrix:
-        tests: ${{ fromJson(needs.build.outputs.suitesToRun) }}
+        tests: ${{ fromJson(needs.metadata.outputs.matrix) }}
 
     steps:
       - name: Checkout repository
