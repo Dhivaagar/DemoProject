@@ -48,7 +48,8 @@ jobs:
             const yaml = require('js-yaml');
             const fileContents = fs.readFileSync('list.yml', 'utf8');
             const data = yaml.load(fileContents);
-            console.log(JSON.stringify(JSON.parse(JSON.stringify(data.items))));
+            console.log("Data: ", data);
+            console.log("Formatted Data:", JSON.stringify(JSON.parse(JSON.stringify(data.items))));
             return JSON.stringify(JSON.parse(JSON.stringify(data.items)));
 
 
@@ -56,7 +57,7 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     strategy:
-      max-parallel: 2
+      fail-fast: false
       matrix:
         tests: ${{ fromJson(needs.build.outputs.suitesToRun) }}
 
