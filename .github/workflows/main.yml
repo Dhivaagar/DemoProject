@@ -1,5 +1,4 @@
-# .github/workflows/main.yml
-name: CI
+name: Get list from YAML
 
 on:
   workflow_dispatch:
