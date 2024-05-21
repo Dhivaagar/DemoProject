@@ -1,5 +1,5 @@
 # .github/workflows/main.yml
-name: Get list from YAML
+name: CI
 
 on:
   workflow_dispatch:
@@ -7,10 +7,6 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        item: []
 
     steps:
       - name: Checkout repository
@@ -25,17 +21,19 @@ jobs:
             const yaml = require('js-yaml');
             const fileContents = fs.readFileSync('list.yml', 'utf8');
             const data = yaml.load(fileContents);
-            return data.items;
+            return JSON.stringify(data.items);
 
-      - name: Set matrix
-        run: echo "matrix={\"item\":${{ toJson(steps['read-yaml'].outputs.result)}}}" >> $GITHUB_ENV
+      - name: Set output
+        id: set-matrix
+        run: echo "::set-output name=matrix::${{ steps.read-yaml.outputs.result }}"
 
   test:
     needs: build
     runs-on: ubuntu-latest
 
     strategy:
-      matrix: ${{ fromJson(env.matrix) }}
+      matrix:
+        item: ${{ fromJson(needs.build.outputs.matrix) }}
 
     steps:
       - name: Checkout repository
