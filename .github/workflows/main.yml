@@ -1,8 +1,10 @@
 # .github/workflows/main.yml
-name: CI
+name: Get List from YAML
 
 on:
-  workflow_dispatch:
+  push:
+    branches:
+      - main
 
 jobs:
   build:
@@ -12,20 +14,18 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '14'
+
+      - name: Install dependencies
+        run: npm install js-yaml
+
       - name: Read list from YAML
         id: read-yaml
-        uses: actions/github-script@v6
-        with:
-          script: |
-            const fs = require('fs');
-            const yaml = require('js-yaml');
-            const fileContents = fs.readFileSync('list.yml', 'utf8');
-            const data = yaml.load(fileContents);
-            return JSON.stringify(data.items);
-
-      - name: Set output
-        id: set-matrix
-        run: echo "::set-output name=matrix::${{ steps.read-yaml.outputs.result }}"
+        run: |
+          node -e "const fs = require('fs'); const yaml = require('js-yaml'); const fileContents = fs.readFileSync('list.yml', 'utf8'); const data = yaml.load(fileContents); console.log(`::set-output name=matrix::${JSON.stringify(data.items)}`);"
 
   test:
     needs: build
