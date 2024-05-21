@@ -22,26 +22,35 @@ jobs:
   build:
     runs-on: ubuntu-latest
     outputs:
-      suitesToRun: ${{ steps.set-suites.outputs.suitesToRun }}
+      suitesToRun: ${{ steps.read-yaml.outputs.result }}
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: Install yq
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y jq
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '14'
 
-      - name: Set suitesToRun
-        id: set-suites
+      - name: Install dependencies
         run: |
-          if [ -z "${{ github.event.inputs.suitesToRun }}" ]; then
-            echo "No suitesToRun provided, reading from list.yml"
-            suites=$(yq -o=json '.items' list.yml)
-            echo "suitesToRun=${suites}" >> $GITHUB_OUTPUT
-          else
-            echo "suitesToRun=${{ inputs.suitesToRun }}" >> $GITHUB_OUTPUT
-          fi
+          npm install
+          npm install js-yaml
+          npm install fs
+
+      - name: Read list from YAML
+        id: read-yaml
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const fs = require('fs');
+            const yaml = require('js-yaml');
+            const fileContents = fs.readFileSync('list.yml', 'utf8');
+            const data = yaml.load(fileContents);
+            console.log(JSON.stringify(JSON.parse(JSON.stringify(data.items))));
+            return JSON.stringify(JSON.parse(JSON.stringify(data.items)));
+
 
   test:
     needs: build
