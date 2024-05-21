@@ -7,14 +7,8 @@ jobs:
   trigger:
     strategy:
       matrix:
-        Mapping:
-          - portalName: CM7
-            suitesToRun: "['1', '2', '3', '4']"
-
-          - portalName: config7
-            suitesToRun: "['5', '6', '7', '8']"
+        portals: [CM7, config7]
 #    uses: Dhivaagar/DemoProject/.github/workflows/integration-Bat.yml@main
     uses: ./.github/workflows/integration-Bat.yml
     with:
-      portalName: ${{ matrix.Mapping.portalName }}
-#      suitesToRun: ${{ matrix.Mapping.suitesToRun }}
+      portalName: ${{ matrix.portals }}

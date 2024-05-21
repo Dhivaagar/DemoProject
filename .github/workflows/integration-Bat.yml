@@ -30,9 +30,8 @@ jobs:
       - name: generate matrix
         id: generate-matrix
         run: |
-          file_name="list.yml"
+          file_name=".github\portals\list.yml"
           echo "matrix=$(yq e ".suites" "$file_name" | sed 's/^- //; s/^/'\''/; s/$/'\''/' | paste -sd, - | sed 's/^/[ /; s/$/ ]/')" >> $GITHUB_OUTPUT
-          
 
   test:
     needs: metadata
