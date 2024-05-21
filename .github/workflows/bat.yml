@@ -5,15 +5,20 @@ on:
 
 jobs:
   build:
+    outputs:
+      portalName: ${{ steps.name.outputs.portalName }}
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
-        tests: [CM7, config7]
+        tests: [ CM7, config7 ]
     steps:
-      - uses: actions/checkout@v3
-
       - name: Run workflow with appropriate portal name
-        uses: ./.github/workflows/integration-Bat.yml
-        with:
-          portalName: ${{ matrix.tests }}
+        id: name
+        run: echo "portalName=${{ matrix.tests }}" >> $GITHUB_OUTPUT
+
+  trigger:
+    needs: build
+    uses: ./.github/workflows/integration-Bat.yml
+    with:
+      portalName: ${{ needs.build.outputs.portalName }}
