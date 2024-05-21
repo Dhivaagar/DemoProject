@@ -3,96 +3,13 @@ name: BatIntegrationTest
 'on':
   workflow_call:
     inputs:
-      env:
-        required: true
-        description: environment to run
-        type: string
-      app_Id:
-        required: true
-        description: appId to run
-        type: string
-      application_name:
-        required: true
-        description: application to run
-        type: string
-      suiteName:
+      portalName:
         required: true
         description: suite to run
         type: string
 
 jobs:
-  iOS-bat:
+  build:
     runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        deviceName:
-          - iPhone 14 Pro
-          - iphone 13 Pro
-          - iPhone 12 Pro
-        osVersion:
-          - 15
-    if: '${{ inputs.application_name == ''ios'' }}'
     steps:
-      - uses: actions/checkout@v3
-      - name: Set up JDK 17
-        uses: actions/setup-java@v3
-        with:
-          java-version: '17'
-          distribution: 'temurin'
-      - name: Setup Maven Action
-        uses: s4u/setup-maven-action@< version >
-        with:
-          java-version: 17
-          maven-version: 3.9.6
-
-      - name: Build and Test with maven
-        run: |
-          gradle -q clean build -x test
-          cd ./$project
-          mvn test -Dtest="PipelineTest1"
-
-  android-bat:
-    runs-on: qa-runner
-    strategy:
-      fail-fast: false
-      matrix:
-        deviceName:
-          - Galaxy S22 Ultra 5G
-          - Galaxy S21 Ultra 5G
-          - Pixel 7 Pro
-        osVersion:
-          - 11
-          - 12
-          - 13
-        exclude:
-          - deviceName: Galaxy S22 Ultra 5G
-            osVersion: 11
-          - deviceName: Galaxy S22 Ultra 5G
-            osVersion: 13
-          - deviceName: Galaxy S21 Ultra 5G
-            osVersion: 12
-          - deviceName: Galaxy S21 Ultra 5G
-            osVersion: 13
-          - deviceName: Pixel 7 Pro
-            osVersion: 11
-          - deviceName: Pixel 7 Pro
-            osVersion: 12
-    if: '${{ inputs.application_name == ''android'' }}'
-    steps:
-      - uses: actions/checkout@v3
-      - name: Set up JDK 17
-        uses: actions/setup-java@v3
-        with:
-          java-version: '17'
-          distribution: 'temurin'
-      - name: Setup Gradle
-        uses: gradle/gradle-build-action@v2
-        with:
-          gradle-version: '8.2'
-
-      - name: Build and Test with Gradle
-        run: |
-          gradle -q clean build -x test
-          cd ./$project
-          gradle test -PsuiteFile=${{inputs.suiteName}} -DappId=${{ inputs.app_Id }} -Dplatform=${{ inputs.application_name }} -DosVersion=${{matrix.osVersion}} -Denv=${{ inputs.env }} -DsuiteFile=${{ inputs.suiteName }} -Dlambda=true -DlambdaUserName=${{secrets.LAMBDA_USERNAME}} -DlambdaPassword=${{ secrets.LAMBDA_PASSWORD }} -Dmobile.device.name="${{ matrix.deviceName }}"
+      - run: echo ${{ inputs.portalName }}
