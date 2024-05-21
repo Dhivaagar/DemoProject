@@ -7,9 +7,6 @@ name: IntegrationTest
         required: true
         description: suite to run
         type: string
-      suitesToRun:
-        required: true
-        type: string
   workflow_dispatch:
     inputs:
       portalName:
@@ -29,7 +26,7 @@ jobs:
     strategy:
       max-parallel: 2
       matrix:
-        tests: ${{ fromJson(inputs.suitesToRun) }}
+        tests: ${{ fromJson(inputs.suitesToRun) | (yq '.items' list.yml) }}
 
     steps:
       - name: Checkout repository
