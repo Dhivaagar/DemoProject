@@ -1,50 +1,45 @@
-name: GitHub Actions Demo
+# .github/workflows/main.yml
+name: Get list from YAML
+
 on:
   workflow_dispatch:
-#  schedule:
-#    - cron: '45,51 12 * * *'
-#    - cron: '47,53 12 * * *'
-#    - cron: '45,53 12 * * *'
 
 jobs:
-  Explore-GitHub-Actions:
+  build:
     runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        item: []
+
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v3
+      - name: Checkout repository
+        uses: actions/checkout@v2
 
-      - name: Set value to Variable
-        id: set-value
-        run: |
-#          if [ "${{ github.event_name }}" == "schedule" ]; then
-#            if [ "${{ github.event.schedule }}" == "45,51 12 * * *" ]; then
-#              echo "num=Three" >> $GITHUB_OUTPUT
-#              echo "to=dpipremkumar@gmail.com prem.kumar,gbg1297@gmail.com Ranjith,  dhivaagar02@gmail.com dhivaagar" >> $GITHUB_OUTPUT
-#            elif [ "${{ github.event.schedule }}" == "47,53 12 * * *" ]; then
-#              echo "num=Two" >> $GITHUB_OUTPUT
-#              echo "to=gbg1297@gmail.com Ranjith,  dhivaagar02@gmail.com dhivaagar" >> $GITHUB_OUTPUT
-#            elif [ "${{ github.event.schedule }}" == "45,53 12 * * *" ]; then
-#              echo "num=One" >> $GITHUB_OUTPUT
-#              echo "to=dhivaagar02@gmail.com dhivaagar" >> $GITHUB_OUTPUT
-#            fi
-#          fi
-
-      - name: Read HTML File
-        id: read-html
-        run: |
-          ls
-          CONTENT=$(cat teamCoverageReport.html)
-          echo "content=$CONTENT" >> "$GITHUB_OUTPUT"
-
-      - name: Send email
-        uses: dawidd6/action-send-mail@v3.9.0
+      - name: Read list from YAML
+        id: read-yaml
+        uses: actions/github-script@v6
         with:
-          server_address: smtp.gmail.com
-          server_port: 587
-          username: 'Madmani2127@gmail.com'
-          password: 'hepu rwof zeaf rylz'
+          script: |
+            const fs = require('fs');
+            const yaml = require('js-yaml');
+            const fileContents = fs.readFileSync('list.yml', 'utf8');
+            const data = yaml.load(fileContents);
+            return data.items;
 
-          subject: Test mail from GitHub action
-          to: dhivaagar02@gmail.com, dhivaagar.b@aximsoft.com, ranjith.g@aximsoft.com
-          from: Madmani2127@gmail.com
-          html_body: ${{ steps.read-html.outputs.content }}
+      - name: Set matrix
+        run: echo "matrix={\"item\":${{ toJson(steps['read-yaml'].outputs.result)}}}" >> $GITHUB_ENV
+
+  test:
+    needs: build
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix: ${{ fromJson(env.matrix) }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Run tests
+        run: echo "Running tests for ${{ matrix.item }}"
