@@ -14,19 +14,44 @@ name: IntegrationTest
         required: true
         type: string
       suitesToRun:
-        description: "The suites which needs to be run i.e., for single suite run format: ['suiteName'],
-          multiple suite run format: ['suiteName1', 'suiteName2']"
-        required: true
+        description: "The suites which needs to be run i.e., for single suite run format: ['suiteName'], multiple suite run format: ['suiteName1', 'suiteName2']"
+        required: false
         type: string
 
 jobs:
-  test:
+  build:
     runs-on: ubuntu-latest
+    outputs:
+      suitesToRun: ${{ steps.set-suites.outputs.suitesToRun }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
 
+      - name: Set suitesToRun
+        id: set-suites
+        run: |
+          if [ -z "${{ github.event.inputs.suitesToRun }}" ]; then
+            echo "No suitesToRun provided, reading from list.yml"
+            suites=$(yq '.items' list.yml)
+            echo "suitesToRun=$suites" >> $GITHUB_OUTPUT
+          else
+            echo "suitesToRun=${{ github.event.inputs.suitesToRun }}" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Prepare matrix
+        id: prepare-matrix
+        run: |
+          echo "Matrix=${{ fromJson(env.suitesToRun) }}"
+        env:
+          suitesToRun: ${{ env.suitesToRun }}
+
+  test:
+    needs: build
+    runs-on: ubuntu-latest
     strategy:
       max-parallel: 2
       matrix:
-        tests: ${{ fromJson(inputs.suitesToRun) | (yq '.items' list.yml) }}
+        tests: ${{ fromJson(needs.build.outputs.suitesToRun) }}
 
     steps:
       - name: Checkout repository
@@ -34,4 +59,5 @@ jobs:
 
       - name: Run tests
         run: |
-          echo "Running tests for ${{ matrix.tests }} in portal ${{ inputs.portalName }}"
+          echo ${{ needs.build.outputs.suitesToRun }}
+          echo "Running tests for ${{ matrix.tests }} in portal ${{ github.event.inputs.portalName }}"
