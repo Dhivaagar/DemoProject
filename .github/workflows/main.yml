@@ -37,14 +37,25 @@ on:
 #            return JSON.stringify(JSON.parse(JSON.stringify(data.items)));
 
 jobs:
+  build:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.read-list.outputs.MY_LIST }}
+    steps:
+      - name: Read list from YAML
+        id: read-list
+        run: |
+          MY_LIST=$(yq '.items' list.yml)
+          ECHO "MY_LIST: $MY_LIST"
+          echo "MY_LIST=$MY_LIST" >> $GITHUB_OUTPUT
 
   test:
     runs-on: ubuntu-latest
-
+    needs: build
     strategy:
       fail-fast: false
       matrix:
-        item: ${{ fromJson(file('list.yml').items) }}
+        item: ${{ fromJson(needs.build.outputs.matrix) }}
 
     steps:
       - name: Checkout repository
