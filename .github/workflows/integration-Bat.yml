@@ -1,4 +1,4 @@
-name: BatIntegrationTest
+name: IntegrationTest
 
 'on':
   workflow_call:

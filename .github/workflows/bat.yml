@@ -1,4 +1,4 @@
-name: MSP Mobile BAT workflow
+name: Workflow Test
 
 on:
   workflow_dispatch:
