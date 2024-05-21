@@ -11,6 +11,8 @@ jobs:
       matrix:
         tests: [CM7, config7]
     steps:
+      - uses: actions/checkout@v3
+
       - name: Run workflow with appropriate portal name
         uses: ./.github/workflows/integration-Bat.yml
         with:
