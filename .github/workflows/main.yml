@@ -40,8 +40,9 @@ jobs:
     runs-on: ubuntu-latest
 
     strategy:
+      fail-fast: false
       matrix:
-        item: ${{ fromJson(needs.build.outputs.matrix) }}
+        item: ["item1","item2","item3"]
 
     steps:
       - name: Checkout repository
