@@ -4,21 +4,15 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
-    outputs:
-      portalName: ${{ steps.name.outputs.portalName }}
-    runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        tests: [ CM7, config7 ]
-    steps:
-      - name: Run workflow with appropriate portal name
-        id: name
-        run: echo "portalName=${{ matrix.tests }}" >> $GITHUB_OUTPUT
 
-  trigger:
-    needs: build
+  CM7:
     uses: ./.github/workflows/integration-Bat.yml
     with:
-      portalName: ${{ needs.build.outputs.portalName }}
+      portalName: CM7
+      suitesToRun: "['1', '2', '3', '4']"
+
+  config7:
+    uses: ./.github/workflows/integration-Bat.yml
+    with:
+      portalName: config7
+      suitesToRun: "['5', '6', '7', '8']"
