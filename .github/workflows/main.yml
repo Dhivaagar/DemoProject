@@ -3,47 +3,48 @@ name: Get list from YAML
 on:
   workflow_dispatch:
 
+#jobs:
+#  build:
+#    runs-on: ubuntu-latest
+#    outputs:
+#      matrix: ${{ steps.read-yaml.outputs.result }}
+#
+#    steps:
+#      - name: Checkout repository
+#        uses: actions/checkout@v2
+#
+#      - name: Set up Node.js
+#        uses: actions/setup-node@v3
+#        with:
+#          node-version: '14'
+#
+#      - name: Install dependencies
+#        run: |
+#          npm install
+#          npm install js-yaml
+#          npm install fs
+#
+#      - name: Read list from YAML
+#        id: read-yaml
+#        uses: actions/github-script@v6
+#        with:
+#          script: |
+#            const fs = require('fs');
+#            const yaml = require('js-yaml');
+#            const fileContents = fs.readFileSync('list.yml', 'utf8');
+#            const data = yaml.load(fileContents);
+#            console.log(JSON.stringify(JSON.parse(JSON.stringify(data.items))));
+#            return JSON.stringify(JSON.parse(JSON.stringify(data.items)));
+
 jobs:
-  build:
-    runs-on: ubuntu-latest
-    outputs:
-      matrix: ${{ steps.read-yaml.outputs.result }}
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '14'
-
-      - name: Install dependencies
-        run: |
-          npm install
-          npm install js-yaml
-          npm install fs
-
-      - name: Read list from YAML
-        id: read-yaml
-        uses: actions/github-script@v6
-        with:
-          script: |
-            const fs = require('fs');
-            const yaml = require('js-yaml');
-            const fileContents = fs.readFileSync('list.yml', 'utf8');
-            const data = yaml.load(fileContents);
-            console.log(JSON.stringify(JSON.parse(JSON.stringify(data.items))));
-            return JSON.stringify(JSON.parse(JSON.stringify(data.items)));
 
   test:
-    needs: build
     runs-on: ubuntu-latest
 
     strategy:
       fail-fast: false
       matrix:
-        item: ${{ needs.build.outputs.matrix }}
+        item: ${{ fromJson(file('list.yml').items) }}
 
     steps:
       - name: Checkout repository
@@ -51,5 +52,4 @@ jobs:
 
       - name: Run tests
         run: |
-          echo "${{ needs.build.outputs.matrix }}"
           echo "Running tests for ${{ matrix.item }}"
