@@ -33,7 +33,7 @@ jobs:
             const yaml = require('js-yaml');
             const fileContents = fs.readFileSync('list.yml', 'utf8');
             const data = yaml.load(fileContents);
-            return JSON.stringify(data.items);
+            return JSON.stringify(JSON.parse(JSON.stringify(data.items)));
 
   test:
     needs: build
