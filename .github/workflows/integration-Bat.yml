@@ -7,19 +7,25 @@ name: BatIntegrationTest
         required: true
         description: suite to run
         type: string
+      suitesToRun:
+        description: "The suites which needs to be run i.e., for single suite run format: ['suiteName'],
+          multiple suite run format: ['suiteName1', 'suiteName2']"
+        required: true
+        type: string
 
 jobs:
-  build:
+  test:
     runs-on: ubuntu-latest
+
     strategy:
       fail-fast: false
       matrix:
-        CM7: [1, 2, 3, 4]
-        config7: [5, 6, 7, 8]
-    steps:
-      - uses: actions/checkout@v3
+        tests: ${{ fromJson(inputs.suitesToRun) }}
 
-      - name: Run workflow with appropriate portal name
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Run tests
         run: |
-          echo ${{ inputs.portalName }}
-          echo ${{ matrix.inputs.portalName }}
+          echo "Running tests for ${{ matrix.tests }} in portal ${{ inputs.portalName }}"
