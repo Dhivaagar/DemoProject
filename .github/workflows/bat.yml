@@ -13,7 +13,8 @@ jobs:
 
           - portalName: config7
             suitesToRun: "['5', '6', '7', '8']"
-    uses: Dhivaagar/DemoProject/.github/workflows/integration-Bat.yml@main
+#    uses: Dhivaagar/DemoProject/.github/workflows/integration-Bat.yml@main
+    uses: ./.github/workflows/integration-Bat.yml
     with:
       portalName: ${{ matrix.Mapping.portalName }}
       suitesToRun: ${{ matrix.Mapping.suitesToRun }}
