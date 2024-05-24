@@ -22,19 +22,21 @@ jobs:
         run: |
           IFS=',' read -ra XML_ARRAY <<< "${{ github.event.inputs.xmls }}"
           IFS=',' read -ra SHELL_ARRAY <<< "${{ github.event.inputs.shells }}"
-          MATRIX=""
+          MATRIX="["
           for i in "${!XML_ARRAY[@]}"; do
-            MATRIX+="xml: ${XML_ARRAY[i]}, shell: ${SHELL_ARRAY[i]}\\n"
+            MATRIX+="{\"xml\": \"${XML_ARRAY[i]}\", \"shell\": \"${SHELL_ARRAY[i]}\"},"
           done
-          echo "matrix=${MATRIX}" >> $GITHUB_OUTPUT
+          MATRIX=${MATRIX::-1} # remove the last comma
+          MATRIX+="]"
+          echo "matrix=$MATRIX" >> $GITHUB_OUTPUT
 
   run_tests:
     needs: generate_tests
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        xml: ${{fromJson(needs.generate_tests.outputs.matrix)}}
+        data: ${{fromJson(needs.generate_tests.outputs.matrix)}}
     steps:
       - name: Run tests
         run: |
-          echo "Running test for ${{ matrix.xml }}"
+          echo "Running test for ${{ matrix.data.xml }} in shell ${{ matrix.data.shell }}"
