@@ -1,52 +1,40 @@
-name: One Shot
 on:
   workflow_dispatch:
     inputs:
-      portalNames:
-        description: "Portal Names (comma separated)"
+      xmls:
+        description: "xml names (comma separated)"
         required: true
         type: string
 
-      rallyTestSetIds:
-        description: "Rally Test Set Ids (comma separated)"
-        required: true
-        type: string
-
-      rallyBuildNos:
-        description: "Rally Build Nos (comma separated)"
+      shells:
+        description: "shell names (comma separated)"
         required: true
         type: string
 
 jobs:
-  trigger:
+  generate_tests:
     runs-on: ubuntu-latest
     outputs:
-      matrix: ${{ steps.setup_matrix.outputs.matrix }}
+      matrix: ${{ steps.set_matrix.outputs.matrix }}
     steps:
       - name: Set up matrix
-        id: setup_matrix
+        id: set_matrix
         run: |
-          portals=(${{ github.event.inputs.portalNames }})
-          testsets=(${{ github.event.inputs.rallyTestSetIds }})
-          buildnos=(${{ github.event.inputs.rallyBuildNos }})
-          combos=()
-          for i in "${!portals[@]}"; do
-            combos+=("{\"portal\":\"${portals[$i]}\",\"testset\":\"${testsets[$i]}\",\"buildno\":\"${buildnos[$i]}\"}")
+          IFS=',' read -ra XML_ARRAY <<< "${{ github.event.inputs.xmls }}"
+          IFS=',' read -ra SHELL_ARRAY <<< "${{ github.event.inputs.shells }}"
+          MATRIX=""
+          for i in "${!XML_ARRAY[@]}"; do
+            MATRIX+="xml: ${XML_ARRAY[i]}, shell: ${SHELL_ARRAY[i]}\\n"
           done
-          echo "matrix=$(jq -c -n --argjson combos \"[${combos[*]}]\" '{combination: $combos}')" >> $GITHUB_OUTPUT
-        env:
-          COMBOS: ${{ github.event.inputs.portalNames }},${{ github.event.inputs.rallyTestSetIds }},${{ github.event.inputs.rallyBuildNos }}
+          echo "matrix=${MATRIX}" >> $GITHUB_OUTPUT
 
   run_tests:
-    needs: trigger
-    runs-on: qa-runner
+    needs: generate_tests
+    runs-on: ubuntu-latest
     strategy:
-      fail-fast: false
-      matrix: ${{ fromJson(needs.trigger.outputs.matrix).combination }}
+      matrix:
+        xml: ${{fromJson(needs.generate_tests.outputs.matrix)}}
     steps:
-      - name: Run Portal Regression
-        uses: ./.github/workflows/integration-Bat.yml
-        with:
-          portalName: ${{ matrix.portal }}
-          rallyTestSetIds: ${{ matrix.testset }}
-          rallyBuildNos: ${{ matrix.buildno }}
+      - name: Run tests
+        run: |
+          echo "Running test for ${{ matrix.xml }}"
