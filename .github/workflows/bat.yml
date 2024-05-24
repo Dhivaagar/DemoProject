@@ -26,9 +26,9 @@ jobs:
       - name: Set up matrix
         id: set_matrix
         run: |
-          IFS=',' read -ra PORTAL_ARRAY <<< "${{ github.event.inputs.portalNames }}"
-          IFS=',' read -ra RALLY_TEST_SET_IDS_ARRAY <<< "${{ github.event.inputs.rallyTestSetIds }}"
-          IFS=',' read -ra RALLY_BUILD_NOS_ARRAY <<< "${{ github.event.inputs.rallyBuildNos }}"
+          IFS=',' read -ra PORTAL_ARRAY <<< "$(echo -n "${{ github.event.inputs.portalNames }}" | tr -d '[:space:]')"
+          IFS=',' read -ra RALLY_TEST_SET_IDS_ARRAY <<< "$(echo -n "${{ github.event.inputs.rallyTestSetIds }}" | tr -d '[:space:]')"
+          IFS=',' read -ra RALLY_BUILD_NOS_ARRAY <<< "$(echo -n "${{ github.event.inputs.rallyBuildNos }}" | tr -d '[:space:]')"
           MATRIX="["
           for i in "${!PORTAL_ARRAY[@]}"; do
             MATRIX+="{\"portalName\": \"${PORTAL_ARRAY[i]}\", \"rallyTestSetIds\": \"${RALLY_TEST_SET_IDS_ARRAY[i]}\", \"rallyBuildNos\": \"${RALLY_BUILD_NOS_ARRAY[i]}\"},"
