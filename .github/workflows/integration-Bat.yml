@@ -4,15 +4,37 @@ on:
   workflow_call:
     inputs:
       portalName:
+        description: portal name
         required: true
-        description: suite to run
         type: string
+
+      rallyTestSetIds:
+        description: "Rally Test Set Ids"
+        required: true
+        type: string
+
+      rallyBuildNos:
+        description: "Rally Build Nos"
+        required: true
+        type: string
+
   workflow_dispatch:
     inputs:
       portalName:
-        description: suite to run
+        description: portal name
         required: true
         type: string
+
+      rallyTestSetIds:
+        description: "Rally Test Set Ids"
+        required: true
+        type: string
+
+      rallyBuildNos:
+        description: "Rally Build Nos"
+        required: true
+        type: string
+
       suitesToRun:
         description: "The suites which needs to be run i.e., for single suite run format: ['suiteName'], multiple suite run format: ['suiteName1', 'suiteName2']"
         required: false
@@ -49,4 +71,4 @@ jobs:
 
       - name: Run tests
         run: |
-          echo "Running tests for ${{ matrix.tests }} in portal ${{ github.event.inputs.portalName }}"
+          echo "Running tests for ${{ matrix.tests }} in portal ${{ github.event.inputs.portalName }} with Rally Test Set Ids ${{ github.event.inputs.rallyTestSetIds }} and Rally Build Nos ${{ github.event.inputs.rallyBuildNos }}"
