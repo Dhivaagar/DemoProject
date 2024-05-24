@@ -1,14 +1,52 @@
-name: Workflow Test
-
+name: One Shot
 on:
   workflow_dispatch:
+    inputs:
+      portalNames:
+        description: "Portal Names (comma separated)"
+        required: true
+        type: string
+
+      rallyTestSetIds:
+        description: "Rally Test Set Ids (comma separated)"
+        required: true
+        type: string
+
+      rallyBuildNos:
+        description: "Rally Build Nos (comma separated)"
+        required: true
+        type: string
 
 jobs:
   trigger:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.setup_matrix.outputs.matrix }}
+    steps:
+      - name: Set up matrix
+        id: setup_matrix
+        run: |
+          portals=(${{ github.event.inputs.portalNames }})
+          testsets=(${{ github.event.inputs.rallyTestSetIds }})
+          buildnos=(${{ github.event.inputs.rallyBuildNos }})
+          combos=()
+          for i in "${!portals[@]}"; do
+            combos+=("{\"portal\":\"${portals[$i]}\",\"testset\":\"${testsets[$i]}\",\"buildno\":\"${buildnos[$i]}\"}")
+          done
+          echo "matrix=$(jq -c -n --argjson combos "${combos[@]}" '{combination: $combos}')" >> $GITHUB_OUTPUT
+      - name: Output matrix
+        run: echo ${{ steps.setup_matrix.outputs.matrix }}
+
+  run_tests:
+    needs: trigger
+    runs-on: qa-runner
     strategy:
-      matrix:
-        portals: [CM7, config7]
-#    uses: Dhivaagar/DemoProject/.github/workflows/integration-Bat.yml@main
-    uses: ./.github/workflows/integration-Bat.yml
-    with:
-      portalName: ${{ matrix.portals }}
+      fail-fast: false
+      matrix: ${{ fromJson(needs.trigger.outputs.matrix).combination }}
+    steps:
+      - name: Run Portal Regression
+        uses: ./.github/workflows/integration-Bat.yml
+        with:
+          portalName: ${{ matrix.portal }}
+          rallyTestSetIds: ${{ matrix.testset }}
+          rallyBuildNos: ${{ matrix.buildno }}
