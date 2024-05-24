@@ -33,9 +33,9 @@ jobs:
           for i in "${!portals[@]}"; do
             combos+=("{\"portal\":\"${portals[$i]}\",\"testset\":\"${testsets[$i]}\",\"buildno\":\"${buildnos[$i]}\"}")
           done
-          echo "matrix=$(jq -c -n --argjson combos "${combos[@]}" '{combination: $combos}')" >> $GITHUB_OUTPUT
-      - name: Output matrix
-        run: echo ${{ steps.setup_matrix.outputs.matrix }}
+          echo "matrix=$(jq -c -n --argjson combos \"[${combos[*]}]\" '{combination: $combos}')" >> $GITHUB_OUTPUT
+        env:
+          COMBOS: ${{ github.event.inputs.portalNames }},${{ github.event.inputs.rallyTestSetIds }},${{ github.event.inputs.rallyBuildNos }}
 
   run_tests:
     needs: trigger
