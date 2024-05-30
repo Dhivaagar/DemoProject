@@ -63,7 +63,9 @@ jobs:
         run: |
           echo "portalName=${{ matrix.config.portalName }}" >> $GITHUB_ENV
           echo "suiteName=${{ matrix.config.suiteName }}" >> $GITHUB_ENV
-          echo "rallyTestSetId=$(echo "${{ needs.generate_tests.outputs.portal_to_rally }}" | jq -r --arg portal "${{ matrix.config.portalName }}" '.[$portal]')" >> $GITHUB_ENV
+          portal_to_rally='${{ needs.generate_tests.outputs.portal_to_rally }}'
+          rallyTestSetId=$(echo "$portal_to_rally" | jq -r --arg portal "$portalName" '.[$portal]')
+          echo "rallyTestSetId=${rallyTestSetId}" >> $GITHUB_ENV
 
       - name: Run tests
         run: |
