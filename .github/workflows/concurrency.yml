@@ -51,6 +51,7 @@ jobs:
     needs: generate_tests
     runs-on: ubuntu-latest
     strategy:
+      max-parallel: 2
       matrix:
         config: ${{fromJson(needs.generate_tests.outputs.matrix)}}
 
@@ -58,10 +59,13 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: set environment variables
+        run: |
+          echo "portalName=${{ matrix.config.portalName }}" >> $GITHUB_ENV
+          echo "suiteName=${{ matrix.config.suiteName }}" >> $GITHUB_ENV
+          portal_to_rally='${{ needs.generate_tests.outputs.portal_to_rally }}'
+          echo "rallyTestSetId=$(echo "$portal_to_rally" | jq -r --arg portal "$portalName" '.[$portal]')" >> $GITHUB_ENV
+
       - name: Run tests
         run: |
-          portalName=${{ matrix.config.portalName }}
-          suiteName=${{ matrix.config.suiteName }}
-          portal_to_rally='${{ needs.generate_tests.outputs.portal_to_rally }}'
-          rallyTestSetId=$(echo "$portal_to_rally" | jq -r --arg portal "$portalName" '.[$portal]')
-          echo "Running portal $portalName with suite $suiteName and Rally Test Set ID $rallyTestSetId"
+          echo "Running portal ${{ env.portalName }} with suite ${{ env.suiteName }} and Rally Test Set ID ${{ env.rallyTestSetId }}"
