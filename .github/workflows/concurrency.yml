@@ -34,7 +34,11 @@ jobs:
           
           # Build JSON array and map
           for i in "${!PORTAL_ARRAY[@]}"; do
-            matrix+="{\"portalName\": \"${PORTAL_ARRAY[i]}\"},"
+            suites=$(yq e ".suites" ".github/portals/${PORTAL_ARRAY[i]}.yml" | sed 's/^- //; s/^/'\''/; s/$/'\''/' | paste -sd, - | sed 's/^/[ /; s/$/ ]/')
+            IFS=',' read -ra SUITE_ARRAY <<< "$suites"
+            for suite in "${SUITE_ARRAY[@]}"; do
+              matrix+="{\"portalName\": \"${PORTAL_ARRAY[i]}\", \"suiteName\": ${suite}},"
+            done
             PORTAL_TO_RALLY_TEST_SET_MAP["${PORTAL_ARRAY[i]}"]="${RALLY_TEST_SET_IDS_ARRAY[i]}"
           done
 
@@ -61,7 +65,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        portal: ${{ fromJson(needs.generate_tests.outputs.matrix) }}
+        config: ${{ fromJson(needs.generate_tests.outputs.matrix) }}
 
     steps:
       - name: Checkout repository
@@ -69,6 +73,8 @@ jobs:
 
       - name: Run tests
         run: |
-          portalName=${{ matrix.portal.portalName }}
-          rallyTestSetId=$(echo "${{ needs.generate_tests.outputs.portal_to_rally }}" | jq -r --arg portal "$portalName" '.[$portal]')
-          echo "Running portal $portalName with Rally Test Set ID $rallyTestSetId"
+          portalName=${{ matrix.config.portalName }}
+          suiteName=${{ matrix.config.suiteName }}
+          portal_to_rally='${{ needs.generate_tests.outputs.portal_to_rally }}'
+          rallyTestSetId=$(echo "$portal_to_rally" | jq -r --arg portal "$portalName" '.[$portal]')
+          echo "Running portal $portalName with suite $suiteName and Rally Test Set ID $rallyTestSetId"
