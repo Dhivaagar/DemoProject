@@ -17,6 +17,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       matrix: ${{ steps.set_matrix.outputs.matrix }}
+      portal_to_rally: ${{ steps.set_matrix.outputs.portal_to_rally }}
     steps:
       - name: Set up matrix
         id: set_matrix
@@ -25,27 +26,42 @@ jobs:
           IFS=',' read -ra PORTAL_ARRAY <<< "$(echo -n "${{ github.event.inputs.portalNames }}" | tr -d '[:space:]')"
           IFS=',' read -ra RALLY_TEST_SET_IDS_ARRAY <<< "$(echo -n "${{ github.event.inputs.rallyTestSetIds }}" | tr -d '[:space:]')"
 
-          # Initialize JSON structure
+          # Initialize JSON structure for the matrix
           matrix="["
-
-          # Build JSON array
+          
+          # Initialize associative array for portal to rally test set mapping
+          declare -A PORTAL_TO_RALLY_TEST_SET_MAP
+          
+          # Build JSON array and map
           for i in "${!PORTAL_ARRAY[@]}"; do
-            matrix+="{\"portalName\": \"${PORTAL_ARRAY[i]}\", \"rallyTestSetId\": \"${RALLY_TEST_SET_IDS_ARRAY[i]}\"},"
+            matrix+="{\"portalName\": \"${PORTAL_ARRAY[i]}\"},"
+            PORTAL_TO_RALLY_TEST_SET_MAP["${PORTAL_ARRAY[i]}"]="${RALLY_TEST_SET_IDS_ARRAY[i]}"
           done
 
           # Remove the last comma and close the JSON array
           matrix=${matrix::-1}
           matrix+="]"
 
-          # Output the JSON structure
+          # Convert the associative array to JSON
+          portal_to_rally="{"
+          for portal in "${!PORTAL_TO_RALLY_TEST_SET_MAP[@]}"; do
+            portal_to_rally+="\"$portal\":\"${PORTAL_TO_RALLY_TEST_SET_MAP[$portal]}\","
+          done
+
+          # Remove the last comma and close the JSON object
+          portal_to_rally=${portal_to_rally::-1}
+          portal_to_rally+="}"
+
+          # Output the JSON structures
           echo "matrix=$matrix" >> $GITHUB_OUTPUT
+          echo "portal_to_rally=$portal_to_rally" >> $GITHUB_OUTPUT
 
   run_tests:
     needs: generate_tests
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        config: ${{ fromJson(needs.generate_tests.outputs.matrix) }}
+        portal: ${{ fromJson(needs.generate_tests.outputs.matrix) }}
 
     steps:
       - name: Checkout repository
@@ -53,6 +69,7 @@ jobs:
 
       - name: Run tests
         run: |
-          portalName=${{ matrix.config.portalName }}
-          rallyTestSetId=${{ matrix.config.rallyTestSetId }}
+          portalName=${{ matrix.portal.portalName }}
+          portal_to_rally='${{ needs.generate_tests.outputs.portal_to_rally }}'
+          rallyTestSetId=$(echo "$portal_to_rally" | jq -r --arg portal "$portalName" '.[$portal]')
           echo "Running portal $portalName with Rally Test Set ID $rallyTestSetId"
