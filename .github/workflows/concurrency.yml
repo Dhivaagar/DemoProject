@@ -33,7 +33,7 @@ jobs:
           
           # Build JSON array and map
           for i in "${!PORTAL_ARRAY[@]}"; do
-            suites=$(yq e ".suites" "scripts/portals/${PORTAL_ARRAY[i]}.yml" | sed 's/^- //; s/^/'\''/; s/$/'\''/' | paste -sd, - | sed 's/^/[ /; s/$/ ]/')
+            suites=$(yq e ".suites" "./scripts/portals/${PORTAL_ARRAY[i]}.yml" | sed 's/^- //; s/^/'\''/; s/$/'\''/' | paste -sd, - | sed 's/^/[ /; s/$/ ]/')
             echo "suites: $suites"
             IFS=',' read -ra SUITE_ARRAY <<< "$suites"
             for suite in "${SUITE_ARRAY[@]}"; do
