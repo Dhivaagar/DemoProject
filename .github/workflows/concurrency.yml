@@ -1,4 +1,5 @@
 name: Single Run
+
 on:
   workflow_dispatch:
     inputs:
@@ -24,13 +25,12 @@ jobs:
       - name: Set up matrix
         id: set_matrix
         run: |
-          IFS=',' read -ra PORTAL_ARRAY <<< "$(echo -n "${{ inputs.portalNames }}" | tr -d '[:space:]')"
-          IFS=',' read -ra RALLY_TEST_SET_IDS_ARRAY <<< "${{ inputs.rallyTestSetIds }}"
+          IFS=',' read -ra PORTAL_ARRAY <<< "$(echo -n "${{ github.event.inputs.portalNames }}" | tr -d '[:space:]')"
+          IFS=',' read -ra RALLY_TEST_SET_IDS_ARRAY <<< "$(echo -n "${{ github.event.inputs.rallyTestSetIds }}" | tr -d '[:space:]')"
           matrix="["
           declare -A PORTAL_TO_RALLY_TEST_SET_MAP
           for i in "${!PORTAL_ARRAY[@]}"; do
             suites=$(yq e ".suites" "scripts/portals/${PORTAL_ARRAY[i]}.yml" | sed 's/^- //; s/^/'\''/; s/$/'\''/' | paste -sd, - | sed 's/^/ /; s/$/ /')
-            echo "suites: $suites"
             IFS=',' read -ra SUITE_ARRAY <<< "$(echo -n "$suites" | tr -d '[:space:]')"
             for suite in "${SUITE_ARRAY[@]}"; do
               matrix+="{\"portalName\": \"${PORTAL_ARRAY[i]}\", \"suiteName\": \"${suite}\"},"
@@ -47,6 +47,7 @@ jobs:
           portal_to_rally+="}"
           echo "matrix=$matrix" >> $GITHUB_OUTPUT
           echo "portal_to_rally=$portal_to_rally" >> $GITHUB_OUTPUT
+
   run_tests:
     needs: generate_tests
     runs-on: ubuntu-latest
@@ -54,18 +55,15 @@ jobs:
       max-parallel: 2
       matrix:
         config: ${{fromJson(needs.generate_tests.outputs.matrix)}}
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: set environment variables
+      - name: Set environment variables
         run: |
           echo "portalName=${{ matrix.config.portalName }}" >> $GITHUB_ENV
           echo "suiteName=${{ matrix.config.suiteName }}" >> $GITHUB_ENV
-          portal_to_rally="${{ needs.generate_tests.outputs.portal_to_rally }}"
-          rallyTestSetId=$(echo "${portal_to_rally}" | jq -r --arg portal "${{ matrix.config.portalName }}" '.[$portal]')
-          echo "rallyTestSetId=${rallyTestSetId}" >> $GITHUB_ENV
+          echo "rallyTestSetId=$(echo "${{ needs.generate_tests.outputs.portal_to_rally }}" | jq -r --arg portal "${{ matrix.config.portalName }}" '.[$portal]')" >> $GITHUB_ENV
 
       - name: Run tests
         run: |
