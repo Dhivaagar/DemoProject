@@ -24,34 +24,24 @@ jobs:
       - name: Set up matrix
         id: set_matrix
         run: |
-          # Read and split inputs
-          IFS=',' read -ra PORTAL_ARRAY <<< "$(echo -n "${{ github.event.inputs.portalNames }}" | tr -d '[:space:]')"
-          IFS=',' read -ra RALLY_TEST_SET_IDS_ARRAY <<< "$(echo -n "${{ github.event.inputs.rallyTestSetIds }}" | tr -d '[:space:]')"
+          IFS=',' read -ra PORTAL_ARRAY <<< "${{ github.event.inputs.portalNames }}"
+          IFS=',' read -ra RALLY_TEST_SET_IDS_ARRAY <<< "${{ github.event.inputs.rallyTestSetIds }}"
 
-          # Initialize JSON structure for the matrix
           matrix="["
-
-          # Initialize associative array for portal to rally test set mapping
           declare -A PORTAL_TO_RALLY_TEST_SET_MAP
-          
-          # Build JSON array and map
-          ls
-          ls scripts/portals
+
           for i in "${!PORTAL_ARRAY[@]}"; do
             suites=$(yq e ".suites" "scripts/portals/${PORTAL_ARRAY[i]}.yml" | sed 's/^- //; s/^/'\''/; s/$/'\''/' | paste -sd, - | sed 's/^/[ /; s/$/ ]/')
-            echo "suites: $suites"
             IFS=',' read -ra SUITE_ARRAY <<< "$suites"
             for suite in "${SUITE_ARRAY[@]}"; do
-              matrix+="{\"portalName\": \"${PORTAL_ARRAY[i]}\", \"suiteName\": ${suite}},"
+              matrix+="{\"portalName\": \"${PORTAL_ARRAY[i]}\", \"suiteName\": \"${suite}\"},"
             done
             PORTAL_TO_RALLY_TEST_SET_MAP["${PORTAL_ARRAY[i]}"]="${RALLY_TEST_SET_IDS_ARRAY[i]}"
           done
 
-          # Remove the last comma and close the JSON array
           matrix=${matrix::-1}
           matrix+="]"
 
-          # Convert the associative array to JSON
           portal_to_rally="{"
           for portal in "${!PORTAL_TO_RALLY_TEST_SET_MAP[@]}"; do
             portal_to_rally+="\"$portal\":\"${PORTAL_TO_RALLY_TEST_SET_MAP[$portal]}\","
@@ -59,7 +49,6 @@ jobs:
           portal_to_rally=${portal_to_rally::-1}
           portal_to_rally+="}"
 
-          # Output the JSON structures
           echo "matrix=$matrix" >> $GITHUB_OUTPUT
           echo "portal_to_rally=$portal_to_rally" >> $GITHUB_OUTPUT
 
