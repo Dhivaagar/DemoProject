@@ -6,7 +6,6 @@ on:
         description: "Portal Names (comma separated)"
         required: true
         type: string
-
       rallyTestSetIds:
         description: "Rally Test Set IDs (comma separated)"
         required: true
@@ -28,30 +27,18 @@ jobs:
 
           # Initialize JSON structure for the matrix
           matrix="["
-          
+
           # Initialize associative array for portal to rally test set mapping
           declare -A PORTAL_TO_RALLY_TEST_SET_MAP
 
-          # Function to safely read YAML file
-          read_yaml() {
-            local file=$1
-            local portal=$2
-            if [ -f "$file" ]; then
-              yq e ".suites[]" "$file" | while read -r suite; do
-                suite=$(echo "$suite" | tr -d "'")
-                matrix+="{\"portalName\": \"${portal}\", \"suiteName\": \"${suite}\"},"
-              done
-            else
-              echo "File $file not found"
-            fi
-          }
-
           # Build JSON array and map
           for i in "${!PORTAL_ARRAY[@]}"; do
-            portal=${PORTAL_ARRAY[i]}
-            rallyTestSetId=${RALLY_TEST_SET_IDS_ARRAY[i]}
-            read_yaml ".github/portals/${portal}.yml" "${portal}"
-            PORTAL_TO_RALLY_TEST_SET_MAP["${portal}"]="${rallyTestSetId}"
+            suites=$(yq e ".suites" ".github/portals/${PORTAL_ARRAY[i]}.yml" | sed 's/^- //; s/^/'\''/; s/$/'\''/' | paste -sd, - | sed 's/^/[ /; s/$/ ]/')
+            IFS=',' read -ra SUITE_ARRAY <<< "$suites"
+            for suite in "${SUITE_ARRAY[@]}"; do
+              matrix+="{\"portalName\": \"${PORTAL_ARRAY[i]}\", \"suiteName\": ${suite}},"
+            done
+            PORTAL_TO_RALLY_TEST_SET_MAP["${PORTAL_ARRAY[i]}"]="${RALLY_TEST_SET_IDS_ARRAY[i]}"
           done
 
           # Remove the last comma and close the JSON array
@@ -63,8 +50,6 @@ jobs:
           for portal in "${!PORTAL_TO_RALLY_TEST_SET_MAP[@]}"; do
             portal_to_rally+="\"$portal\":\"${PORTAL_TO_RALLY_TEST_SET_MAP[$portal]}\","
           done
-
-          # Remove the last comma and close the JSON object
           portal_to_rally=${portal_to_rally::-1}
           portal_to_rally+="}"
 
@@ -77,7 +62,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        config: ${{ fromJson(needs.generate_tests.outputs.matrix) }}
+        config: ${{fromJson(needs.generate_tests.outputs.matrix)}}
 
     steps:
       - name: Checkout repository
