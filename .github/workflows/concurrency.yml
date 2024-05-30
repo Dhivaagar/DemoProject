@@ -30,10 +30,11 @@ jobs:
 
           # Initialize associative array for portal to rally test set mapping
           declare -A PORTAL_TO_RALLY_TEST_SET_MAP
-
+          
           # Build JSON array and map
           for i in "${!PORTAL_ARRAY[@]}"; do
             suites=$(yq e ".suites" ".github/portals/${PORTAL_ARRAY[i]}.yml" | sed 's/^- //; s/^/'\''/; s/$/'\''/' | paste -sd, - | sed 's/^/[ /; s/$/ ]/')
+            echo "suites: $suites"
             IFS=',' read -ra SUITE_ARRAY <<< "$suites"
             for suite in "${SUITE_ARRAY[@]}"; do
               matrix+="{\"portalName\": \"${PORTAL_ARRAY[i]}\", \"suiteName\": ${suite}},"
