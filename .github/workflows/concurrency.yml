@@ -1,0 +1,61 @@
+name: Single Run
+on:
+  workflow_dispatch:
+    inputs:
+      portalNames:
+        description: "Portal Names (comma separated)"
+        required: true
+        type: string
+
+      rallyTestSetIds:
+        description: "Rally Test Set IDs (comma separated)"
+        required: true
+        type: string
+
+jobs:
+  generate_tests:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.set_matrix.outputs.matrix }}
+    steps:
+      - name: Set up matrix
+        id: set_matrix
+        run: |
+          # Read and split inputs
+          IFS=',' read -ra PORTAL_ARRAY <<< "$(echo -n "${{ github.event.inputs.portalNames }}" | tr -d '[:space:]')"
+          IFS=',' read -ra RALLY_TEST_SET_IDS_ARRAY <<< "$(echo -n "${{ github.event.inputs.rallyTestSetIds }}" | tr -d '[:space:]')"
+
+          # Initialize JSON structure
+          portalsData="["
+
+          # Build JSON array
+          for i in "${!PORTAL_ARRAY[@]}"; do
+            portalsData+="{\"portalName\": \"${PORTAL_ARRAY[i]}\", \"rallyTestSetId\": \"${RALLY_TEST_SET_IDS_ARRAY[i]}\"},"
+          done
+
+          # Remove the last comma and close the JSON array
+          portalsData=${portalsData::-1}
+          portalsData+="]"
+
+          # Export the JSON structure as an environment variable
+          echo "portalsData=$portalsData" >> $GITHUB_ENV
+
+          # Export the matrix as JSON
+          echo "matrix=${portalsData}" >> $GITHUB_OUTPUT
+
+  run_tests:
+    needs: generate_tests
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        portal: ${{fromJson(needs.generate_tests.outputs.matrix)}}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Run tests
+        run: |
+          portalName=$(echo '${{ matrix.portal }}' | jq -r .portalName)
+          rallyTestSetId=$(echo '${{ matrix.portal }}' | jq -r .rallyTestSetId)
+          echo "Running portal $portalName with Rally Test Set ID $rallyTestSetId"
