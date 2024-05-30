@@ -18,6 +18,9 @@ jobs:
       matrix: ${{ steps.set_matrix.outputs.matrix }}
       portal_to_rally: ${{ steps.set_matrix.outputs.portal_to_rally }}
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
       - name: Set up matrix
         id: set_matrix
         run: |
@@ -33,6 +36,7 @@ jobs:
           
           # Build JSON array and map
           ls
+          ls scripts/portals
           for i in "${!PORTAL_ARRAY[@]}"; do
             suites=$(yq e ".suites" "scripts/portals/${PORTAL_ARRAY[i]}.yml" | sed 's/^- //; s/^/'\''/; s/$/'\''/' | paste -sd, - | sed 's/^/[ /; s/$/ ]/')
             echo "suites: $suites"
