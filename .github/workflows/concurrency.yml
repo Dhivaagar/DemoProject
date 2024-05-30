@@ -41,7 +41,7 @@ jobs:
           echo "portalsData=$portalsData" >> $GITHUB_ENV
 
           # Export the matrix as JSON
-          echo "matrix=${portalsData}" >> $GITHUB_OUTPUT
+          echo "matrix=${PORTAL_ARRAY[@]}" >> $GITHUB_OUTPUT
 
   run_tests:
     needs: generate_tests
