@@ -26,29 +26,26 @@ jobs:
           IFS=',' read -ra RALLY_TEST_SET_IDS_ARRAY <<< "$(echo -n "${{ github.event.inputs.rallyTestSetIds }}" | tr -d '[:space:]')"
 
           # Initialize JSON structure
-          portalsData="["
+          matrix="["
 
           # Build JSON array
           for i in "${!PORTAL_ARRAY[@]}"; do
-            portalsData+="{\"portalName\": \"${PORTAL_ARRAY[i]}\", \"rallyTestSetId\": \"${RALLY_TEST_SET_IDS_ARRAY[i]}\"},"
+            matrix+="{\"portalName\": \"${PORTAL_ARRAY[i]}\", \"rallyTestSetId\": \"${RALLY_TEST_SET_IDS_ARRAY[i]}\"},"
           done
 
           # Remove the last comma and close the JSON array
-          portalsData=${portalsData::-1}
-          portalsData+="]"
+          matrix=${matrix::-1}
+          matrix+="]"
 
-          # Export the JSON structure as an environment variable
-          echo "portalsData=$portalsData" >> $GITHUB_ENV
-
-          # Export the matrix as JSON
-          echo "matrix=${PORTAL_ARRAY[@]}" >> $GITHUB_OUTPUT
+          # Output the JSON structure
+          echo "matrix=$matrix" >> $GITHUB_OUTPUT
 
   run_tests:
     needs: generate_tests
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        portal: ${{fromJson(needs.generate_tests.outputs.matrix)}}
+        config: ${{ fromJson(needs.generate_tests.outputs.matrix) }}
 
     steps:
       - name: Checkout repository
@@ -56,6 +53,6 @@ jobs:
 
       - name: Run tests
         run: |
-          portalName=$(echo '${{ matrix.portal }}' | jq -r .portalName)
-          rallyTestSetId=$(echo '${{ matrix.portal }}' | jq -r .rallyTestSetId)
+          portalName=${{ matrix.config.portalName }}
+          rallyTestSetId=${{ matrix.config.rallyTestSetId }}
           echo "Running portal $portalName with Rally Test Set ID $rallyTestSetId"
