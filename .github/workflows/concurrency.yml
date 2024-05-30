@@ -70,6 +70,6 @@ jobs:
       - name: Run tests
         run: |
           portalName=${{ matrix.portal.portalName }}
-          portal_to_rally='${{ needs.generate_tests.outputs.portal_to_rally }}'
-          rallyTestSetId=$(echo "$portal_to_rally" | jq -r --arg portal "$portalName" '.[$portal]')
+#          portal_to_rally='${{ needs.generate_tests.outputs.portal_to_rally }}'
+          rallyTestSetId=$(echo "${{ needs.generate_tests.outputs.portal_to_rally }}" | jq -r --arg portal "$portalName" '.[$portal]')
           echo "Running portal $portalName with Rally Test Set ID $rallyTestSetId"
