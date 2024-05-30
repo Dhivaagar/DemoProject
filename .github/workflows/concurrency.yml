@@ -32,6 +32,8 @@ jobs:
           declare -A PORTAL_TO_RALLY_TEST_SET_MAP
           
           # Build JSON array and map
+          ls
+          ls scripts
           ls scripts/portals
           for i in "${!PORTAL_ARRAY[@]}"; do
             suites=$(yq e ".suites" "scripts/portals/${PORTAL_ARRAY[i]}.yml" | sed 's/^- //; s/^/'\''/; s/$/'\''/' | paste -sd, - | sed 's/^/[ /; s/$/ ]/')
