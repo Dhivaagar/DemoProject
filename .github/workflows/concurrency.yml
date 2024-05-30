@@ -18,37 +18,35 @@ jobs:
       matrix: ${{ steps.set_matrix.outputs.matrix }}
       portal_to_rally: ${{ steps.set_matrix.outputs.portal_to_rally }}
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
       - name: Set up matrix
         id: set_matrix
         run: |
-          IFS=',' read -ra PORTAL_ARRAY <<< "${{ github.event.inputs.portalNames }}"
-          IFS=',' read -ra RALLY_TEST_SET_IDS_ARRAY <<< "${{ github.event.inputs.rallyTestSetIds }}"
-
+          IFS=',' read -ra PORTAL_ARRAY <<< "$(echo -n "${{ inputs.portalNames }}" | tr -d '[:space:]')"
+          IFS=',' read -ra RALLY_TEST_SET_IDS_ARRAY <<< "${{ inputs.rallyTestSetIds }}"
           matrix="["
           declare -A PORTAL_TO_RALLY_TEST_SET_MAP
-
           for i in "${!PORTAL_ARRAY[@]}"; do
-            suites=$(yq e ".suites" ".github/portals/${PORTAL_ARRAY[i]}.yml" | sed 's/^- //; s/^/'\''/; s/$/'\''/' | tr -d '\n' | sed 's/[][]//g')
-            IFS="', '" read -ra SUITE_ARRAY <<< "$suites"
+            suites=$(yq e ".suites" "scripts/portals/${PORTAL_ARRAY[i]}.yml" | sed 's/^- //; s/^/'\''/; s/$/'\''/' | paste -sd, - | sed 's/^/[ /; s/$/ ]/')
+            echo "suites: $suites"
+            IFS=',' read -ra SUITE_ARRAY <<< "$suites"
             for suite in "${SUITE_ARRAY[@]}"; do
-              matrix+="{\"portalName\": \"${PORTAL_ARRAY[i]}\", \"suiteName\": \"$suite\"},"
+              matrix+="{\"portalName\": \"${PORTAL_ARRAY[i]}\", \"suiteName\": \"${suite}\"},"
             done
             PORTAL_TO_RALLY_TEST_SET_MAP["${PORTAL_ARRAY[i]}"]="${RALLY_TEST_SET_IDS_ARRAY[i]}"
           done
-
           matrix=${matrix::-1}
           matrix+="]"
-
           portal_to_rally="{"
           for portal in "${!PORTAL_TO_RALLY_TEST_SET_MAP[@]}"; do
             portal_to_rally+="\"$portal\":\"${PORTAL_TO_RALLY_TEST_SET_MAP[$portal]}\","
           done
           portal_to_rally=${portal_to_rally::-1}
           portal_to_rally+="}"
-
           echo "matrix=$matrix" >> $GITHUB_OUTPUT
           echo "portal_to_rally=$portal_to_rally" >> $GITHUB_OUTPUT
-
   run_tests:
     needs: generate_tests
     runs-on: ubuntu-latest
