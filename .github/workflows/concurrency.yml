@@ -21,8 +21,8 @@ jobs:
       - name: Set up matrix
         id: set_matrix
         run: |
-          IFS=',' read -ra PORTAL_ARRAY <<< "$(echo -n "${{ inputs.portalNames }}" | tr -d '[:space:]')"
-          IFS=',' read -ra RALLY_TEST_SET_IDS_ARRAY <<< "$(echo -n "${{ inputs.rallyTestSetIds }}" | tr -d '[:space:]')"
+          IFS=',' read -ra PORTAL_ARRAY <<< "${{ github.event.inputs.portalNames }}"
+          IFS=',' read -ra RALLY_TEST_SET_IDS_ARRAY <<< "${{ github.event.inputs.rallyTestSetIds }}"
 
           matrix="["
           declare -A PORTAL_TO_RALLY_TEST_SET_MAP
