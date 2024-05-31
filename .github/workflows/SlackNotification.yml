@@ -1,0 +1,20 @@
+name: Slack Notification Demo
+on: push
+jobs:
+  slackNotification:
+    name: Slack Notification
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Slack Notification
+        uses: rtCamp/action-slack-notify@v2
+        env:
+          SLACK_CHANNEL: general
+          SLACK_COLOR: ${{ job.status }} # or a specific color like 'good' or '#ff00ff'
+          SLACK_ICON: https://github.com/rtCamp.png?size=48
+          SLACK_MESSAGE: 'Job ${{ job.status }} for ${{ github.repository }} by @${{ github.actor }}'
+          SLACK_TITLE: Notification from GitHub Actions
+          SLACK_USERNAME: GitActions
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
