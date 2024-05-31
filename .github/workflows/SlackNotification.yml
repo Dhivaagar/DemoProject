@@ -1,5 +1,8 @@
 name: Slack Notification Demo
-on: push
+on:
+  push:
+  workflow_dispatch:
+
 jobs:
   slackNotification:
     name: Slack Notification
