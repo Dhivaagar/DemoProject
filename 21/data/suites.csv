@@ -1,0 +1,7 @@
+"Status","Start Time","Stop Time","Duration in ms","Parent Suite","Suite","Sub Suite","Test Class","Test Method","Name","Description"
+"passed","Fri Jun 21 08:25:27 GMT 2024","Fri Jun 21 08:25:27 GMT 2024","2","Surefire suite","Surefire test","com.example.selenium.PipelineTest","com.example.selenium.PipelineTest","test1","test1",""
+"passed","Fri Jun 21 08:25:27 GMT 2024","Fri Jun 21 08:25:27 GMT 2024","1","Surefire suite","Surefire test","com.example.selenium.SimpleTest","com.example.selenium.SimpleTest","message","message",""
+"passed","Fri Jun 21 08:25:27 GMT 2024","Fri Jun 21 08:25:27 GMT 2024","0","Surefire suite","Surefire test","com.example.selenium.PipelineTest","com.example.selenium.PipelineTest","test2","test2",""
+"broken","Fri Jun 21 08:25:27 GMT 2024","Fri Jun 21 08:25:27 GMT 2024","192","Surefire suite","Surefire test","com.example.selenium.GenerateXmlTest","com.example.selenium.GenerateXmlTest","generateXML","generateXML",""
+"broken","Fri Jun 21 08:25:27 GMT 2024","Fri Jun 21 08:25:29 GMT 2024","1883","Surefire suite","Surefire test","com.example.selenium.ExampleTest","com.example.selenium.ExampleTest","exampleTestMethod2","exampleTestMethod2",""
+"failed","Fri Jun 21 08:25:27 GMT 2024","Fri Jun 21 08:25:27 GMT 2024","1","Surefire suite","Surefire test","com.example.selenium.PipelineTest","com.example.selenium.PipelineTest","test3","test3",""
