@@ -10,10 +10,10 @@ on:
 
 jobs:
   metadata:
-    strategy:
-      fail-fast: false
-      matrix:
-        test: ${{ inputs.chunk }}
+#    strategy:
+#      fail-fast: false
+#      matrix:
+#        test: ${{ inputs.chunk }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
