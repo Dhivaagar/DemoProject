@@ -1,4 +1,58 @@
-name: Dynamic Environment Variables with Dynamic Loop Range
+#name: Dynamic Environment Variables with Dynamic Loop Range
+#
+#on:
+#  workflow_dispatch:
+#    inputs:
+#      start:
+#        description: 'Start of the sequence'
+#        required: true
+#        default: 0
+#      end:
+#        description: 'End of the sequence'
+#        required: true
+#        default: 3
+#
+#jobs:
+#  set-vars:
+#    runs-on: ubuntu-latest
+#    outputs:
+#      var_values: ${{ steps.set-vars.outputs.var_values }}
+#    steps:
+#      - name: Checkout code
+#        uses: actions/checkout@v2
+#
+#      - name: Set dynamic environment variables in a loop
+#        id: set-vars
+#        run: |
+#          start=${{ github.event.inputs.start }}
+#          end=${{ github.event.inputs.end }}
+#          output=""
+#          for i in $(seq $start $end); do
+#            echo "var_$i=$i" >> $GITHUB_ENV
+#            output="$output var_$i=$i"
+#          done
+#          echo "var_values=$output" >> $GITHUB_OUTPUT
+#
+#  use-vars:
+#    runs-on: ubuntu-latest
+#    needs: set-vars
+#    steps:
+#      - name: Checkout code
+#        uses: actions/checkout@v2
+#
+#      - name: Extract and print dynamic environment variables
+#        run: |
+#          var_values="${{ needs.set-vars.outputs.var_values }}"
+#          for var in $var_values; do
+#            echo $var >> $GITHUB_ENV
+#          done
+#          source $GITHUB_ENV
+#          for var in $var_values; do
+#            var_name=$(echo $var | cut -d '=' -f 1)
+#            echo "$var_name=${!var_name}"
+#          done
+
+name: Create Dynamic Array Structure
 
 on:
   workflow_dispatch:
@@ -6,48 +60,44 @@ on:
       start:
         description: 'Start of the sequence'
         required: true
-        default: 0
+        default: 1
       end:
         description: 'End of the sequence'
         required: true
-        default: 3
+        default: 2
 
 jobs:
-  set-vars:
+  create-array:
     runs-on: ubuntu-latest
     outputs:
-      var_values: ${{ steps.set-vars.outputs.var_values }}
+      array_structure: ${{ steps.create-array.outputs.array_structure }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Set dynamic environment variables in a loop
-        id: set-vars
+      - name: Create dynamic array structure
+        id: create-array
         run: |
           start=${{ github.event.inputs.start }}
           end=${{ github.event.inputs.end }}
-          output=""
+          array="["
           for i in $(seq $start $end); do
-            echo "var_$i=$i" >> $GITHUB_ENV
-            output="$output var_$i=$i"
+            array="$array[{\"p$i\"=\"$i\", \"s$i\"=\"$i\"}],"
           done
-          echo "var_values=$output" >> $GITHUB_OUTPUT
+          array="${array%,}" # Remove the trailing comma
+          array="$array]"
+          
+          echo "array_structure=$array" >> $GITHUB_OUTPUT
 
-  use-vars:
+  print-array:
     runs-on: ubuntu-latest
-    needs: set-vars
+    needs: create-array
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Extract and print dynamic environment variables
+      - name: Extract and print array structure
         run: |
-          var_values="${{ needs.set-vars.outputs.var_values }}"
-          for var in $var_values; do
-            echo $var >> $GITHUB_ENV
-          done
-          source $GITHUB_ENV
-          for var in $var_values; do
-            var_name=$(echo $var | cut -d '=' -f 1)
-            echo "$var_name=${!var_name}"
-          done
+          array_structure="${{ needs.create-array.outputs.array_structure }}"
+          echo "Array Structure:"
+          echo "$array_structure"
