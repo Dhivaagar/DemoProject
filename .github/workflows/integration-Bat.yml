@@ -3,72 +3,21 @@ name: IntegrationTest
 on:
   workflow_call:
     inputs:
-      portalName:
-        description: portal name
+      chunk:
+        description: chunk data
         required: true
-        type: string
-
-      rallyTestSetIds:
-        description: "Rally Test Set Ids"
-        required: true
-        type: string
-
-      rallyBuildNos:
-        description: "Rally Build Nos"
-        required: true
-        type: string
-
-  workflow_dispatch:
-    inputs:
-      portalName:
-        description: portal name
-        required: true
-        type: string
-
-      rallyTestSetIds:
-        description: "Rally Test Set Ids"
-        required: true
-        type: string
-
-      rallyBuildNos:
-        description: "Rally Build Nos"
-        required: true
-        type: string
-
-      suitesToRun:
-        description: "The suites which needs to be run i.e., for single suite run format: ['suiteName'], multiple suite run format: ['suiteName1', 'suiteName2']"
-        required: false
         type: string
 
 jobs:
   metadata:
     runs-on: ubuntu-latest
-    outputs:
-      matrix: ${{ steps.generate-matrix.outputs.matrix }}
+    strategy:
+      matrix:
+        tests: ${{ fromJson(inputs.chunk) }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: generate matrix
-        id: generate-matrix
+      - name: Run Integration Test
         run: |
-          if [ -z "${{ inputs.suitesToRun }}" ]; then
-            echo "matrix=$(yq e ".suites" ".github/portals/${{ inputs.portalName }}.yml" | sed 's/^- //; s/^/'\''/; s/$/'\''/' | paste -sd, - | sed 's/^/[ /; s/$/ ]/')" >> $GITHUB_OUTPUT
-          else
-            echo "matrix=${{ inputs.suitesToRun }}" >> $GITHUB_OUTPUT
-          fi
-
-  test:
-    needs: metadata
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        tests: ${{ fromJson(needs.metadata.outputs.matrix) }}
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Run tests
-        run: |
-          echo "Running tests for ${{ matrix.tests }} in portal ${{ github.event.inputs.portalName }} with Rally Test Set Ids ${{ github.event.inputs.rallyTestSetIds }} and Rally Build Nos ${{ github.event.inputs.rallyBuildNos }}"
+          echo ${{ matrix.tests }}
