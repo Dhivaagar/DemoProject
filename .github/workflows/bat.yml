@@ -1,25 +1,40 @@
-name: Bat Test
+name: Main Workflow
 
 on:
-  workflow_dispatch:
-jobs:
-  test:
-    strategy:
-      matrix:
-#        tests: [ "[ '{ 'portalName': 'marketingPortal', 'suiteName': 'UpdateAudienceAfterPromoLaunch=marketingPortal' }', '{ 'portalName': 'marketingPortal', 'suiteName': 'UpdateAudienceAfterPromoLaunch=marketingPortal' }' ]", "[ '{ 'portalName': 'marketingPortal', 'suiteName': 'UpdateAudienceAfterPromoLaunch=marketingPortal' }', '{ 'portalName': 'marketingPortal', 'suiteName:' 'UpdateAudienceAfterPromoLaunch=marketingPortal' }' ]" ]
-        tests:
-          - portalName: marketingPortal
-            suiteName: UpdateAudienceAfterPromoLaunch=marketingPortal
-          - portalName: marketingPortal
-            suiteName: UpdateAudienceAfterPromoLaunch=marketingPortal
+  push:
+    branches:
+      - main
 
-#    uses: ./.github/workflows/integration-Bat.yml
-#    with:
-#      chunk: ${{ matrix.tests }}
+jobs:
+  process-lists:
     runs-on: ubuntu-latest
+    outputs:
+      sublists: ${{ steps.prepare-sublists.outputs.sublists }}
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - name: Run Integration Test
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Prepare sublists
+        id: prepare-sublists
         run: |
-          echo "Running integration test for chunk ${{ matrix.tests }}"
+          # Define your nested lists here
+          subLists=$(cat << 'EOF'
+          [
+            [
+              "{ 'portalName': 'marketingPortal', 'suiteName': 'UpdateAudienceAfterPromoLaunch=marketingPortal' }",
+              "{ 'portalName': 'marketingPortal', 'suiteName': 'UpdateAudienceAfterPromoLaunch=marketingPortal' }"
+            ],
+            [
+              "{ 'portalName': 'marketingPortal', 'suiteName': 'UpdateAudienceAfterPromoLaunch=marketingPortal' }",
+              "{ 'portalName': 'marketingPortal', 'suiteName': 'UpdateAudienceAfterPromoLaunch=marketingPortal' }"
+            ]
+          ]
+          EOF
+          )
+          echo "sublists=$subLists" >> $GITHUB_OUTPUT
+
+      - name: Trigger sub-workflow
+        uses: actions/workflow-caller@v2
+        with:
+          workflow: trigger.yml
+          arguments: '{"sublists": "${{ steps.prepare-sublists.outputs.sublists }}"}'
