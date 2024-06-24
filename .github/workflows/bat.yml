@@ -70,16 +70,17 @@ jobs:
   test:
     strategy:
       matrix:
-        config:
-          - portalName: cm3
-            suiteName: "BookAppointmentBacklogTest=cm3"
-          - portalName: cm3
-            suiteName: "CM3URLBacklogTest=cm3"
-        setup:
-          - portalName: cm3
-            suiteName: "CM7BacklogRegistrationDateTest=cm3"
-          - portalName: cm3
-            suiteName: "CM7CappedPricingGuideGridListView=cm3"
+        tests:
+          - config:
+            - portalName: cm3
+              suiteName: "BookAppointmentBacklogTest=cm3"
+            - portalName: cm3
+              suiteName: "CM3URLBacklogTest=cm3"
+          - setup:
+            - portalName: cm3
+              suiteName: "CM7BacklogRegistrationDateTest=cm3"
+            - portalName: cm3
+              suiteName: "CM7CappedPricingGuideGridListView=cm3"
 
     runs-on: ubuntu-latest
 
@@ -87,14 +88,14 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: Print config matrix variables
+      - name: Print tests matrix variables
         run: |
-          echo "Config matrix:"
-          echo "portalName: ${{ matrix.config.portalName }}"
-          echo "suiteName: ${{ matrix.config.suiteName }}"
+          echo "Tests matrix:"
+          echo "portalName: ${{ matrix.tests.config.portalName }}"
+          echo "suiteName: ${{ matrix.tests.config.suiteName }}"
 
       - name: Print setup matrix variables
         run: |
           echo "Setup matrix:"
-          echo "portalName: ${{ matrix.setup.portalName }}"
-          echo "suiteName: ${{ matrix.setup.suiteName }}"
+          echo "portalName: ${{ matrix.setup.config.portalName }}"
+          echo "suiteName: ${{ matrix.setup.config.suiteName }}"
