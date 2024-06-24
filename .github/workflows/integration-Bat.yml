@@ -10,10 +10,10 @@ on:
 
 jobs:
   metadata:
-    strategy:
-      fail-fast: false
-      matrix:
-        test: ${{ inputs.chunk }}
+#    strategy:
+#      fail-fast: false
+#      matrix:
+#        test: ${{ inputs.chunk }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -21,4 +21,4 @@ jobs:
 
       - name: Run Integration Test
         run: |
-          echo "Running integration test for chunk ${{ matrix.test }}"
+          echo "Running integration test for chunk ${{ inputs.chunk }}"
