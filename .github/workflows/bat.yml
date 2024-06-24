@@ -94,7 +94,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: create-array
     strategy:
-      matrix: ${{ fromJson(needs.create-array.outputs.array_structure }}
+      matrix: ${{ fromJson(needs.create-array.outputs.array_structure) }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
