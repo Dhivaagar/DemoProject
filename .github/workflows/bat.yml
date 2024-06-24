@@ -82,21 +82,22 @@ jobs:
           end=${{ github.event.inputs.end }}
           array="["
           for i in $(seq $start $end); do
-            array="$array[{\"p$i\"=\"$i\", \"s$i\"=\"$i\"}],"
+            array="$array{\"p$i\"=\"$i\", \"s$i\"=\"$i\"},"
           done
           array="${array%,}" # Remove the trailing comma
           array="$array]"
-          
+
           echo "array_structure=$array" >> $GITHUB_OUTPUT
 
   process-array:
     runs-on: ubuntu-latest
     needs: create-array
     strategy:
-      matrix: ${{ fromJson(needs.create-array.outputs.array_structure)[0] }}
+      matrix:
+        index: ${{ fromJson(needs.create-array.outputs.array_structure) }}
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v2
 
       - name: Process array element
         run: |
