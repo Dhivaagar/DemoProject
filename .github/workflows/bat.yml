@@ -7,8 +7,8 @@ jobs:
     strategy:
       matrix:
         tests:
-          - "[ BookAppointmentBacklogTest=cm3, CM3URLBacklogTest=cm3 ]"
-          - "[ CM7BacklogRegistrationDateTest=cm3, CM7CappedPricingGuideGridListView=cm3 ]"
+          - "[ 'BookAppointmentBacklogTest=cm3', 'CM3URLBacklogTest=cm3' ]"
+          - "[ 'CM7BacklogRegistrationDateTest=cm3', 'CM7CappedPricingGuideGridListView=cm3' ]"
 
     uses: ./.github/workflows/integration-Bat.yml
     with:
