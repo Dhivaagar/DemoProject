@@ -16,7 +16,7 @@ jobs:
   set-vars:
     runs-on: ubuntu-latest
     outputs:
-      vars: ${{ steps.set-vars.outputs.vars }}
+      var_values: ${{ steps.set-vars.outputs.var_values }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -31,9 +31,7 @@ jobs:
             echo "var_$i=$i" >> $GITHUB_ENV
             output="$output var_$i=$i"
           done
-          
-          # Save the variables as a single output string
-          echo "vars=$output" >> $GITHUB_OUTPUT
+          echo "var_values=$output" >> $GITHUB_OUTPUT
 
   use-vars:
     runs-on: ubuntu-latest
@@ -42,15 +40,14 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Extract and use dynamic environment variables
+      - name: Extract and print dynamic environment variables
         run: |
-          vars="${{ needs.set-vars.outputs.vars }}"
-          for var in $vars; do
+          var_values="${{ needs.set-vars.outputs.var_values }}"
+          for var in $var_values; do
             echo $var >> $GITHUB_ENV
           done
-          
-          # Print the dynamic environment variables
-          for var in $vars; do
+          source $GITHUB_ENV
+          for var in $var_values; do
             var_name=$(echo $var | cut -d '=' -f 1)
             echo "$var_name=${!var_name}"
           done
