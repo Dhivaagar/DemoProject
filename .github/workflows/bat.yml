@@ -86,9 +86,40 @@ jobs:
           done
           array="${array%,}" # Remove the trailing comma
           array="$array]"
+          
+          trimmed="${array#*[}"
+          trimmed="${trimmed%]*}"
+          
+          IFS='},{'
+          read -ra elements <<< "$trimmed"
+          
+          declare -a array
+          
+          for element in "${elements[@]}"; do
+            # Remove leading '{' and trailing '}' if they exist
+            element="${element#{"
+            element="${element%}}"
+        
+            # Split each element into key-value pairs based on ',' and '='
+            IFS=',' read -ra pairs <<< "$element"
+        
+            # Declare associative array to store key-value pairs
+            declare -A keyValuePairs
+        
+            # Loop through key-value pairs
+            for pair in "${pairs[@]}"; do
+              IFS='=' read -r key value <<< "$pair"
+              keyValuePairs["$key"]="$value"
+            done
+        
+            # Append parsed associative array to the final array
+            array+=("$keyValuePairs")
+          done
+          declare -p array
+          
+          echo "${array[0]}"
 
           echo "array_structure=$array" >> $GITHUB_OUTPUT
-          echo "array_structure_0"array[0]
 
   process-array:
     runs-on: ubuntu-latest
