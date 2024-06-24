@@ -88,7 +88,7 @@ jobs:
           array="$array]"
 
           echo "array_structure=$array" >> $GITHUB_OUTPUT
-          echo "array_structure_0"$array[0]
+          echo "array_structure_0"array[0]
 
   process-array:
     runs-on: ubuntu-latest
