@@ -67,72 +67,34 @@ on:
         default: 2
 
 jobs:
-  create-array:
-    runs-on: ubuntu-latest
-    outputs:
-      array_structure: ${{ steps.create-array.outputs.array_structure }}
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Create dynamic array structure
-        id: create-array
-        run: |
-          start=${{ github.event.inputs.start }}
-          end=${{ github.event.inputs.end }}
-          array="["
-          for i in $(seq $start $end); do
-            array="$array{\"p$i\"=\"$i\", \"s$i\"=\"$i\"},"
-          done
-          array="${array%,}" # Remove the trailing comma
-          array="$array]"
-          
-          trimmed="${array#*[}"
-          trimmed="${trimmed%]*}"
-          
-          IFS='},{'
-          read -ra elements <<< "$trimmed"
-          
-          declare -a array
-          
-          for element in "${elements[@]}"; do
-            # Remove leading '{' and trailing '}' if they exist
-            element="${element#{"
-            element="${element%}}"
-        
-            # Split each element into key-value pairs based on ',' and '='
-            IFS=',' read -ra pairs <<< "$element"
-        
-            # Declare associative array to store key-value pairs
-            declare -A keyValuePairs
-        
-            # Loop through key-value pairs
-            for pair in "${pairs[@]}"; do
-              IFS='=' read -r key value <<< "$pair"
-              keyValuePairs["$key"]="$value"
-            done
-        
-            # Append parsed associative array to the final array
-            array+=("$keyValuePairs")
-          done
-          declare -p array
-          
-          echo "${array[0]}"
-
-          echo "array_structure=$array" >> $GITHUB_OUTPUT
-
-  process-array:
-    runs-on: ubuntu-latest
-    needs: create-array
+  test:
     strategy:
-      matrix: ${{ fromJson(needs.create-array.outputs.array_structure) }}
+      matrix:
+        config:
+          - portalName: cm3
+            suiteName: "BookAppointmentBacklogTest=cm3"
+          - portalName: cm3
+            suiteName: "CM3URLBacklogTest=cm3"
+        setup:
+          - portalName: cm3
+            suiteName: "CM7BacklogRegistrationDateTest=cm3"
+          - portalName: cm3
+            suiteName: "CM7CappedPricingGuideGridListView=cm3"
+
+    runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout code
+      - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: Process array element
+      - name: Print config matrix variables
         run: |
-          array_structure="${{ needs.create-array.outputs.array_structure }}"
-          index=${{ matrix.index }}
-          echo "Processing array element $index:"
-          echo "${index}"  # Adjust processing logic as needed
+          echo "Config matrix:"
+          echo "portalName: ${{ matrix.config.portalName }}"
+          echo "suiteName: ${{ matrix.config.suiteName }}"
+
+      - name: Print setup matrix variables
+        run: |
+          echo "Setup matrix:"
+          echo "portalName: ${{ matrix.setup.portalName }}"
+          echo "suiteName: ${{ matrix.setup.suiteName }}"
