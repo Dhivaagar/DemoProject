@@ -6,7 +6,7 @@ jobs:
   test:
     strategy:
       matrix:
-        tests: [ "[ \"{ \"portalName\": \"marketingPortal\", \"suiteName\": \"UpdateAudienceAfterPromoLaunch=marketingPortal\" }\", \"{ \"portalName\": \"marketingPortal\", \"suiteName\": \"UpdateAudienceAfterPromoLaunch=marketingPortal\" }\" ]", "[ \"{ \"portalName\": \"marketingPortal\", \"suiteName\": \"UpdateAudienceAfterPromoLaunch=marketingPortal\" }\", \"{ \"portalName\": \"marketingPortal\", \"suiteName\": \"UpdateAudienceAfterPromoLaunch=marketingPortal\" }\" ]"]
+        tests: [ "[ { \"portalName\": \"marketingPortal\", \"suiteName\": \"UpdateAudienceAfterPromoLaunch=marketingPortal\" }, { \"portalName\": \"marketingPortal\", \"suiteName\": \"UpdateAudienceAfterPromoLaunch=marketingPortal\" } ]", "[ { \"portalName\": \"marketingPortal\", \"suiteName\": \"UpdateAudienceAfterPromoLaunch=marketingPortal\" }, { \"portalName\": \"marketingPortal\", \"suiteName\": \"UpdateAudienceAfterPromoLaunch=marketingPortal\" } ]"]
 #        tests: [ { "portalName": "marketingPortal", "suiteName": "UpdateAudienceAfterPromoLaunch=marketingPortal" }, { "portalName": "marketingPortal", "suiteName": "UpdateAudienceAfterPromoLaunch=marketingPortal" } ]
     uses: ./.github/workflows/integration-Bat.yml
     with:
