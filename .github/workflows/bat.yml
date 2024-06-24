@@ -7,8 +7,8 @@ jobs:
     strategy:
       matrix:
         tests:
-          - "[{ portalName: cm3, suiteName: BookAppointmentBacklogTest=cm3 }, { portalName: cm3, suiteName: CM3URLBacklogTest=cm3 }]"
-          - "[{ portalName: cm3, suiteName: CM7BacklogRegistrationDateTest=cm3 }, { portalName: cm3, suiteName: CM7CappedPricingGuideGridListView=cm3 }]"
+          - "[ BookAppointmentBacklogTest=cm3, CM3URLBacklogTest=cm3 ]"
+          - "[ CM7BacklogRegistrationDateTest=cm3, CM7CappedPricingGuideGridListView=cm3 ]"
 
     uses: ./.github/workflows/integration-Bat.yml
     with:
