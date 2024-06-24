@@ -104,4 +104,4 @@ jobs:
           array_structure="${{ needs.create-array.outputs.array_structure }}"
           index=${{ matrix.index }}
           echo "Processing array element $index:"
-          echo "${array_structure[$((index - 1))]}"  # Adjust index for zero-based array
+          echo "${index}"  # Adjust processing logic as needed
