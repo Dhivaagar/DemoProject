@@ -1,19 +1,27 @@
-name: Triggered Workflow
+name: IntegrationTest
 
 on:
   workflow_call:
     inputs:
-      sublists:
-        type: string
+      chunk:
+        description: chunk data
         required: true
+        type: string
 
 jobs:
-  process-sublists:
+  metadata:
     strategy:
       matrix:
-        sublist: ${{fromJson(inputs.sublists)}}
+        tests: ${{ fromJSON(inputs.chunk) }}
+#    strategy:
+#      fail-fast: false
+#      matrix:
+#        test: ${{ inputs.chunk }}
     runs-on: ubuntu-latest
     steps:
-      - name: Process sublist
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Run Integration Test
         run: |
-          echo "Processing sublist ${{ matrix.sublist }}"
+          echo "Running integration test for chunk ${{ matrix.tests }}"
