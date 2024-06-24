@@ -1,49 +1,56 @@
-name: one shot
+name: Dynamic Environment Variables with Dynamic Loop Range
+
 on:
   workflow_dispatch:
     inputs:
-      portalNames:
-        description: "Portal Name"
+      start:
+        description: 'Start of the sequence'
         required: true
-        type: string
-
-      rallyTestSetIds:
-        description: "Rally Test Set Ids"
+        default: 0
+      end:
+        description: 'End of the sequence'
         required: true
-        type: string
-
-      rallyBuildNos:
-        description: "Rally Build Nos"
-        required: true
-        type: string
+        default: 3
 
 jobs:
-  generate_tests:
+  set-vars:
     runs-on: ubuntu-latest
     outputs:
-      matrix: ${{ steps.set_matrix.outputs.matrix }}
+      vars: ${{ steps.set-vars.outputs.vars }}
     steps:
-      - name: Set up matrix
-        id: set_matrix
-        run: |
-          IFS=',' read -ra PORTAL_ARRAY <<< "$(echo -n "${{ github.event.inputs.portalNames }}" | tr -d '[:space:]')"
-          IFS=',' read -ra RALLY_TEST_SET_IDS_ARRAY <<< "$(echo -n "${{ github.event.inputs.rallyTestSetIds }}" | tr -d '[:space:]')"
-          IFS=',' read -ra RALLY_BUILD_NOS_ARRAY <<< "$(echo -n "${{ github.event.inputs.rallyBuildNos }}" | tr -d '[:space:]')"
-          MATRIX="["
-          for i in "${!PORTAL_ARRAY[@]}"; do
-            MATRIX+="{\"portalName\": \"${PORTAL_ARRAY[i]}\", \"rallyTestSetIds\": \"${RALLY_TEST_SET_IDS_ARRAY[i]}\", \"rallyBuildNos\": \"${RALLY_BUILD_NOS_ARRAY[i]}\"},"
-          done
-          MATRIX=${MATRIX::-1} # remove the last comma
-          MATRIX+="]"
-          echo "matrix=$MATRIX" >> $GITHUB_OUTPUT
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-  run_tests:
-    needs: generate_tests
-    strategy:
-      matrix:
-        data: ${{fromJson(needs.generate_tests.outputs.matrix)}}
-    uses: ./.github/workflows/integration-Bat.yml
-    with:
-      portalName: ${{ matrix.data.portalName }}
-      rallyTestSetIds: ${{ matrix.data.rallyTestSetIds }}
-      rallyBuildNos: ${{ matrix.data.rallyBuildNos }}
+      - name: Set dynamic environment variables in a loop
+        id: set-vars
+        run: |
+          start=${{ github.event.inputs.start }}
+          end=${{ github.event.inputs.end }}
+          output=""
+          for i in $(seq $start $end); do
+            echo "var_$i=$i" >> $GITHUB_ENV
+            output="$output var_$i=$i"
+          done
+          
+          # Save the variables as a single output string
+          echo "vars=$output" >> $GITHUB_OUTPUT
+
+  use-vars:
+    runs-on: ubuntu-latest
+    needs: set-vars
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Extract and use dynamic environment variables
+        run: |
+          vars="${{ needs.set-vars.outputs.vars }}"
+          for var in $vars; do
+            echo $var >> $GITHUB_ENV
+          done
+          
+          # Print the dynamic environment variables
+          for var in $vars; do
+            var_name=$(echo $var | cut -d '=' -f 1)
+            echo "$var_name=${!var_name}"
+          done
