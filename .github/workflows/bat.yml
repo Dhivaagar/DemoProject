@@ -2,21 +2,14 @@ name: Bat Test
 
 on:
   workflow_dispatch:
-
 jobs:
   test:
     strategy:
       matrix:
         tests:
-          - [  # Use square brackets for the array
-            { 'portalName': 'cm3', 'suiteName': 'BookAppointmentBacklogTest=cm3' },
-            { 'portalName': 'cm3', 'suiteName': 'CM3URLBacklogTest=cm3' }
-          ]
-          - [  # Use square brackets for the array
-            { 'portalName': 'cm3', 'suiteName': 'CM7BacklogRegistrationDateTest=cm3' },
-            { 'portalName': 'cm3', 'suiteName': 'CM7CappedPricingGuideGridListView=cm3' }
-          ]
+          - "[{ portalName: cm3, suiteName: BookAppointmentBacklogTest=cm3 }", "{ portalName: cm3, suiteName: CM3URLBacklogTest=cm3 }]"
+          - "[{ portalName: cm3, suiteName: CM7BacklogRegistrationDateTest=cm3 }", "{ portalName: cm3, suiteName: CM7CappedPricingGuideGridListView=cm3 }]"
 
     uses: ./.github/workflows/integration-Bat.yml
     with:
-      chunk: ${{ matrix.tests }}  # Use matrix.tests directly (no quotes)
+      chunk: ${{ matrix.tests.chunk }}
