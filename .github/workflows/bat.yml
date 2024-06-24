@@ -19,10 +19,11 @@ jobs:
             - portalName: cm3
               suiteName: "CM7CappedPricingGuideGridListView=cm3"
           - chunk_2:
-              - portalName: cm3
-                suiteName: "CM7BacklogRegistrationDateTest=cm3"
-              - portalName: cm3
-                suiteName: "CM7CappedPricingGuideGridListView=cm3"
+            - portalName: cm3
+              suiteName: "CM7BacklogRegistrationDateTest=cm3"
+            - portalName: cm3
+              suiteName: "CM7CappedPricingGuideGridListView=cm3"
+
     uses: ./.github/workflows/integration-Bat.yml
     with:
-      chunk: ${{ matrix.tests.chunk }}
+      chunk: ${{ matrix.tests }}
