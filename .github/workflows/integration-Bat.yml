@@ -10,9 +10,9 @@ on:
 
 jobs:
   metadata:
-#    strategy:
-#      matrix:
-#        tests: ${{ fromJSON(inputs.chunk) }}
+    strategy:
+      matrix:
+        tests: ${{ fromJSON(inputs.chunk) }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -20,4 +20,4 @@ jobs:
 
       - name: Run Integration Test
         run: |
-          echo "Running integration test for chunk ${{ inputs.chunk }} "
+          echo "Running integration test for chunk ${{ matrix.tests }} "
