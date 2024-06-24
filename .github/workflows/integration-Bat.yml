@@ -11,13 +11,10 @@ on:
 jobs:
   metadata:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        tests: ${{ fromJson(inputs.chunk) }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
       - name: Run Integration Test
         run: |
-          echo ${{ matrix.tests }}
+          echo "Running integration test for chunk ${{ inputs.chunk }}"
