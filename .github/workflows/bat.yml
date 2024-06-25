@@ -82,6 +82,9 @@ jobs:
           # Finalize the chunks array string
           chunks_array=${chunks_array::-1}
           chunks_array+="]"
+          
+          echo "chunks_array=${chunks_array}"
+          echo "portal_to_rally=${portal_to_rally}"
   
           # Output the portal to rally map, and chunks array
           echo "portal_to_rally=${portal_to_rally}" >> $GITHUB_OUTPUT
