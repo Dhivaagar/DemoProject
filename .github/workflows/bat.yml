@@ -282,6 +282,10 @@ jobs:
           chunks_array=${chunks_array::-1}
           chunks_array+="]"
           
+          # Print the matrix and portal to rally test set map
+          echo "portal_to_rally=${portal_to_rally}"
+          echo "chunks_array=${chunks_array}"
+          
           # Output the portal to rally map, and chunks array
           echo "portal_to_rally=${portal_to_rally}" >> $GITHUB_OUTPUT
           echo "chunks_array=${chunks_array}" >> $GITHUB_OUTPUT
