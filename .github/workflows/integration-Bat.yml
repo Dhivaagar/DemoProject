@@ -9,7 +9,7 @@ on:
         type: string
 
 jobs:
-  metadata:
+  integration:
     strategy:
       fail-fast: false
       max-parallel: 2
@@ -22,4 +22,4 @@ jobs:
 
       - name: Run Integration Test
         run: |
-          echo "Running integration test for chunk ${{ matrix.tests }} "
+          echo "Running integration test for chunk ${{ matrix.tests }}"
