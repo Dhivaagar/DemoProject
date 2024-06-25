@@ -49,7 +49,7 @@ jobs:
             suites=$(yq e ".suites" "scripts/portals/${PORTAL_ARRAY[i]}.yml" | sed 's/^- //; s/^/'\''/; s/$/'\''/' | paste -sd, - | sed "s/'//g" | sed 's/^/ /; s/$/ /')
             IFS=',' read -ra SUITE_ARRAY <<< "$(echo -n "$suites" | tr -d '[:space:]')"
               for suite in "${SUITE_ARRAY[@]}"; do
-              matrix+="{\\\"portalName\\\": \\\"${PORTAL_ARRAY[i]}\\\", \\\"suiteName\\\": \\\"${suite}\\\"},"
+              matrix+="\"{\\\"portalName\\\": \\\"${PORTAL_ARRAY[i]}\\\", \\\"suiteName\\\": \\\"${suite}\\\"}\","
             done
             PORTAL_TO_RALLY_TEST_SET_MAP["${PORTAL_ARRAY[i]}"]="${RALLY_TEST_SET_IDS_ARRAY[i]}"
           done
