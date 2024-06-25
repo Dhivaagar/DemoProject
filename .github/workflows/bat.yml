@@ -92,8 +92,8 @@ jobs:
         id: set_matrix
         run: |  
           # Split input arrays
-          IFS=',' read -r -a portalArray <<< "${{ inputs.portalNames }}"
-          IFS=',' read -r -a rallyTestSetIdsArray <<< "${{ inputs.rallyTestSetIds }}"
+          IFS=',' read -r -a portalArray <<< "$(echo -n "${{ inputs.portalNames }}" | tr -d '[:space:]')"
+          IFS=',' read -r -a rallyTestSetIdsArray <<< "$(echo -n "${{ inputs.rallyTestSetIds }}" | tr -d '[:space:]')"
           
           # Validate array lengths
           if [ ${#rallyTestSetIdsArray[@]} -ne ${#portalArray[@]} ]; then
