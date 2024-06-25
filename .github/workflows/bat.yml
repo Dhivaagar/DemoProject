@@ -92,15 +92,15 @@ jobs:
     strategy:
       matrix:
         tests: ${{fromJson(needs.metadata.outputs.chunks_array)}}
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+#    runs-on: ubuntu-latest
+#    steps:
+#      - name: Checkout
+#        uses: actions/checkout@v4
+#
+#      - name: Run Integration Test
+#        run: |
+#          echo "Running integration test for chunk ${{ matrix.tests }} "
 
-      - name: Run Integration Test
-        run: |
-          echo "Running integration test for chunk ${{ matrix.tests }} "
-
 #          - "[ { \"portalName\": \"marketingPortal\", \"suiteName\": \"UpdateAudienceAfterPromoLaunch=marketingPortal\" }, { \"portalName\": \"marketingPortal\", \"suiteName\": \"UpdateAudienceAfterPromoLaunch=marketingPortal\" }, { \"portalName\": \"marketingPortal\", \"suiteName\": \"UpdateAudienceAfterPromoLaunch=marketingPortal\" }, { \"portalName\": \"marketingPortal\", \"suiteName\": \"UpdateAudienceAfterPromoLaunch=marketingPortal\" } ]"
 #          - "[ { \"portalName\": \"marketingPortal\", \"suiteName\": \"UpdateAudienceAfterPromoLaunch=marketingPortal\" }, { \"portalName\": \"marketingPortal\", \"suiteName\": \"UpdateAudienceAfterPromoLaunch=marketingPortal\" }, { \"portalName\": \"marketingPortal\", \"suiteName\": \"UpdateAudienceAfterPromoLaunch=marketingPortal\" }, { \"portalName\": \"marketingPortal\", \"suiteName\": \"UpdateAudienceAfterPromoLaunch=marketingPortal\" } ]"
 #          - "[ { \"portalName\": \"marketingPortal\", \"suiteName\": \"UpdateAudienceAfterPromoLaunch=marketingPortal\" }, { \"portalName\": \"marketingPortal\", \"suiteName\": \"UpdateAudienceAfterPromoLaunch=marketingPortal\" }, { \"portalName\": \"marketingPortal\", \"suiteName\": \"UpdateAudienceAfterPromoLaunch=marketingPortal\" }, { \"portalName\": \"marketingPortal\", \"suiteName\": \"UpdateAudienceAfterPromoLaunch=marketingPortal\" } ]"
@@ -192,6 +192,6 @@ jobs:
 #          - "[ { \"portalName\": \"marketingPortal\", \"suiteName\": \"UpdateAudienceAfterPromoLaunch=marketingPortal\" }, { \"portalName\": \"marketingPortal\", \"suiteName\": \"UpdateAudienceAfterPromoLaunch=marketingPortal\" }, { \"portalName\": \"marketingPortal\", \"suiteName\": \"UpdateAudienceAfterPromoLaunch=marketingPortal\" }, { \"portalName\": \"marketingPortal\", \"suiteName\": \"UpdateAudienceAfterPromoLaunch=marketingPortal\" } ]"
 #          - "[ { \"portalName\": \"marketingPortal\", \"suiteName\": \"UpdateAudienceAfterPromoLaunch=marketingPortal\" }, { \"portalName\": \"marketingPortal\", \"suiteName\": \"UpdateAudienceAfterPromoLaunch=marketingPortal\" }, { \"portalName\": \"marketingPortal\", \"suiteName\": \"UpdateAudienceAfterPromoLaunch=marketingPortal\" }, { \"portalName\": \"marketingPortal\", \"suiteName\": \"UpdateAudienceAfterPromoLaunch=marketingPortal\" } ]"
 
-#    uses: ./.github/workflows/integration-Bat.yml
-#    with:
-#      chunk: ${{ matrix.tests }}
+    uses: ./.github/workflows/integration-Bat.yml
+    with:
+      chunk: ${{ matrix.tests }}
