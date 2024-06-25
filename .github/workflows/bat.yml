@@ -87,7 +87,9 @@ jobs:
           echo "portalToRallyTestSetMapString=$portalToRallyTestSetMapString"
           
           # Output results to files
-          echo "chunks_array=$chunksArrayString" >> $GITHUB_OUTPUT
+          chunks_array=$(echo "$chunksArrayString")
+          portalToRallyTestSetMapString=$(echo "$portalToRallyTestSetMapString")
+          echo "chunks_array=$chunks_array" >> $GITHUB_OUTPUT
           echo "portal_to_rally=$portalToRallyTestSetMapString" >> $GITHUB_OUTPUT
 
   test:
