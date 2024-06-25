@@ -263,7 +263,7 @@ jobs:
           # Construct the portal to rally test set map string
           portal_to_rally="{"
           for portal in "${!PORTAL_TO_RALLY_TEST_SET_MAP[@]}"; do
-            portal_to_rally+="\"$portal\":\"${PORTAL_TO_RALLY_TEST_SET_MAP[$portal]}\","
+            portal_to_rally+="\\"$portal\\":\\"${PORTAL_TO_RALLY_TEST_SET_MAP[$portal]}\\","
           done
           portal_to_rally=${portal_to_rally::-1}
           portal_to_rally+="}"
