@@ -68,6 +68,12 @@ jobs:
             chunksArray+=("\"$(IFS=,; echo "${chunk[*]}")\"")
           done
           
+          # print matrix
+          echo "matrix=${matrix[@]}"
+          echo "num_chunks=$numChunks"
+          echo "portal_to_rally=${portalToRallyTestSetMap[@]}"
+          echo "chunks_array=${chunksArray[@]}"
+          
           # Output results to files
           echo "portal_to_rally=${portalToRallyTestSetMap[@]}" >> $GITHUB_OUTPUT
           echo "chunks_array=${chunksArray[@]}" >> $GITHUB_OUTPUT
@@ -76,7 +82,7 @@ jobs:
     needs: metadata
     strategy:
       matrix:
-        tests: ${{needs.metadata.outputs.chunks_array}}
+        tests: ${{fromJSON(needs.metadata.outputs.chunks_array)}}
 #    uses: ./.github/workflows/integration-Bat.yml
 #    with:
 #      chunk: ${{ matrix.tests }}
