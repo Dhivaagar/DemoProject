@@ -23,11 +23,12 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Install yq
+      - name: Install yq and jq
         run: |
           wget https://github.com/mikefarah/yq/releases/download/v4.30.6/yq_linux_amd64 -O yq
           chmod +x yq
           sudo mv yq /usr/local/bin/yq
+          sudo apt-get update && sudo apt-get install -y jq
 
       - name: Set up matrix
         id: set_matrix
@@ -67,7 +68,7 @@ jobs:
           
           for (( i=0; i<numChunks; i++ )); do
             chunk=("${matrix[@]:i*chunkSize:chunkSize}")
-            chunkString=$(printf '%s\n' "${chunk[@]}" | jq -sR . | jq -s .)
+            chunkString=$(printf '%s\n' "${chunk[@]}" | jq -s .)
             chunksArray+=("$chunkString")
           done
           
@@ -76,7 +77,7 @@ jobs:
           rallyTestSetIdsArrayString=$(IFS=,; echo "${rallyTestSetIdsArray[*]}")
           matrixString=$(IFS=,; echo "${matrix[*]}")
           chunksArrayString=$(printf '%s\n' "${chunksArray[@]}" | jq -s .)
-          portalToRallyTestSetMapString=$(for key in "${!portalToRallyTestSetMap[@]}"; do echo "\"$key\":\"${portalToRallyTestSetMap[$key]}\""; done | jq -s .)
+          portalToRallyTestSetMapString=$(printf '%s\n' $(for key in "${!portalToRallyTestSetMap[@]}"; do echo "{\"$key\":\"${portalToRallyTestSetMap[$key]}\"}"; done) | jq -s add)
           
           # Output results
           echo "portalArrayString=$portalArrayString"
