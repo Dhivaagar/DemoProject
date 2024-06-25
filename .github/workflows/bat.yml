@@ -76,7 +76,7 @@ jobs:
           for i in $(seq 0 $((num_chunks - 1))); do
             chunk=$(echo ${matrix_array[@]:$((i * 100)):100} | jq -s '.')
             chunk_string=$(echo $chunk)
-            chunks_array+="$chunk_string,"
+            chunk_array+="\"$chunk_string\","
           done
   
           # Finalize the chunks array string
