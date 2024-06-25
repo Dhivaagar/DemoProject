@@ -58,6 +58,8 @@ jobs:
           matrix=${matrix::-1}
           matrix+="]"
           
+          echo "matrix=$matrix"
+          
           # Construct the portal to rally test set map string
           portal_to_rally="{"
           for portal in "${!PORTAL_TO_RALLY_TEST_SET_MAP[@]}"; do
