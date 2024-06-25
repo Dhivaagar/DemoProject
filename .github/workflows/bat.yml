@@ -65,18 +65,27 @@ jobs:
           
           for (( i=0; i<numChunks; i++ )); do
             chunk=("${matrix[@]:i*chunkSize:chunkSize}")
-            chunksArray+=("\"$(IFS=,; echo "${chunk[*]}")\"")
+            chunkString=$(IFS=,; echo "${chunk[*]}")
+            chunksArray+=("\"$chunkString\"")
           done
           
-          # print matrix
-          echo "matrix=${matrix[@]}"
-          echo "num_chunks=$numChunks"
-          echo "portal_to_rally=${portalToRallyTestSetMap[@]}"
-          echo "chunks_array=${chunksArray[@]}"
+          # Convert arrays to strings
+          portalArrayString=$(IFS=,; echo "${portalArray[*]}")
+          rallyTestSetIdsArrayString=$(IFS=,; echo "${rallyTestSetIdsArray[*]}")
+          matrixString=$(IFS=,; echo "${matrix[*]}")
+          chunksArrayString=$(IFS=,; echo "${chunksArray[*]}")
+          portalToRallyTestSetMapString=$(for key in "${!portalToRallyTestSetMap[@]}"; do echo "$key:${portalToRallyTestSetMap[$key]}"; done | paste -sd, -)
+          
+          # Output results
+          echo "portalArrayString=$portalArrayString"
+          echo "rallyTestSetIdsArrayString=$rallyTestSetIdsArrayString"
+          echo "matrixString=$matrixString"
+          echo "chunksArrayString=$chunksArrayString"
+          echo "portalToRallyTestSetMapString=$portalToRallyTestSetMapString"
           
           # Output results to files
-          echo "portal_to_rally=${portalToRallyTestSetMap[@]}" >> $GITHUB_OUTPUT
-          echo "chunks_array=${chunksArray[@]}" >> $GITHUB_OUTPUT
+          echo "portal_to_rally=$portalToRallyTestSetMapString" >> $GITHUB_OUTPUT
+          echo "chunks_array=$chunksArrayString" >> $GITHUB_OUTPUT
 
   test:
     needs: metadata
