@@ -1,0 +1,12 @@
+#serviceCapabilities.yml
+suites:
+  - NewDomainURLValidationTest=serviceCapabilities
+  - CardPresentPaymentGPIAPITest=serviceCapabilities
+  - OnlinePaymentGPIAPITest=serviceCapabilities
+  - StockNumberSearchTest=serviceCapabilities
+  - DP7DealerHoursTest=dp7
+  - DP7FutureApptUsingDeeplinkTest=dp7
+  - DP7DashboardStatusTest=dp7
+  - DP7WorkbookCapacitiesTest=multiPortal
+  - DP7LeadAppointmentsTest=multiPortal
+  - DP7ConfigurationUITest=multiPortal

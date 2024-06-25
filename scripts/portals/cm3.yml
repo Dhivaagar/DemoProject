@@ -1,6 +1,17 @@
-# cm3.yml
+#cm3.yml
 suites:
-  - item1
-  - item2
-  - item3
-  - item4
+  - BookAppointmentBacklogTest=cm3
+  - CM3URLBacklogTest=cm3
+  - CM7BacklogRegistrationDateTest=cm3
+  - CM7CappedPricingGuideGridListView=cm3
+  - CM7DealerLocatorTestData=cm3
+  - CM7DeeplinkURLTest=cm3
+  - CM7DisplayUpdatePckgOptionPriceTestData=cm3
+  - CM7MaintenanceMenuTest=cm3
+  - CM7NewBacklogTest=cm3
+  - CM7toCp7RegistrationDate=cm3
+  - MenuFeaturesBacklogTest=cm3
+  - MenuGridViewBacklogTest=cm3
+  - MenuGridViewTestData=cm3
+  - MenuListBacklogTest=cm3
+  - MenuSelectVehicleTestData=cm3

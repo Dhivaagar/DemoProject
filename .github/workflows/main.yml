@@ -31,7 +31,7 @@ on:
 #          script: |
 #            const fs = require('fs');
 #            const yaml = require('js-yaml');
-#            const fileContents = fs.readFileSync('list.yml', 'utf8');
+#            const fileContents = fs.readFileSync('cm3.yml', 'utf8');
 #            const data = yaml.load(fileContents);
 #            console.log(JSON.stringify(JSON.parse(JSON.stringify(data.items))));
 #            return JSON.stringify(JSON.parse(JSON.stringify(data.items)));
@@ -46,12 +46,12 @@ jobs:
         id: read-list
         run: |
           MY_LIST=$(yq '.items' list.yml)
-          ECHO "MY_LIST: $MY_LIST"
+          ECHO 
           echo "MY_LIST=$MY_LIST" >> $GITHUB_OUTPUT
 
   test:
     runs-on: ubuntu-latest
-    needs: build
+
     strategy:
       fail-fast: false
       matrix:

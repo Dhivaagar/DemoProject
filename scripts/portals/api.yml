@@ -1,0 +1,17 @@
+# api.yml
+suites:
+  - AudienceApiTest=marketingPortal
+  - ConsumerPortalSanityTestEnhanced=api
+  - PostConsumerPortalAPITestEnhanced=api
+  - CapacitiesTest=api
+  - ChannelsApiTest=marketingPortal
+  - Config7APITest=config7
+  - GetDealerPortalAPITestEnhanced=api
+  - DealerAdvisorHoursTest=api
+  - AppointmentClient=api
+  - MK7APITest=api
+  - ProgramsApiTest=marketingPortal
+  - SkillsCRUD=api
+  - StatusBoardAPITest=api
+  - TeamDetails=api
+  - UpdateBusinessPolicies=api

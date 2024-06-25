@@ -48,7 +48,7 @@ jobs:
           
           # Construct the matrix and map
           for i in "${!PORTAL_ARRAY[@]}"; do
-            suites=$(yq e ".suites" "buildspec/portals/${PORTAL_ARRAY[i]}.yml" | sed 's/^- //; s/^/'\''/; s/$/'\''/' | paste -sd, - | sed "s/'//g" | sed 's/^/ /; s/$/ /')
+            suites=$(yq e ".suites" "scripts/portals/${PORTAL_ARRAY[i]}.yml" | sed 's/^- //; s/^/'\''/; s/$/'\''/' | paste -sd, - | sed "s/'//g" | sed 's/^/ /; s/$/ /')
             IFS=',' read -ra SUITE_ARRAY <<< "$(echo -n "$suites" | tr -d '[:space:]')"
               for suite in "${SUITE_ARRAY[@]}"; do
               matrix+="{\"portalName\": \"${PORTAL_ARRAY[i]}\", \"suiteName\": \"${suite}\"},"

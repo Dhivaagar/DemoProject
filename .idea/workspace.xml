@@ -5,23 +5,70 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d5491b4c-bc33-4b46-bd7a-bc0d20e184dc" name="Changes" comment="push local code to master">
+      <change afterPath="$PROJECT_DIR$/scripts/portals/api.yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/portals/asr.yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/portals/companies.yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/portals/cp8.yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/portals/dp7.yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/portals/engage8.yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/portals/marketingPortal.yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/portals/mp8.yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/portals/n7.yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/portals/ps.yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/portals/serviceCapabilities.yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/portals/statusboard.yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/pratice/UpdateYAML.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.github/workflows/bat.yml" beforeDir="false" afterPath="$PROJECT_DIR$/.github/workflows/bat.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.github/workflows/main.yml" beforeDir="false" afterPath="$PROJECT_DIR$/.github/workflows/main.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.github/workflows/populateOptionValues.yml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/portals/cm3.yml" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/portals/cm3.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/portals/config7.yml" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/portals/config7.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/DSA/LeetCode/LeetCodeSolution.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/DSA/LeetCode/LeetCodeSolution.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/DSA/List/LinkedList.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/DSA/List/LinkedList.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/GEmailSender.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/GEmailSender.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/example/selenium/GenerateXmlTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/example/selenium/GenerateXmlTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="gh-pages" />
+        <entry key="$PROJECT_DIR$" value="dhivaagar" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;Dhivaagar&quot;
+  }
+}</component>
   <component name="GithubDefaultAccount">
     <option name="defaultAccountId" value="e048b248-9280-4f1e-ab15-12c871d27db3" />
+  </component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/Dhivaagar/DemoProjects.git&quot;,
+    &quot;accountId&quot;: &quot;e048b248-9280-4f1e-ab15-12c871d27db3&quot;
+  }
+}</component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="jar://C:/Program Files/Java/jdk-17/lib/src.zip!/java.base/java/util/HashSet.java" root0="SKIP_INSPECTION" />
+    <setting file="jar://$MAVEN_REPOSITORY$/com/xtime/automation/cm3/8.17.0-SNAPSHOT/cm3-8.17.0-SNAPSHOT-test-jar-with-dependencies.jar!/com/xtime/automation/core/browser/ChromeBrowser.class" root0="SKIP_INSPECTION" />
+    <setting file="jar://$MAVEN_REPOSITORY$/org/testng/testng/7.8.0/testng-7.8.0-sources.jar!/org/testng/IReporter.java" root0="SKIP_INSPECTION" />
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
@@ -36,37 +83,67 @@
     <option name="showLibraryContents" value="true" />
     <option name="showMembers" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Application.CharCount.executor&quot;: &quot;Run&quot;,
-    &quot;Maven.selenium-pratice [clean].executor&quot;: &quot;Run&quot;,
-    &quot;Maven.selenium-pratice [install].executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;TestNG.PipelineTest2.executor&quot;: &quot;Run&quot;,
-    &quot;dart.analysis.tool.window.visible&quot;: &quot;false&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;D:/Project_Workspace/LocalDemoProject&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;org.jetbrains.plugins.github.ui.GithubSettingsConfigurable&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.AlertHandling.executor": "Debug",
+    "Application.CharCount.executor": "Run",
+    "Application.GEmailSender.executor": "Run",
+    "Application.GenerateXmlTest.executor": "Run",
+    "Application.HTMLGenerator.executor": "Run",
+    "Application.JsonDataRetrieve.executor": "Run",
+    "Application.LeetCodeSolution.executor": "Debug",
+    "Application.Main.executor": "Run",
+    "Application.Name.executor": "Debug",
+    "Application.TestRailIntegration.executor": "Run",
+    "Application.UpdateYAML.executor": "Run",
+    "Application.XmlFileHandler.executor": "Run",
+    "Maven.selenium-pratice [clean].executor": "Run",
+    "Maven.selenium-pratice [install].executor": "Run",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "TestNG.D:/Project_Workspace/LocalDemoProject/src/test/resources/test/toRun.xml.executor": "Run",
+    "TestNG.D:/Project_Workspace/LocalDemoProject/testng.xml.executor": "Run",
+    "TestNG.ExampleTest.executor": "Run",
+    "TestNG.ExampleTest.print.executor": "Run",
+    "TestNG.GenerateXml.saveXml.executor": "Run",
+    "TestNG.GenerateXmlTest.executor": "Run",
+    "TestNG.GenerateXmlTest.generateXML.executor": "Run",
+    "TestNG.PipelineTest2.executor": "Run",
+    "dart.analysis.tool.window.visible": "false",
+    "extractMethod.generateAnnotations": "false",
+    "git-widget-placeholder": "main",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "D:/Project_Workspace/LocalDemoProject/scripts/portals",
+    "project.structure.last.edited": "Project",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "preferences.pluginManager"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\Project_Workspace\LocalDemoProject\.github\portals" />
+      <recent name="D:\Project_Workspace\LocalDemoProject\src\main\java\advancedProgramming" />
+      <recent name="D:\Project_Workspace\LocalDemoProject\src\main\java\advancedProgramming\flightticketbookingapplication" />
+      <recent name="D:\Project_Workspace\LocalDemoProject\src\main\resources\Test-Data\drivers" />
+      <recent name="D:\Project_Workspace\LocalDemoProject" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
-      <recent name="D:\Project_Workspace\LocalDemoProject\src\main\resources" />
-      <recent name="D:\Project_Workspace\LocalDemoProject\src\test\resources" />
+      <recent name="D:\Project_Workspace\LocalDemoProject\scripts" />
+      <recent name="D:\Project_Workspace\LocalDemoProject\.github\portals" />
+      <recent name="D:\Project_Workspace\LocalDemoProject" />
+      <recent name="D:\Project_Workspace\LocalDemoProject\.github\workflows" />
+      <recent name="D:\Project_Workspace\LocalDemoProject\.github" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.CharCount">
-    <configuration name="CharCount" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="pratice.CharCount" />
-      <module name="LocalDemoProject" />
+  <component name="RunManager">
+    <configuration name="GEmailSender" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="org.example.GEmailSender" />
+      <module name="selenium-pratice" />
+      <shortenClasspath name="ARGS_FILE" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="pratice.*" />
+          <option name="PATTERN" value="org.example.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -74,36 +151,17 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="PipelineTest2" type="TestNG" temporary="true" nameIsGenerated="true">
-      <module name="LocalDemoProject" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="com.example.selenium.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="com.example.selenium" />
-      <option name="MAIN_CLASS_NAME" value="com.example.selenium.PipelineTest2" />
-      <option name="TEST_OBJECT" value="CLASS" />
-      <properties />
-      <listeners />
+    <configuration default="true" type="Application" factoryName="Application">
+      <shortenClasspath name="ARGS_FILE" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.CharCount" />
-        <item itemvalue="TestNG.PipelineTest2" />
+        <item itemvalue="Application.GEmailSender" />
       </list>
     </recent_temporary>
-  </component>
-  <component name="SharedIndexes">
-    <attachedChunks>
-      <set>
-        <option value="jdk-17.0.9-corretto-17.0.9-8336523bb0d9-93b19daf" />
-      </set>
-    </attachedChunks>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -114,160 +172,411 @@
       <option name="presentableId" value="Default" />
       <updated>1710761231435</updated>
     </task>
-    <task id="LOCAL-00001" summary="push local code to master">
+    <task id="LOCAL-00183" summary="push local code to master">
       <option name="closed" value="true" />
-      <created>1710761902145</created>
-      <option name="number" value="00001" />
-      <option name="presentableId" value="LOCAL-00001" />
+      <created>1719224058085</created>
+      <option name="number" value="00183" />
+      <option name="presentableId" value="LOCAL-00183" />
       <option name="project" value="LOCAL" />
-      <updated>1710761902145</updated>
+      <updated>1719224058085</updated>
     </task>
-    <task id="LOCAL-00002" summary="push local code to master">
+    <task id="LOCAL-00184" summary="push local code to master">
       <option name="closed" value="true" />
-      <created>1710763151432</created>
-      <option name="number" value="00002" />
-      <option name="presentableId" value="LOCAL-00002" />
+      <created>1719224546562</created>
+      <option name="number" value="00184" />
+      <option name="presentableId" value="LOCAL-00184" />
       <option name="project" value="LOCAL" />
-      <updated>1710763151432</updated>
+      <updated>1719224546562</updated>
     </task>
-    <task id="LOCAL-00003" summary="push local code to master">
+    <task id="LOCAL-00185" summary="push local code to master">
       <option name="closed" value="true" />
-      <created>1710763240506</created>
-      <option name="number" value="00003" />
-      <option name="presentableId" value="LOCAL-00003" />
+      <created>1719224925118</created>
+      <option name="number" value="00185" />
+      <option name="presentableId" value="LOCAL-00185" />
       <option name="project" value="LOCAL" />
-      <updated>1710763240506</updated>
+      <updated>1719224925118</updated>
     </task>
-    <task id="LOCAL-00004" summary="push local code to master">
+    <task id="LOCAL-00186" summary="push local code to master">
       <option name="closed" value="true" />
-      <created>1710763852022</created>
-      <option name="number" value="00004" />
-      <option name="presentableId" value="LOCAL-00004" />
+      <created>1719225059517</created>
+      <option name="number" value="00186" />
+      <option name="presentableId" value="LOCAL-00186" />
       <option name="project" value="LOCAL" />
-      <updated>1710763852022</updated>
+      <updated>1719225059517</updated>
     </task>
-    <task id="LOCAL-00005" summary="push local code to master">
+    <task id="LOCAL-00187" summary="push local code to master">
       <option name="closed" value="true" />
-      <created>1710765524896</created>
-      <option name="number" value="00005" />
-      <option name="presentableId" value="LOCAL-00005" />
+      <created>1719225171234</created>
+      <option name="number" value="00187" />
+      <option name="presentableId" value="LOCAL-00187" />
       <option name="project" value="LOCAL" />
-      <updated>1710765524896</updated>
+      <updated>1719225171234</updated>
     </task>
-    <task id="LOCAL-00006" summary="push local code to master">
+    <task id="LOCAL-00188" summary="push local code to master">
       <option name="closed" value="true" />
-      <created>1710766199473</created>
-      <option name="number" value="00006" />
-      <option name="presentableId" value="LOCAL-00006" />
+      <created>1719225282069</created>
+      <option name="number" value="00188" />
+      <option name="presentableId" value="LOCAL-00188" />
       <option name="project" value="LOCAL" />
-      <updated>1710766199473</updated>
+      <updated>1719225282070</updated>
     </task>
-    <task id="LOCAL-00007" summary="push local code to master">
+    <task id="LOCAL-00189" summary="push local code to master">
       <option name="closed" value="true" />
-      <created>1710767032175</created>
-      <option name="number" value="00007" />
-      <option name="presentableId" value="LOCAL-00007" />
+      <created>1719225366572</created>
+      <option name="number" value="00189" />
+      <option name="presentableId" value="LOCAL-00189" />
       <option name="project" value="LOCAL" />
-      <updated>1710767032175</updated>
+      <updated>1719225366572</updated>
     </task>
-    <task id="LOCAL-00008" summary="push local code to master">
+    <task id="LOCAL-00190" summary="push local code to master">
       <option name="closed" value="true" />
-      <created>1710767695818</created>
-      <option name="number" value="00008" />
-      <option name="presentableId" value="LOCAL-00008" />
+      <created>1719225948581</created>
+      <option name="number" value="00190" />
+      <option name="presentableId" value="LOCAL-00190" />
       <option name="project" value="LOCAL" />
-      <updated>1710767695818</updated>
+      <updated>1719225948581</updated>
     </task>
-    <task id="LOCAL-00009" summary="push local code to master">
+    <task id="LOCAL-00191" summary="push local code to master">
       <option name="closed" value="true" />
-      <created>1710768166957</created>
-      <option name="number" value="00009" />
-      <option name="presentableId" value="LOCAL-00009" />
+      <created>1719226129393</created>
+      <option name="number" value="00191" />
+      <option name="presentableId" value="LOCAL-00191" />
       <option name="project" value="LOCAL" />
-      <updated>1710768166957</updated>
+      <updated>1719226129393</updated>
     </task>
-    <task id="LOCAL-00010" summary="push local code to master">
+    <task id="LOCAL-00192" summary="push local code to master">
       <option name="closed" value="true" />
-      <created>1710768315593</created>
-      <option name="number" value="00010" />
-      <option name="presentableId" value="LOCAL-00010" />
+      <created>1719226189295</created>
+      <option name="number" value="00192" />
+      <option name="presentableId" value="LOCAL-00192" />
       <option name="project" value="LOCAL" />
-      <updated>1710768315593</updated>
+      <updated>1719226189295</updated>
     </task>
-    <task id="LOCAL-00011" summary="push local code to master">
+    <task id="LOCAL-00193" summary="push local code to master">
       <option name="closed" value="true" />
-      <created>1710769234464</created>
-      <option name="number" value="00011" />
-      <option name="presentableId" value="LOCAL-00011" />
+      <created>1719226258727</created>
+      <option name="number" value="00193" />
+      <option name="presentableId" value="LOCAL-00193" />
       <option name="project" value="LOCAL" />
-      <updated>1710769234464</updated>
+      <updated>1719226258727</updated>
     </task>
-    <task id="LOCAL-00012" summary="push local code to master">
+    <task id="LOCAL-00194" summary="push local code to master">
       <option name="closed" value="true" />
-      <created>1710770695583</created>
-      <option name="number" value="00012" />
-      <option name="presentableId" value="LOCAL-00012" />
+      <created>1719226311627</created>
+      <option name="number" value="00194" />
+      <option name="presentableId" value="LOCAL-00194" />
       <option name="project" value="LOCAL" />
-      <updated>1710770695583</updated>
+      <updated>1719226311627</updated>
     </task>
-    <task id="LOCAL-00013" summary="push local code to master">
+    <task id="LOCAL-00195" summary="push local code to master">
       <option name="closed" value="true" />
-      <created>1710771468417</created>
-      <option name="number" value="00013" />
-      <option name="presentableId" value="LOCAL-00013" />
+      <created>1719226379891</created>
+      <option name="number" value="00195" />
+      <option name="presentableId" value="LOCAL-00195" />
       <option name="project" value="LOCAL" />
-      <updated>1710771468425</updated>
+      <updated>1719226379891</updated>
     </task>
-    <task id="LOCAL-00014" summary="push local code to master">
+    <task id="LOCAL-00196" summary="push local code to master">
       <option name="closed" value="true" />
-      <created>1710772442239</created>
-      <option name="number" value="00014" />
-      <option name="presentableId" value="LOCAL-00014" />
+      <created>1719226830490</created>
+      <option name="number" value="00196" />
+      <option name="presentableId" value="LOCAL-00196" />
       <option name="project" value="LOCAL" />
-      <updated>1710772442239</updated>
+      <updated>1719226830490</updated>
     </task>
-    <task id="LOCAL-00015" summary="push local code to master">
+    <task id="LOCAL-00197" summary="push local code to master">
       <option name="closed" value="true" />
-      <created>1710772609086</created>
-      <option name="number" value="00015" />
-      <option name="presentableId" value="LOCAL-00015" />
+      <created>1719227670661</created>
+      <option name="number" value="00197" />
+      <option name="presentableId" value="LOCAL-00197" />
       <option name="project" value="LOCAL" />
-      <updated>1710772609086</updated>
+      <updated>1719227670661</updated>
     </task>
-    <task id="LOCAL-00016" summary="push local code to master">
+    <task id="LOCAL-00198" summary="push local code to master">
       <option name="closed" value="true" />
-      <created>1710772802497</created>
-      <option name="number" value="00016" />
-      <option name="presentableId" value="LOCAL-00016" />
+      <created>1719227920978</created>
+      <option name="number" value="00198" />
+      <option name="presentableId" value="LOCAL-00198" />
       <option name="project" value="LOCAL" />
-      <updated>1710772802497</updated>
+      <updated>1719227920978</updated>
     </task>
-    <task id="LOCAL-00017" summary="push local code to master">
+    <task id="LOCAL-00199" summary="push local code to master">
       <option name="closed" value="true" />
-      <created>1710773074266</created>
-      <option name="number" value="00017" />
-      <option name="presentableId" value="LOCAL-00017" />
+      <created>1719228848177</created>
+      <option name="number" value="00199" />
+      <option name="presentableId" value="LOCAL-00199" />
       <option name="project" value="LOCAL" />
-      <updated>1710773074266</updated>
+      <updated>1719228848177</updated>
     </task>
-    <task id="LOCAL-00018" summary="push local code to master">
+    <task id="LOCAL-00200" summary="push local code to master">
       <option name="closed" value="true" />
-      <created>1710773300285</created>
-      <option name="number" value="00018" />
-      <option name="presentableId" value="LOCAL-00018" />
+      <created>1719229092961</created>
+      <option name="number" value="00200" />
+      <option name="presentableId" value="LOCAL-00200" />
       <option name="project" value="LOCAL" />
-      <updated>1710773300285</updated>
+      <updated>1719229092961</updated>
     </task>
-    <task id="LOCAL-00019" summary="push local code to master">
+    <task id="LOCAL-00201" summary="push local code to master">
       <option name="closed" value="true" />
-      <created>1710822669087</created>
-      <option name="number" value="00019" />
-      <option name="presentableId" value="LOCAL-00019" />
+      <created>1719229111818</created>
+      <option name="number" value="00201" />
+      <option name="presentableId" value="LOCAL-00201" />
       <option name="project" value="LOCAL" />
-      <updated>1710822669087</updated>
+      <updated>1719229111818</updated>
     </task>
-    <option name="localTasksCounter" value="20" />
+    <task id="LOCAL-00202" summary="push local code to master">
+      <option name="closed" value="true" />
+      <created>1719229232693</created>
+      <option name="number" value="00202" />
+      <option name="presentableId" value="LOCAL-00202" />
+      <option name="project" value="LOCAL" />
+      <updated>1719229232693</updated>
+    </task>
+    <task id="LOCAL-00203" summary="push local code to master">
+      <option name="closed" value="true" />
+      <created>1719229976369</created>
+      <option name="number" value="00203" />
+      <option name="presentableId" value="LOCAL-00203" />
+      <option name="project" value="LOCAL" />
+      <updated>1719229976369</updated>
+    </task>
+    <task id="LOCAL-00204" summary="push local code to master">
+      <option name="closed" value="true" />
+      <created>1719230035081</created>
+      <option name="number" value="00204" />
+      <option name="presentableId" value="LOCAL-00204" />
+      <option name="project" value="LOCAL" />
+      <updated>1719230035081</updated>
+    </task>
+    <task id="LOCAL-00205" summary="push local code to master">
+      <option name="closed" value="true" />
+      <created>1719230080465</created>
+      <option name="number" value="00205" />
+      <option name="presentableId" value="LOCAL-00205" />
+      <option name="project" value="LOCAL" />
+      <updated>1719230080465</updated>
+    </task>
+    <task id="LOCAL-00206" summary="push local code to master">
+      <option name="closed" value="true" />
+      <created>1719230116897</created>
+      <option name="number" value="00206" />
+      <option name="presentableId" value="LOCAL-00206" />
+      <option name="project" value="LOCAL" />
+      <updated>1719230116897</updated>
+    </task>
+    <task id="LOCAL-00207" summary="push local code to master">
+      <option name="closed" value="true" />
+      <created>1719230471825</created>
+      <option name="number" value="00207" />
+      <option name="presentableId" value="LOCAL-00207" />
+      <option name="project" value="LOCAL" />
+      <updated>1719230471825</updated>
+    </task>
+    <task id="LOCAL-00208" summary="push local code to master">
+      <option name="closed" value="true" />
+      <created>1719230556885</created>
+      <option name="number" value="00208" />
+      <option name="presentableId" value="LOCAL-00208" />
+      <option name="project" value="LOCAL" />
+      <updated>1719230556885</updated>
+    </task>
+    <task id="LOCAL-00209" summary="push local code to master">
+      <option name="closed" value="true" />
+      <created>1719230649420</created>
+      <option name="number" value="00209" />
+      <option name="presentableId" value="LOCAL-00209" />
+      <option name="project" value="LOCAL" />
+      <updated>1719230649420</updated>
+    </task>
+    <task id="LOCAL-00210" summary="push local code to master">
+      <option name="closed" value="true" />
+      <created>1719232250229</created>
+      <option name="number" value="00210" />
+      <option name="presentableId" value="LOCAL-00210" />
+      <option name="project" value="LOCAL" />
+      <updated>1719232250229</updated>
+    </task>
+    <task id="LOCAL-00211" summary="push local code to master">
+      <option name="closed" value="true" />
+      <created>1719232360894</created>
+      <option name="number" value="00211" />
+      <option name="presentableId" value="LOCAL-00211" />
+      <option name="project" value="LOCAL" />
+      <updated>1719232360894</updated>
+    </task>
+    <task id="LOCAL-00212" summary="push local code to master">
+      <option name="closed" value="true" />
+      <created>1719232417369</created>
+      <option name="number" value="00212" />
+      <option name="presentableId" value="LOCAL-00212" />
+      <option name="project" value="LOCAL" />
+      <updated>1719232417370</updated>
+    </task>
+    <task id="LOCAL-00213" summary="push local code to master">
+      <option name="closed" value="true" />
+      <created>1719232512578</created>
+      <option name="number" value="00213" />
+      <option name="presentableId" value="LOCAL-00213" />
+      <option name="project" value="LOCAL" />
+      <updated>1719232512578</updated>
+    </task>
+    <task id="LOCAL-00214" summary="push local code to master">
+      <option name="closed" value="true" />
+      <created>1719232615146</created>
+      <option name="number" value="00214" />
+      <option name="presentableId" value="LOCAL-00214" />
+      <option name="project" value="LOCAL" />
+      <updated>1719232615146</updated>
+    </task>
+    <task id="LOCAL-00215" summary="push local code to master">
+      <option name="closed" value="true" />
+      <created>1719232773742</created>
+      <option name="number" value="00215" />
+      <option name="presentableId" value="LOCAL-00215" />
+      <option name="project" value="LOCAL" />
+      <updated>1719232773742</updated>
+    </task>
+    <task id="LOCAL-00216" summary="push local code to master">
+      <option name="closed" value="true" />
+      <created>1719233049513</created>
+      <option name="number" value="00216" />
+      <option name="presentableId" value="LOCAL-00216" />
+      <option name="project" value="LOCAL" />
+      <updated>1719233049513</updated>
+    </task>
+    <task id="LOCAL-00217" summary="push local code to master">
+      <option name="closed" value="true" />
+      <created>1719233392332</created>
+      <option name="number" value="00217" />
+      <option name="presentableId" value="LOCAL-00217" />
+      <option name="project" value="LOCAL" />
+      <updated>1719233392332</updated>
+    </task>
+    <task id="LOCAL-00218" summary="push local code to master">
+      <option name="closed" value="true" />
+      <created>1719233563032</created>
+      <option name="number" value="00218" />
+      <option name="presentableId" value="LOCAL-00218" />
+      <option name="project" value="LOCAL" />
+      <updated>1719233563032</updated>
+    </task>
+    <task id="LOCAL-00219" summary="push local code to master">
+      <option name="closed" value="true" />
+      <created>1719233694067</created>
+      <option name="number" value="00219" />
+      <option name="presentableId" value="LOCAL-00219" />
+      <option name="project" value="LOCAL" />
+      <updated>1719233694067</updated>
+    </task>
+    <task id="LOCAL-00220" summary="push local code to master">
+      <option name="closed" value="true" />
+      <created>1719234443847</created>
+      <option name="number" value="00220" />
+      <option name="presentableId" value="LOCAL-00220" />
+      <option name="project" value="LOCAL" />
+      <updated>1719234443847</updated>
+    </task>
+    <task id="LOCAL-00221" summary="push local code to master">
+      <option name="closed" value="true" />
+      <created>1719236283775</created>
+      <option name="number" value="00221" />
+      <option name="presentableId" value="LOCAL-00221" />
+      <option name="project" value="LOCAL" />
+      <updated>1719236283775</updated>
+    </task>
+    <task id="LOCAL-00222" summary="push local code to master">
+      <option name="closed" value="true" />
+      <created>1719236526914</created>
+      <option name="number" value="00222" />
+      <option name="presentableId" value="LOCAL-00222" />
+      <option name="project" value="LOCAL" />
+      <updated>1719236526914</updated>
+    </task>
+    <task id="LOCAL-00223" summary="push local code to master">
+      <option name="closed" value="true" />
+      <created>1719236608500</created>
+      <option name="number" value="00223" />
+      <option name="presentableId" value="LOCAL-00223" />
+      <option name="project" value="LOCAL" />
+      <updated>1719236608500</updated>
+    </task>
+    <task id="LOCAL-00224" summary="push local code to master">
+      <option name="closed" value="true" />
+      <created>1719236693456</created>
+      <option name="number" value="00224" />
+      <option name="presentableId" value="LOCAL-00224" />
+      <option name="project" value="LOCAL" />
+      <updated>1719236693456</updated>
+    </task>
+    <task id="LOCAL-00225" summary="push local code to master">
+      <option name="closed" value="true" />
+      <created>1719236841671</created>
+      <option name="number" value="00225" />
+      <option name="presentableId" value="LOCAL-00225" />
+      <option name="project" value="LOCAL" />
+      <updated>1719236841671</updated>
+    </task>
+    <task id="LOCAL-00226" summary="push local code to master">
+      <option name="closed" value="true" />
+      <created>1719237051042</created>
+      <option name="number" value="00226" />
+      <option name="presentableId" value="LOCAL-00226" />
+      <option name="project" value="LOCAL" />
+      <updated>1719237051042</updated>
+    </task>
+    <task id="LOCAL-00227" summary="push local code to master">
+      <option name="closed" value="true" />
+      <created>1719237670585</created>
+      <option name="number" value="00227" />
+      <option name="presentableId" value="LOCAL-00227" />
+      <option name="project" value="LOCAL" />
+      <updated>1719237670585</updated>
+    </task>
+    <task id="LOCAL-00228" summary="push local code to master">
+      <option name="closed" value="true" />
+      <created>1719237787516</created>
+      <option name="number" value="00228" />
+      <option name="presentableId" value="LOCAL-00228" />
+      <option name="project" value="LOCAL" />
+      <updated>1719237787516</updated>
+    </task>
+    <task id="LOCAL-00229" summary="push local code to master">
+      <option name="closed" value="true" />
+      <created>1719287961534</created>
+      <option name="number" value="00229" />
+      <option name="presentableId" value="LOCAL-00229" />
+      <option name="project" value="LOCAL" />
+      <updated>1719287961534</updated>
+    </task>
+    <task id="LOCAL-00230" summary="push local code to master">
+      <option name="closed" value="true" />
+      <created>1719288004338</created>
+      <option name="number" value="00230" />
+      <option name="presentableId" value="LOCAL-00230" />
+      <option name="project" value="LOCAL" />
+      <updated>1719288004339</updated>
+    </task>
+    <task id="LOCAL-00231" summary="push local code to master">
+      <option name="closed" value="true" />
+      <created>1719288130354</created>
+      <option name="number" value="00231" />
+      <option name="presentableId" value="LOCAL-00231" />
+      <option name="project" value="LOCAL" />
+      <updated>1719288130354</updated>
+    </task>
+    <option name="localTasksCounter" value="232" />
     <servers />
+  </component>
+  <component name="Vcs.Log.History.Properties">
+    <option name="COLUMN_ID_ORDER">
+      <list>
+        <option value="Default.Root" />
+        <option value="Default.Author" />
+        <option value="Default.Date" />
+        <option value="Default.Subject" />
+        <option value="Space.CommitStatus" />
+      </list>
+    </option>
   </component>
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">
@@ -283,5 +592,77 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="push local code to master" />
     <option name="LAST_COMMIT_MESSAGE" value="push local code to master" />
+  </component>
+  <component name="WfRunsListSearchHistory">{
+  &quot;history&quot;: [
+    {
+      &quot;branch&quot;: &quot;main&quot;,
+      &quot;currentBranchFilter&quot;: true
+    },
+    {
+      &quot;branch&quot;: &quot;main&quot;,
+      &quot;currentBranchFilter&quot;: true
+    },
+    {
+      &quot;branch&quot;: &quot;main&quot;,
+      &quot;currentBranchFilter&quot;: true
+    },
+    {
+      &quot;branch&quot;: &quot;main&quot;,
+      &quot;currentBranchFilter&quot;: true
+    },
+    {
+      &quot;branch&quot;: &quot;main&quot;,
+      &quot;currentBranchFilter&quot;: true
+    },
+    {
+      &quot;branch&quot;: &quot;main&quot;,
+      &quot;currentBranchFilter&quot;: true
+    },
+    {
+      &quot;branch&quot;: &quot;main&quot;,
+      &quot;currentBranchFilter&quot;: true
+    },
+    {
+      &quot;branch&quot;: &quot;main&quot;,
+      &quot;currentBranchFilter&quot;: true
+    },
+    {
+      &quot;branch&quot;: &quot;main&quot;,
+      &quot;currentBranchFilter&quot;: true
+    },
+    {
+      &quot;branch&quot;: &quot;main&quot;,
+      &quot;currentBranchFilter&quot;: true
+    },
+    {
+      &quot;branch&quot;: &quot;main&quot;,
+      &quot;currentBranchFilter&quot;: true
+    },
+    {
+      &quot;branch&quot;: &quot;main&quot;,
+      &quot;currentBranchFilter&quot;: true
+    }
+  ],
+  &quot;lastFilter&quot;: {
+    &quot;branch&quot;: &quot;main&quot;,
+    &quot;currentBranchFilter&quot;: true
+  }
+}</component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/pratice/JsonDataRetrieve.java</url>
+          <line>15</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/DSA/LeetCode/LeetCodeSolution.java</url>
+          <line>24</line>
+          <option name="timeStamp" value="42" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

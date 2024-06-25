@@ -1,0 +1,18 @@
+#companies.yml
+suites:
+  - Config7BrandCssFileTest=config7
+  - Config7BarndingDuplicateTest=config7
+  - Config7CompaniesTest=config7
+  - Config7CompanyBrandingTest=config7
+  - Config7CompanyDealerScopingTest=config7
+  - Config7CompanyGroupE2ETest=config7
+  - Config7CompanyGroupsTest=config7
+  - Config7CompanyInvitationLinkTest=config7
+  - Config7CompanyPartnersTest=config7
+  - Config7CompanyUserFormValidationTest=config7
+  - Config7CompanyUserManagementTest=config7
+  - Config7CompanyUsersTest=config7
+  - Config7NonBrandCssFileTest=config7
+  - Config7AddRemoveCompanyTest=multiPortal
+  - Config7CompaniesUserCreationTest=multiPortal
+  - Config7DealerInviteLinkAcceptTest=multiPortal

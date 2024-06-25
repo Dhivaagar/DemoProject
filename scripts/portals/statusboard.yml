@@ -1,0 +1,7 @@
+#Statusboard.yml
+suites:
+  - ConfigBoardActivationTest=config7
+  - ConfigBoardCkEditorTest=config7
+  - ConfigBoardFilterByStatusTest=config7
+  - ConfigBoardOptionsTest=config7
+  - ConfigBoardTest=config7
