@@ -90,15 +90,10 @@ jobs:
 
       - name: Set up matrix
         id: set_matrix
-        run: |
-
-          # Simulating inputs (replace with actual input handling)
-          inputsPortalNames="cm3,config7,asr,marketingPortal"
-          inputsRallyTestSetIds="testSet1,testSet2,testSet3,testSet4"
-  
+        run: |  
           # Split input arrays
-          IFS=',' read -r -a portalArray <<< "$inputsPortalNames"
-          IFS=',' read -r -a rallyTestSetIdsArray <<< "$inputsRallyTestSetIds"
+          IFS=',' read -r -a portalArray <<< "${{ inputs.portalNames }}"
+          IFS=',' read -r -a rallyTestSetIdsArray <<< "${{ inputs.rallyTestSetIds }}"
           
           # Validate array lengths
           if [ ${#rallyTestSetIdsArray[@]} -ne ${#portalArray[@]} ]; then
