@@ -65,6 +65,7 @@ jobs:
           done
           portal_to_rally=${portal_to_rally::-1}
           portal_to_rally+="}"
+          
           # Split matrix into smaller chunks of 100 values each
           matrix_array=($(echo $matrix | jq -c '.[]'))
           num_chunks=$(((${#matrix_array[@]} + 99) / 100))  # Adjusted for 100 values per chunk
@@ -94,9 +95,14 @@ jobs:
         tests: ${{fromJson(needs.metadata.outputs.chunks_array)}}
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Run Integration Test
+      - name: print matrix
         run: |
-          echo "Running integration test for chunk ${{ matrix.tests }} "
+          echo ${{ matrix.tests }}
+
+      - name: Run Integration Test
+        uses: ./.github/workflows/integration-Bat.yml
+        with:
+          chunk: ${{ matrix.tests }}
