@@ -27,25 +27,23 @@ jobs:
           wget https://github.com/mikefarah/yq/releases/download/v4.30.6/yq_linux_amd64 -O yq
           chmod +x yq
           sudo mv yq /usr/local/bin/yq
-
       - name: Set up matrix
         id: set_matrix
         run: |
-
           # Read input arrays
           IFS=',' read -ra PORTAL_ARRAY <<< "$(echo -n "${{ inputs.portalNames }}" | tr -d '[:space:]')"
           IFS=',' read -ra RALLY_TEST_SET_IDS_ARRAY <<< "$(echo -n "${{ inputs.rallyTestSetIds }}" | tr -d '[:space:]')"
-
+          
           # Validate array lengths
           if [ ! -z "$RALLY_TEST_SET_IDS_ARRAY" ] && [ ${#RALLY_TEST_SET_IDS_ARRAY[@]} -ne ${#PORTAL_ARRAY[@]} ]; then
             echo "Error: The number of PORTAL_ARRAY does not match the number of RALLY_TEST_SET_IDS_ARRAY."
             exit 1
           fi
-
+          
           # Initialize matrix and map
           matrix="["
           declare -A PORTAL_TO_RALLY_TEST_SET_MAP
-
+          
           # Construct the matrix and map
           for i in "${!PORTAL_ARRAY[@]}"; do
             suites=$(yq e ".suites" "scripts/portals/${PORTAL_ARRAY[i]}.yml" | sed 's/^- //; s/^/'\''/; s/$/'\''/' | paste -sd, - | sed "s/'//g" | sed 's/^/ /; s/$/ /')
@@ -55,11 +53,11 @@ jobs:
             done
             PORTAL_TO_RALLY_TEST_SET_MAP["${PORTAL_ARRAY[i]}"]="${RALLY_TEST_SET_IDS_ARRAY[i]}"
           done
-
+          
           # Finalize the matrix string
           matrix=${matrix::-1}
           matrix+="]"
-
+          
           # Construct the portal to rally test set map string
           portal_to_rally="{"
           for portal in "${!PORTAL_TO_RALLY_TEST_SET_MAP[@]}"; do
@@ -67,25 +65,21 @@ jobs:
           done
           portal_to_rally=${portal_to_rally::-1}
           portal_to_rally+="}"
-
           # Split matrix into smaller chunks of 100 values each
           matrix_array=($(echo $matrix | jq -c '.[]'))
           num_chunks=$(((${#matrix_array[@]} + 99) / 100))  # Adjusted for 100 values per chunk
           chunks_array="["
-
+          
           for i in $(seq 0 $((num_chunks - 1))); do
             chunk=$(echo ${matrix_array[@]:$((i * 100)):100} | jq -s '.')
             chunk_string=$(echo $chunk)
-            chunk_array+="\"$chunk_string\","
+            chunks_array+="$chunk_string,"
           done
-
+          
           # Finalize the chunks array string
           chunks_array=${chunks_array::-1}
           chunks_array+="]"
-
-          echo "chunks_array=${chunks_array}"
-          echo "portal_to_rally=${portal_to_rally}"
-
+          
           # Output the portal to rally map, and chunks array
           echo "portal_to_rally=${portal_to_rally}" >> $GITHUB_OUTPUT
           echo "chunks_array=${chunks_array}" >> $GITHUB_OUTPUT
@@ -94,7 +88,7 @@ jobs:
     needs: metadata
     strategy:
       matrix:
-        tests: ${{ needs.metadata.outputs.chunks_array }}
+        tests: ${{fromJson(needs.metadata.outputs.chunks_array)}}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -103,7 +97,6 @@ jobs:
       - name: Run Integration Test
         run: |
           echo "Running integration test for chunk ${{ matrix.tests }} "
-
 #          - "[ { \"portalName\": \"marketingPortal\", \"suiteName\": \"UpdateAudienceAfterPromoLaunch=marketingPortal\" }, { \"portalName\": \"marketingPortal\", \"suiteName\": \"UpdateAudienceAfterPromoLaunch=marketingPortal\" }, { \"portalName\": \"marketingPortal\", \"suiteName\": \"UpdateAudienceAfterPromoLaunch=marketingPortal\" }, { \"portalName\": \"marketingPortal\", \"suiteName\": \"UpdateAudienceAfterPromoLaunch=marketingPortal\" } ]"
 #          - "[ { \"portalName\": \"marketingPortal\", \"suiteName\": \"UpdateAudienceAfterPromoLaunch=marketingPortal\" }, { \"portalName\": \"marketingPortal\", \"suiteName\": \"UpdateAudienceAfterPromoLaunch=marketingPortal\" }, { \"portalName\": \"marketingPortal\", \"suiteName\": \"UpdateAudienceAfterPromoLaunch=marketingPortal\" }, { \"portalName\": \"marketingPortal\", \"suiteName\": \"UpdateAudienceAfterPromoLaunch=marketingPortal\" } ]"
 #          - "[ { \"portalName\": \"marketingPortal\", \"suiteName\": \"UpdateAudienceAfterPromoLaunch=marketingPortal\" }, { \"portalName\": \"marketingPortal\", \"suiteName\": \"UpdateAudienceAfterPromoLaunch=marketingPortal\" }, { \"portalName\": \"marketingPortal\", \"suiteName\": \"UpdateAudienceAfterPromoLaunch=marketingPortal\" }, { \"portalName\": \"marketingPortal\", \"suiteName\": \"UpdateAudienceAfterPromoLaunch=marketingPortal\" } ]"
@@ -198,109 +191,3 @@ jobs:
 #    uses: ./.github/workflows/integration-Bat.yml
 #    with:
 #      chunk: ${{ matrix.tests }}
-
-#name: Bat Test
-#
-#on:
-#  workflow_dispatch:
-#    inputs:
-#      portalNames:
-#        description: portal names
-#        required: true
-#        type: string
-#      rallyTestSetIds:
-#        description: rally test set ids
-#        required: true
-#        type: string
-#
-#jobs:
-#  metadata:
-#    runs-on: ubuntu-latest
-#    outputs:
-#      chunks_array: ${{ steps.set_matrix.outputs.chunks_array }}
-#      portal_to_rally: ${{ steps.set_matrix.outputs.portal_to_rally }}
-#
-#    steps:
-#      - name: Checkout repository
-#        uses: actions/checkout@v4
-#
-#      - name: Install yq
-#        run: |
-#          wget https://github.com/mikefarah/yq/releases/download/v4.30.6/yq_linux_amd64 -O yq
-#          chmod +x yq
-#          sudo mv yq /usr/local/bin/yq
-#      - name: Set up matrix
-#        id: set_matrix
-#        run: |
-#          # Read input arrays
-#          IFS=',' read -ra PORTAL_ARRAY <<< "$(echo -n "${{ inputs.portalNames }}" | tr -d '[:space:]')"
-#          IFS=',' read -ra RALLY_TEST_SET_IDS_ARRAY <<< "$(echo -n "${{ inputs.rallyTestSetIds }}" | tr -d '[:space:]')"
-#
-#          # Validate array lengths
-#          if [ ! -z "$RALLY_TEST_SET_IDS_ARRAY" ] && [ ${#RALLY_TEST_SET_IDS_ARRAY[@]} -ne ${#PORTAL_ARRAY[@]} ]; then
-#            echo "Error: The number of PORTAL_ARRAY does not match the number of RALLY_TEST_SET_IDS_ARRAY."
-#            exit 1
-#          fi
-#
-#          # Initialize matrix and map
-#          matrix="["
-#          declare -A PORTAL_TO_RALLY_TEST_SET_MAP
-#
-#          # Construct the matrix and map
-#          for i in "${!PORTAL_ARRAY[@]}"; do
-#            suites=$(yq e ".suites" "scripts/portals/${PORTAL_ARRAY[i]}.yml" | sed 's/^- //; s/^/'\''/; s/$/'\''/' | paste -sd, - | sed "s/'//g" | sed 's/^/ /; s/$/ /')
-#            IFS=',' read -ra SUITE_ARRAY <<< "$(echo -n "$suites" | tr -d '[:space:]')"
-#              for suite in "${SUITE_ARRAY[@]}"; do
-#              matrix+="{\"portalName\": \"${PORTAL_ARRAY[i]}\", \"suiteName\": \"${suite}\"},"
-#            done
-#            PORTAL_TO_RALLY_TEST_SET_MAP["${PORTAL_ARRAY[i]}"]="${RALLY_TEST_SET_IDS_ARRAY[i]}"
-#          done
-#
-#          # Finalize the matrix string
-#          matrix=${matrix::-1}
-#          matrix+="]"
-#
-#          # Construct the portal to rally test set map string
-#          portal_to_rally="{"
-#          for portal in "${!PORTAL_TO_RALLY_TEST_SET_MAP[@]}"; do
-#            portal_to_rally+="\\"$portal\\":\\"${PORTAL_TO_RALLY_TEST_SET_MAP[$portal]}\\","
-#          done
-#          portal_to_rally=${portal_to_rally::-1}
-#          portal_to_rally+="}"
-#
-#          # Split matrix into smaller chunks of 100 values each
-#          matrix_array=($(echo $matrix | jq -c '.[]'))
-#          num_chunks=$(((${#matrix_array[@]} + 99) / 100))  # Adjusted for 100 values per chunk
-#          chunks_array="["
-#
-#          for i in $(seq 0 $((num_chunks - 1))); do
-#            chunk=$(echo ${matrix_array[@]:$((i * 100)):100} | jq -s '.')
-#            chunk_string=$(echo $chunk)
-#            chunks_array+="\"$chunk_string\","
-#          done
-#
-#          # Finalize the chunks array string
-#          chunks_array=${chunks_array::-1}
-#          chunks_array+="]"
-#
-#          # Print the matrix and portal to rally test set map
-#          echo "portal_to_rally=${portal_to_rally}"
-#          echo "chunks_array=${chunks_array}"
-#
-#          # Output the portal to rally map, and chunks array
-#          echo "portal_to_rally=${portal_to_rally}" >> $GITHUB_OUTPUT
-#          echo "chunks_array=${chunks_array}" >> $GITHUB_OUTPUT
-#
-#  test:
-#    needs: metadata
-#    strategy:
-#      matrix:
-#        tests: ${{fromJson(needs.metadata.outputs.chunks_array)}}
-#    runs-on: ubuntu-latest
-#    steps:
-#      - name: Checkout
-#        uses: actions/checkout@v4
-#
-#      - name: Run Integration Test
-#        run: |
-#          echo "Running integration test for chunk ${{ matrix.tests }} "
