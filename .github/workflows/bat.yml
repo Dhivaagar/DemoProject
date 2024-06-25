@@ -275,15 +275,12 @@ jobs:
           for i in $(seq 0 $((num_chunks - 1))); do
             chunk=$(echo ${matrix_array[@]:$((i * 100)):100} | jq -s '.')
             chunk_string=$(echo $chunk)
-            chunk_array+="\"$chunk_string\","
+            chunks_array+="\"$chunk_string\","
           done
           
           # Finalize the chunks array string
           chunks_array=${chunks_array::-1}
           chunks_array+="]"
-          
-          echo "chunks_array=${chunks_array}"
-          echo "portal_to_rally=${portal_to_rally}"
           
           # Output the portal to rally map, and chunks array
           echo "portal_to_rally=${portal_to_rally}" >> $GITHUB_OUTPUT
@@ -291,14 +288,14 @@ jobs:
 
   test:
     needs: metadata
-    runs-on: ubuntu-latest
     strategy:
       matrix:
-        chunk: ${{ fromJson(needs.metadata.outputs.chunks_array) }}
+        tests: ${{fromJson(needs.metadata.outputs.chunks_array)}}
+    runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
+      - name: Checkout
         uses: actions/checkout@v4
 
       - name: Run Integration Test
         run: |
-          echo "Running integration test for chunk ${{ matrix.chunk }}"
+          echo "Running integration test for chunk ${{ matrix.tests }} "
