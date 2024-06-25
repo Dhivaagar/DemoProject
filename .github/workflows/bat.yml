@@ -11,6 +11,7 @@ on:
         description: rally test set ids
         required: true
         type: string
+
 jobs:
   metadata:
     runs-on: ubuntu-latest
@@ -30,7 +31,7 @@ jobs:
 
       - name: Set up matrix
         id: set_matrix
-        run: |  
+        run: |
           # Split input arrays
           IFS=',' read -r -a portalArray <<< "$(echo -n "${{ inputs.portalNames }}" | tr -d '[:space:]')"
           IFS=',' read -r -a rallyTestSetIdsArray <<< "$(echo -n "${{ inputs.rallyTestSetIds }}" | tr -d '[:space:]')"
@@ -50,33 +51,33 @@ jobs:
             portalName="${portalArray[$i]}"
             rallyTestSetId="${rallyTestSetIdsArray[$i]}"
             suiteList=$(yq e '.suites[]' "scripts/portals/${portalName}.yml")
-  
+          
             while IFS= read -r suite; do
               entry="{\\\"portalName\\\":\\\"$portalName\\\", \\\"suiteName\\\":\\\"$suite\\\"}"
               matrix+=("$entry")
             done <<< "$suiteList"
-  
+          
             portalToRallyTestSetMap["$portalName"]="$rallyTestSetId"
           done
-  
+          
           # Split matrix into chunks of 100 values each
           chunkSize=100
           numChunks=$(( (${#matrix[@]} + chunkSize - 1) / chunkSize ))
           chunksArray=()
-  
+          
           for (( i=0; i<numChunks; i++ )); do
             chunk=("${matrix[@]:i*chunkSize:chunkSize}")
             chunkString=$(IFS=,; echo "${chunk[*]}")
-            chunksArray+=("\"$chunkString\"")
+            chunksArray+=("$chunkString")
           done
-  
+          
           # Convert arrays to strings
           portalArrayString=$(IFS=,; echo "${portalArray[*]}")
           rallyTestSetIdsArrayString=$(IFS=,; echo "${rallyTestSetIdsArray[*]}")
           matrixString=$(IFS=,; echo "${matrix[*]}")
-          chunksArrayString=$(IFS=,; echo "${chunksArray[*]}")
+          chunksArrayString=$(printf '[%s]' "$(IFS=,; echo "${chunksArray[*]}")")
           portalToRallyTestSetMapString=$(for key in "${!portalToRallyTestSetMap[@]}"; do echo "$key:${portalToRallyTestSetMap[$key]}"; done | paste -sd, -)
-  
+          
           # Output results
           echo "portalArrayString=$portalArrayString"
           echo "rallyTestSetIdsArrayString=$rallyTestSetIdsArrayString"
@@ -93,14 +94,11 @@ jobs:
     strategy:
       matrix:
         tests: ${{fromJSON(needs.metadata.outputs.chunks_array)}}
-#    uses: ./.github/workflows/integration-Bat.yml
-#    with:
-#      chunk: ${{ matrix.tests }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: print matrix
+      - name: Print matrix
         run: |
           echo ${{ matrix.tests }}
