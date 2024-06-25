@@ -53,7 +53,7 @@ jobs:
             suiteList=$(yq e '.suites[]' "scripts/portals/${portalName}.yml")
           
             while IFS= read -r suite; do
-              entry="{\\\"portalName\\\":\\\"$portalName\\\", \\\"suiteName\\\":\\\"$suite\\\"}"
+              entry="{\"portalName\":\"$portalName\", \"suiteName\":\"$suite\"}"
               matrix+=("$entry")
             done <<< "$suiteList"
           
@@ -67,7 +67,7 @@ jobs:
           
           for (( i=0; i<numChunks; i++ )); do
             chunk=("${matrix[@]:i*chunkSize:chunkSize}")
-            chunkString=$(IFS=,; echo "${chunk[*]}")
+            chunkString=$(printf '%s\n' "${chunk[@]}" | jq -sR . | jq -s .)
             chunksArray+=("$chunkString")
           done
           
@@ -75,8 +75,8 @@ jobs:
           portalArrayString=$(IFS=,; echo "${portalArray[*]}")
           rallyTestSetIdsArrayString=$(IFS=,; echo "${rallyTestSetIdsArray[*]}")
           matrixString=$(IFS=,; echo "${matrix[*]}")
-          chunksArrayString=$(printf '[%s]' "$(IFS=,; echo "${chunksArray[*]}")")
-          portalToRallyTestSetMapString=$(for key in "${!portalToRallyTestSetMap[@]}"; do echo "$key:${portalToRallyTestSetMap[$key]}"; done | paste -sd, -)
+          chunksArrayString=$(printf '%s\n' "${chunksArray[@]}" | jq -s .)
+          portalToRallyTestSetMapString=$(for key in "${!portalToRallyTestSetMap[@]}"; do echo "\"$key\":\"${portalToRallyTestSetMap[$key]}\""; done | jq -s .)
           
           # Output results
           echo "portalArrayString=$portalArrayString"
@@ -93,7 +93,7 @@ jobs:
     needs: metadata
     strategy:
       matrix:
-        tests: ${{fromJSON(needs.metadata.outputs.chunks_array)}}
+        tests: ${{ fromJSON(needs.metadata.outputs.chunks_array) }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
