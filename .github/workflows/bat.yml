@@ -48,7 +48,7 @@ jobs:
           for i in "${!portalArray[@]}"; do
             portalName="${portalArray[$i]}"
             rallyTestSetId="${rallyTestSetIdsArray[$i]}"
-            suiteList=$(yq e '.suites[]' "portals/${portalName}.yml")
+            suiteList=$(yq e '.suites[]' "scripts/portals/${portalName}.yml")
             
             while IFS= read -r suite; do
               entry="{\\\"portalName\\\":\\\"$portalName\\\", \\\"suiteName\\\":\\\"$suite\\\"}"
@@ -77,19 +77,14 @@ jobs:
     strategy:
       matrix:
         tests: ${{needs.metadata.outputs.chunks_array}}
-    uses: ./.github/workflows/integration-Bat.yml
-    with:
-      chunk: ${{ matrix.tests }}
-#    runs-on: ubuntu-latest
-#    steps:
-#      - name: Checkout repository
-#        uses: actions/checkout@v4
-#
-#      - name: print matrix
-#        run: |
-#          echo ${{ matrix.tests }}
-#
-#      - name: Run Integration Test
-#        uses: ./.github/workflows/integration-Bat.yml
-#        with:
-#          chunk: ${{ matrix.tests }}
+#    uses: ./.github/workflows/integration-Bat.yml
+#    with:
+#      chunk: ${{ matrix.tests }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: print matrix
+        run: |
+          echo ${{ matrix.tests }}
