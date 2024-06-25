@@ -14,9 +14,9 @@ on:
 jobs:
   metadata:
     runs-on: ubuntu-latest
-    outputs:
-      chunks_array: ${{ steps.set_matrix.outputs.chunks_array }}
-      portal_to_rally: ${{ steps.set_matrix.outputs.portal_to_rally }}
+#    outputs:
+#      chunks_array: ${{ steps.set_matrix.outputs.chunks_array }}
+#      portal_to_rally: ${{ steps.set_matrix.outputs.portal_to_rally }}
 
     steps:
       - name: Checkout repository
@@ -27,12 +27,78 @@ jobs:
           wget https://github.com/mikefarah/yq/releases/download/v4.30.6/yq_linux_amd64 -O yq
           chmod +x yq
           sudo mv yq /usr/local/bin/yq
+
+#      - name: Set up matrix
+#        id: set_matrix
+#        run: |
+#          # Read input arrays
+#          IFS=',' read -ra PORTAL_ARRAY <<< "$(echo -n "${{ inputs.portalNames }}" | tr -d '[:space:]')"
+#          IFS=',' read -ra RALLY_TEST_SET_IDS_ARRAY <<< "$(echo -n "${{ inputs.rallyTestSetIds }}" | tr -d '[:space:]')"
+#
+#          # Validate array lengths
+#          if [ ${#rallyTestSetIdsArray[@]} -ne ${#portalArray[@]} ]; then
+#            echo "Error: The number of PORTAL_ARRAY does not match the number of RALLY_TEST_SET_IDS_ARRAY."
+#            exit 1
+#          fi
+#
+#          # Initialize matrix and map
+#          matrix=()
+#          declare -A portalToRallyTestSetMap
+#
+#          # Read suites from YAML files and construct matrix and map
+#          for i in "${!portalArray[@]}"; do
+#            portalName="${portalArray[$i]}"
+#            rallyTestSetId="${rallyTestSetIdsArray[$i]}"
+#            suiteList=$(yq e '.suites[]' "scripts/portals/${portalName}.yml")
+#
+#            while IFS= read -r suite; do
+#              entry="{\\\"portalName\\\":\\\"$portalName\\\", \\\"suiteName\\\":\\\"$suite\\\"}"
+#              matrix+=("$entry")
+#            done <<< "$suiteList"
+#
+#            portalToRallyTestSetMap["$portalName"]="$rallyTestSetId"
+#          done
+#
+#          # Split matrix into chunks of 100 values each
+#          chunkSize=100
+#          numChunks=$(( (${#matrix[@]} + chunkSize - 1) / chunkSize ))
+#          chunksArray=()
+#
+#          for (( i=0; i<numChunks; i++ )); do
+#            chunk=("${matrix[@]:i*chunkSize:chunkSize}")
+#            chunkString=$(IFS=,; echo "${chunk[*]}")
+#            chunksArray+=("\"$chunkString\"")
+#          done
+#
+#          # Convert arrays to strings
+#          portalArrayString=$(IFS=,; echo "${portalArray[*]}")
+#          rallyTestSetIdsArrayString=$(IFS=,; echo "${rallyTestSetIdsArray[*]}")
+#          matrixString=$(IFS=,; echo "${matrix[*]}")
+#          chunksArrayString=$(IFS=,; echo "${chunksArray[*]}")
+#          portalToRallyTestSetMapString=$(for key in "${!portalToRallyTestSetMap[@]}"; do echo "$key:${portalToRallyTestSetMap[$key]}"; done | paste -sd, -)
+#
+#          # Output results
+#          echo "portalArrayString=$portalArrayString"
+#          echo "rallyTestSetIdsArrayString=$rallyTestSetIdsArrayString"
+#          echo "matrixString=$matrixString"
+#          echo "chunksArrayString=$chunksArrayString"
+#          echo "portalToRallyTestSetMapString=$portalToRallyTestSetMapString"
+#
+#          # Output results to files
+#          echo "portal_to_rally=$portalToRallyTestSetMapString" >> $GITHUB_OUTPUT
+#          echo "chunks_array=$chunksArrayString" >> $GITHUB_OUTPUT
+
       - name: Set up matrix
         id: set_matrix
         run: |
-          # Read input arrays
-          IFS=',' read -ra PORTAL_ARRAY <<< "$(echo -n "${{ inputs.portalNames }}" | tr -d '[:space:]')"
-          IFS=',' read -ra RALLY_TEST_SET_IDS_ARRAY <<< "$(echo -n "${{ inputs.rallyTestSetIds }}" | tr -d '[:space:]')"
+
+          # Simulating inputs (replace with actual input handling)
+          inputsPortalNames="cm3,config7,asr,marketingPortal"
+          inputsRallyTestSetIds="testSet1,testSet2,testSet3,testSet4"
+  
+          # Split input arrays
+          IFS=',' read -r -a portalArray <<< "$inputsPortalNames"
+          IFS=',' read -r -a rallyTestSetIdsArray <<< "$inputsRallyTestSetIds"
           
           # Validate array lengths
           if [ ${#rallyTestSetIdsArray[@]} -ne ${#portalArray[@]} ]; then
@@ -49,33 +115,33 @@ jobs:
             portalName="${portalArray[$i]}"
             rallyTestSetId="${rallyTestSetIdsArray[$i]}"
             suiteList=$(yq e '.suites[]' "scripts/portals/${portalName}.yml")
-            
+  
             while IFS= read -r suite; do
               entry="{\\\"portalName\\\":\\\"$portalName\\\", \\\"suiteName\\\":\\\"$suite\\\"}"
               matrix+=("$entry")
             done <<< "$suiteList"
-          
+  
             portalToRallyTestSetMap["$portalName"]="$rallyTestSetId"
           done
-          
+  
           # Split matrix into chunks of 100 values each
           chunkSize=100
           numChunks=$(( (${#matrix[@]} + chunkSize - 1) / chunkSize ))
           chunksArray=()
-          
+  
           for (( i=0; i<numChunks; i++ )); do
             chunk=("${matrix[@]:i*chunkSize:chunkSize}")
             chunkString=$(IFS=,; echo "${chunk[*]}")
             chunksArray+=("\"$chunkString\"")
           done
-          
+  
           # Convert arrays to strings
           portalArrayString=$(IFS=,; echo "${portalArray[*]}")
           rallyTestSetIdsArrayString=$(IFS=,; echo "${rallyTestSetIdsArray[*]}")
           matrixString=$(IFS=,; echo "${matrix[*]}")
           chunksArrayString=$(IFS=,; echo "${chunksArray[*]}")
           portalToRallyTestSetMapString=$(for key in "${!portalToRallyTestSetMap[@]}"; do echo "$key:${portalToRallyTestSetMap[$key]}"; done | paste -sd, -)
-          
+  
           # Output results
           echo "portalArrayString=$portalArrayString"
           echo "rallyTestSetIdsArrayString=$rallyTestSetIdsArrayString"
@@ -83,23 +149,21 @@ jobs:
           echo "chunksArrayString=$chunksArrayString"
           echo "portalToRallyTestSetMapString=$portalToRallyTestSetMapString"
           
-          # Output results to files
-          echo "portal_to_rally=$portalToRallyTestSetMapString" >> $GITHUB_OUTPUT
-          echo "chunks_array=$chunksArrayString" >> $GITHUB_OUTPUT
+          echo "Output files written successfully."
 
-  test:
-    needs: metadata
-    strategy:
-      matrix:
-        tests: ${{fromJSON(needs.metadata.outputs.chunks_array)}}
-#    uses: ./.github/workflows/integration-Bat.yml
-#    with:
-#      chunk: ${{ matrix.tests }}
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: print matrix
-        run: |
-          echo ${{ matrix.tests }}
+#  test:
+#    needs: metadata
+#    strategy:
+#      matrix:
+#        tests: ${{fromJSON(needs.metadata.outputs.chunks_array)}}
+##    uses: ./.github/workflows/integration-Bat.yml
+##    with:
+##      chunk: ${{ matrix.tests }}
+#    runs-on: ubuntu-latest
+#    steps:
+#      - name: Checkout repository
+#        uses: actions/checkout@v4
+#
+#      - name: print matrix
+#        run: |
+#          echo ${{ matrix.tests }}
