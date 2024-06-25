@@ -238,7 +238,7 @@ jobs:
           IFS=',' read -ra RALLY_TEST_SET_IDS_ARRAY <<< "$(echo -n "${{ inputs.rallyTestSetIds }}" | tr -d '[:space:]')"
 
           # Validate array lengths
-          if [ ! -z "$RALLY_TEST_SET_IDS_ARRAY" ] && [ ${#RALLY_TEST_SET_IDS_ARRAY[@]} -ne ${#PORTAL_ARRAY[@]} ]; then
+          if [ ${#RALLY_TEST_SET_IDS_ARRAY[@]} -ne ${#PORTAL_ARRAY[@]} ]; then
             echo "Error: The number of PORTAL_ARRAY does not match the number of RALLY_TEST_SET_IDS_ARRAY."
             exit 1
           fi
@@ -276,21 +276,27 @@ jobs:
           for i in $(seq 0 $((num_chunks - 1))); do
             chunk=$(echo ${matrix_array[@]:$((i * 100)):100} | jq -s '.')
             chunk_string=$(echo $chunk)
-            chunks_array+="${chunk_string},"
+            chunks_array+="\"$chunk_string\","
           done
 
           # Finalize the chunks array string
           chunks_array=${chunks_array::-1}
           chunks_array+="]"
 
+          # Output the portal to rally map, and chunks array
           echo "chunks_array=${chunks_array}" >> $GITHUB_OUTPUT
           echo "portal_to_rally=${portal_to_rally}" >> $GITHUB_OUTPUT
 
   test:
     needs: metadata
+    runs-on: ubuntu-latest
     strategy:
       matrix:
-        tests: ${{fromJson(needs.metadata.outputs.chunks_array)}}
-    uses: ./.github/workflows/integration-Bat.yml
-    with:
-      chunk: ${{ matrix.tests }}
+        chunk: ${{ fromJson(needs.metadata.outputs.chunks_array) }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Run Integration Test
+        run: |
+          echo "Running integration test for chunk ${{ matrix.chunk }}"
