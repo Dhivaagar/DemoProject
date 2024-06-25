@@ -13,7 +13,7 @@ on:
         type: string
 jobs:
   metadata:
-    runs-on: CAI-Enterprise
+    runs-on: ubuntu-latest
     outputs:
       chunks_array: ${{ steps.set_matrix.outputs.chunks_array }}
       portal_to_rally: ${{ steps.set_matrix.outputs.portal_to_rally }}
