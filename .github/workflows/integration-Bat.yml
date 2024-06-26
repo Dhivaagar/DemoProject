@@ -12,7 +12,6 @@ jobs:
   integration:
     strategy:
       fail-fast: false
-      max-parallel: 2
       matrix:
         tests: ${{ fromJSON(inputs.chunk) }}
     runs-on: ubuntu-latest
