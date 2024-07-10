@@ -1,0 +1,27 @@
+name: Manage Tags
+
+on:
+  schedule:
+    - cron: '0 * * * *' # This triggers the workflow every hour
+
+jobs:
+  manage-tags:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Manage tags
+        run: |
+          if [ "$(date +'%H')" -eq 0 ]; then
+            echo "Deleting all tags as it's the top of the hour"
+            git tag -l | xargs -n 1 git push --delete origin
+            git tag -l | xargs -n 1 git tag -d
+          else
+            echo "Skipping cleanup as it's not the top of the hour"
+          fi
+
+          date=$(date +'%Y%m%d%H')
+          TAG="V${date}.0"
+          git tag $TAG
+          git push origin $TAG
