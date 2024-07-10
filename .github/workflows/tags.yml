@@ -2,26 +2,35 @@ name: Manage Tags
 
 on:
   schedule:
-    - cron: '0 * * * *' # This triggers the workflow every hour
+    - cron: '*/5 * * * *'  # Every 5 minutes
 
 jobs:
   manage-tags:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: Manage tags
+      - name: Create a new tag
         run: |
-          if [ "$(date +'%H')" -eq 0 ]; then
-            echo "Deleting all tags as it's the top of the hour"
-            git tag -l | xargs -n 1 git push --delete origin
-            git tag -l | xargs -n 1 git tag -d
-          else
-            echo "Skipping cleanup as it's not the top of the hour"
-          fi
+          latest_tag=$(git describe --tags `git rev-list --tags --max-count=1`)
+          new_tag=$(date +%Y%m%d%H%M%S)
+          git tag $new_tag
+          git push origin $new_tag
 
-          date=$(date +'%Y%m%d%H')
-          TAG="V${date}.0"
-          git tag $TAG
-          git push origin $TAG
+      - name: Get all tags
+        id: get-tags
+        run: |
+          tags=$(git tag -l | sort -V)
+          echo "tags=$tags" >> $GITHUB_OUTPUT
+
+      - name: Delete oldest tag if there are more than 30 tags
+        if: ${{ steps.get-tags.outputs.tags }}
+        run: |
+          tags=(${GITHUB_ENV.tags})
+          if [ ${#tags[@]} -gt 30 ]; then
+            oldest_tag=${tags[0]}
+            git tag -d $oldest_tag
+            git push origin --delete $oldest_tag
+          fi
