@@ -29,7 +29,7 @@ jobs:
         if: ${{ steps.get-tags.outputs.tags }}
         run: |
           tags=(${GITHUB_ENV.tags})
-          if [ ${#tags[@]} -gt 30 ]; then
+          if [ ${#tags[@]} -gt 5 ]; then
             oldest_tag=${tags[0]}
             git tag -d $oldest_tag
             git push origin --delete $oldest_tag
