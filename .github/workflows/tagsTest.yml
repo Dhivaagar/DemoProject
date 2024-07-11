@@ -2,8 +2,8 @@ name: Manage Tags
 
 on:
   workflow_dispatch:
-  schedule:
-    - cron: '*/5 * * * *'  # Every 5 minutes
+#  schedule:
+#    - cron: '*/5 * * * *'  # Every 5 minutes
 
 jobs:
   manage-tags:
@@ -29,6 +29,7 @@ jobs:
         if: ${{ steps.get-tags.outputs.tags }}
         run: |
           tags=(${{ steps.get-tags.outputs.tags }})
+          echo "tags=${tags[@]}"
           while [ ${#tags[@]} -gt 5 ]; do
             oldest_tag=${tags[0]}
             git tag -d $oldest_tag
