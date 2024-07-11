@@ -34,7 +34,7 @@ jobs:
       - name: Get all tags
         id: get-tags
         run: |
-          tags=$(git tag -l | sort -Vr)  # Sort tags in reverse order
+          tags=$(git tag -l | sort -V)  # Sort tags in reverse order
           tags=$(echo $tags | tr '\n' ' ')
           echo "tags=$tags"
           echo "::set-output name=tags::$tags"
