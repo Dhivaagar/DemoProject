@@ -24,12 +24,13 @@ jobs:
           tags=$(git tag -l | sort -V)
           echo "tags=$tags" >> $GITHUB_OUTPUT
 
-      - name: Delete oldest tag if there are more than 30 tags
+      - name: Delete oldest tag if there are more than 5 tags
         if: ${{ steps.get-tags.outputs.tags }}
         run: |
-          tags=(${GITHUB_ENV.tags})
-          if [ ${#tags[@]} -gt 5 ]; then
+          tags=(${{ steps.get-tags.outputs.tags }})
+          while [ ${#tags[@]} -gt 5 ]; do
             oldest_tag=${tags[0]}
             git tag -d $oldest_tag
-            git push origin --delete $oldest_tag
-          fi
+            git push origin :$oldest_tag
+            tags=("${tags[@]:1}")
+          done
