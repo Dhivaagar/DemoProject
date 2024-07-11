@@ -7,47 +7,56 @@ on:
         required: true
         type: string
 
+run-name: ${{ github.event_name == 'workflow_dispatch' && format('CI/CD-{0}-branch-{1}', tojson(inputs), github.ref_name) || '' }}
 jobs:
   test:
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        suiteName: ${{ fromJson(inputs.suiteName) }}
     environment:
       name: github-pages
 #      url: https://dhivaagar.github.io/DemoProject/12/
       url: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/${{ github.run_number }}
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
-      - name: Set up JDK 17
-        uses: actions/setup-java@v3
-        with:
-          java-version: '17'
-          distribution: 'temurin'
-
-      - name: Run tests
+      - name: print message
         run: |
-          ls
-          mvn test -DsuiteName=${{ github.event.inputs.suiteName }}
+          echo "Hello ${{ matrix.suiteName }}"
 
-      - name: Load test report history
-        uses: actions/checkout@v3
-        if: always()
-        continue-on-error: true
-        with:
-          ref: gh-pages
-          path: gh-pages
-
-      - name: Build test report
-        uses: simple-elf/allure-report-action@v1.7
-        if: always()
-        with:
-          gh_pages: gh-pages
-          allure_history: allure-history
-          allure_results: allure-results
-
-      - name: Publish test report
-        uses: peaceiris/actions-gh-pages@v3
-        if: always()
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_branch: gh-pages
-          publish_dir: allure-history
+#      - name: Set up JDK 17
+#        uses: actions/setup-java@v3
+#        with:
+#          java-version: '17'
+#          distribution: 'temurin'
+#
+#      - name: Run tests
+#        run: |
+#          ls
+#          mvn test -DsuiteName=${{ github.event.inputs.suiteName }}
+#
+#      - name: Load test report history
+#        uses: actions/checkout@v3
+#        if: always()
+#        continue-on-error: true
+#        with:
+#          ref: gh-pages
+#          path: gh-pages
+#
+#      - name: Build test report
+#        uses: simple-elf/allure-report-action@v1.7
+#        if: always()
+#        with:
+#          gh_pages: gh-pages
+#          allure_history: allure-history
+#          allure_results: allure-results
+#
+#      - name: Publish test report
+#        uses: peaceiris/actions-gh-pages@v3
+#        if: always()
+#        with:
+#          github_token: ${{ secrets.GITHUB_TOKEN }}
+#          publish_branch: gh-pages
+#          publish_dir: allure-history
