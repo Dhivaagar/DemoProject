@@ -17,7 +17,6 @@ jobs:
     outputs:
       chunks_array: ${{ steps.set_matrix.outputs.chunks_array }}
       portal_to_rally: ${{ steps.set_matrix.outputs.portal_to_rally }}
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4

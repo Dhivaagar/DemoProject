@@ -9,6 +9,11 @@ on:
         type: string
 
 jobs:
+  print:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Print
+        run: echo ${{ inputs.chunk }}
   integration:
     strategy:
       fail-fast: false
