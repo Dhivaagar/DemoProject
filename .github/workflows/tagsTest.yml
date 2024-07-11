@@ -25,7 +25,7 @@ jobs:
       - name: Get all tags
         id: get-tags
         run: |
-          git tag -l
+          git tag -l | sort -V
           tags=$(git tag -l | sort -V)
           echo "tags=$tags"
           echo "tags=$tags" >> $GITHUB_OUTPUT
