@@ -18,18 +18,19 @@ jobs:
         id: get-tags
         run: |
           tags=$(git tag -l | sort -V)
-          echo "tags=$tags" >> $GITHUB_ENV
+          echo "tags=$(echo $tags | tr ' ' '\n')" >> $GITHUB_OUTPUT
 
       - name: Delete oldest tag if there are more than 5 tags
         run: |
-          tags=(${{ env.tags }})
-          if [ ${#tags[@]} -gt 5 ]; then
-            echo "tags=${tags[@]}"
-            while [ ${#tags[@]} -gt 5 ]; do
-              oldest_tag=${tags[0]}
+          tags="${{ steps.get-tags.outputs.tags }}"
+          tags_array=($tags)
+          if [ ${#tags_array[@]} -gt 5 ]; then
+            echo "tags=${tags_array[@]}"
+            while [ ${#tags_array[@]} -gt 5 ]; do
+              oldest_tag=${tags_array[0]}
               git tag -d $oldest_tag
               git push origin --delete :$oldest_tag
               echo "Deleted oldest tag: $oldest_tag"
-              tags=("${tags[@]:1}")
+              tags_array=("${tags_array[@]:1}")
             done
           fi
