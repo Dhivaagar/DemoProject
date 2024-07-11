@@ -36,6 +36,7 @@ jobs:
         run: |
           tags=$(git tag -l | sort -Vr)  # Sort tags in reverse order
           tags=$(echo $tags | tr '\n' ' ')
+          echo "tags=$tags"
           echo "::set-output name=tags::$tags"
 
       - name: Delete oldest tag if there are more than 5 tags
