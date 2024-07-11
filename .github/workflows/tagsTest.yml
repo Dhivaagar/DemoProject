@@ -11,18 +11,23 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
+        with:
+         fetch-tags: true
+         fetch-depth: 0
 
-      - name: Create a new tag
-        run: |
-          new_tag=$(date +%Y%m%d%H%M%S)
-          git tag $new_tag
-          git push origin $new_tag
+      #      - name: Create a new tag
+#        run: |
+#          new_tag=$(date +%Y%m%d%H%M%S)
+#          git tag $new_tag
+#          git push origin $new_tag
 
       - name: Get all tags
         id: get-tags
         run: |
+          git tag -l
           tags=$(git tag -l | sort -V)
+          echo "tags=$tags"
           echo "tags=$tags" >> $GITHUB_OUTPUT
 
       - name: Delete oldest tag if there are more than 5 tags
