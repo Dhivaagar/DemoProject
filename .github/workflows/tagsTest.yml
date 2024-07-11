@@ -25,15 +25,14 @@ jobs:
       - name: Get all tags
         id: get-tags
         run: |
-          git tag -l | sort -V
           tags=$(git tag -l | sort -V)
           echo "tags=$tags"
-          echo "tags=$tags" >> $GITHUB_OUTPUT
+          echo "tags=$tags" >> $GITHUB_ENV
 
       - name: Delete oldest tag if there are more than 5 tags
-        if: ${{ steps.get-tags.outputs.tags }}
+        if: ${{ env.tags }}
         run: |
-          tags=(${{ steps.get-tags.outputs.tags }})
+          tags=(${{ env.tags }})
           echo "tags=${tags[@]}"
           while [ ${#tags[@]} -gt 5 ]; do
             oldest_tag=${tags[0]}
