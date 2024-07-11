@@ -2,7 +2,7 @@ name: Manage Tags
 
 on:
   schedule:
-    - cron: '*/2 * * * *'  # Every 5 minutes
+    - cron: '*/5 * * * *'  # Every 5 minutes
 
 jobs:
   manage-tags:
@@ -14,7 +14,6 @@ jobs:
 
       - name: Create a new tag
         run: |
-          latest_tag=$(git describe --tags `git rev-list --tags --max-count=1`)
           new_tag=$(date +%Y%m%d%H%M%S)
           git tag $new_tag
           git push origin $new_tag
