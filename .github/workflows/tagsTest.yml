@@ -34,7 +34,7 @@ jobs:
       - name: Get all tags
         id: get-tags
         run: |
-          tags=$(git tag -l | sort -V)
+          tags=$(git tag -l | sort -Vr)  # Sort tags in reverse order
           tags=$(echo $tags | tr '\n' ' ')
           echo "::set-output name=tags::$tags"
 
@@ -45,10 +45,10 @@ jobs:
           if [ ${#tags_array[@]} -gt 5 ]; then
             echo "tags=${tags_array[@]}"
             while [ ${#tags_array[@]} -gt 5 ]; do
-              oldest_tag=${tags_array[0]}
+              oldest_tag=${tags_array[-1]}  # Get the last tag in the array
               git tag -d $oldest_tag
               git push origin :refs/tags/$oldest_tag
               echo "Deleted oldest tag: $oldest_tag"
-              tags_array=("${tags_array[@]:1}")
+              tags_array=("${tags_array[@]:0:${#tags_array[@]}-1}")  # Remove the last element
             done
           fi
