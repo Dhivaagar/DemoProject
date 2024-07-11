@@ -18,7 +18,8 @@ jobs:
         id: get-tags
         run: |
           tags=$(git tag -l | sort -V)
-          echo "tags=$(echo $tags | tr ' ' '\n')" >> $GITHUB_OUTPUT
+          tags=$(echo $tags | tr '\n' ' ')
+          echo "::set-output name=tags::$tags"
 
       - name: Delete oldest tag if there are more than 5 tags
         run: |
