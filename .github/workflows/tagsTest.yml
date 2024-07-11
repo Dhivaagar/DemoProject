@@ -34,22 +34,23 @@ jobs:
       - name: Get all tags
         id: get-tags
         run: |
+          git tag -l
           tags=$(git tag -l)  # Sort tags in reverse order
           tags=$(echo $tags | tr '\n' ' ')
           echo "tags=$tags"
           echo "::set-output name=tags::$tags"
 
-      - name: Delete oldest tag if there are more than 5 tags
-        run: |
-          tags="${{ steps.get-tags.outputs.tags }}"
-          tags_array=($tags)
-          if [ ${#tags_array[@]} -gt 5 ]; then
-            echo "tags=${tags_array[@]}"
-            while [ ${#tags_array[@]} -gt 5 ]; do
-              oldest_tag=${tags_array[-1]}  # Get the last tag in the array
-              git tag -d $oldest_tag
-              git push origin :refs/tags/$oldest_tag
-              echo "Deleted oldest tag: $oldest_tag"
-              tags_array=("${tags_array[@]:0:${#tags_array[@]}-1}")  # Remove the last element
-            done
-          fi
+#      - name: Delete oldest tag if there are more than 5 tags
+#        run: |
+#          tags="${{ steps.get-tags.outputs.tags }}"
+#          tags_array=($tags)
+#          if [ ${#tags_array[@]} -gt 5 ]; then
+#            echo "tags=${tags_array[@]}"
+#            while [ ${#tags_array[@]} -gt 5 ]; do
+#              oldest_tag=${tags_array[-1]}  # Get the last tag in the array
+#              git tag -d $oldest_tag
+#              git push origin :refs/tags/$oldest_tag
+#              echo "Deleted oldest tag: $oldest_tag"
+#              tags_array=("${tags_array[@]:0:${#tags_array[@]}-1}")  # Remove the last element
+#            done
+#          fi
