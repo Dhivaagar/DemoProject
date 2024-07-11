@@ -21,6 +21,13 @@ jobs:
           tags=$(echo $tags | tr '\n' ' ')
           echo "::set-output name=tags::$tags"
 
+      - name: Create a new tag
+        run: |
+          current_date=$(date +"%d/%m/%Y")
+          new_tag="Backup-$current_date"
+          git tag $new_tag
+          git push origin $new_tag
+
       - name: Delete oldest tag if there are more than 5 tags
         run: |
           tags="${{ steps.get-tags.outputs.tags }}"
