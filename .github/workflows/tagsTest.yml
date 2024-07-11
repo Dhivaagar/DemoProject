@@ -2,8 +2,6 @@ name: Manage Tags
 
 on:
   workflow_dispatch:
-#  schedule:
-#    - cron: '*/5 * * * *'  # Every 5 minutes
 
 jobs:
   manage-tags:
@@ -13,37 +11,25 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-         fetch-tags: true
-         fetch-depth: 0
-
-      #      - name: Create a new tag
-#        run: |
-#          new_tag=$(date +%Y%m%d%H%M%S)
-#          git tag $new_tag
-#          git push origin $new_tag
+          fetch-tags: true
+          fetch-depth: 0
 
       - name: Get all tags
         id: get-tags
         run: |
           tags=$(git tag -l | sort -V)
-          echo "tags=$tags"
           echo "tags=$tags" >> $GITHUB_ENV
 
       - name: Delete oldest tag if there are more than 5 tags
-        if: ${{ env.tags }}
         run: |
           tags=(${{ env.tags }})
-          echo "tags=${tags[@]}"
-          while [ ${#tags[@]} -gt 5 ]; do
-            oldest_tag=${tags[0]}
-            git tag -d $oldest_tag
-            git push origin --delete :$oldest_tag
-            echo "Deleted oldest tag: $oldest_tag"
-            tags=("${tags[@]:1}")
-          done
-#
-#          if [ ${#tags[@]} -gt 5 ]; then
-#            oldest_tag=${tags[0]}
-#            git tag -d $oldest_tag
-#            git push origin --delete $oldest_tag
-#          fi
+          if [ ${#tags[@]} -gt 5 ]; then
+            echo "tags=${tags[@]}"
+            while [ ${#tags[@]} -gt 5 ]; do
+              oldest_tag=${tags[0]}
+              git tag -d $oldest_tag
+              git push origin --delete :$oldest_tag
+              echo "Deleted oldest tag: $oldest_tag"
+              tags=("${tags[@]:1}")
+            done
+          fi
