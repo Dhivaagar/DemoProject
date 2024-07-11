@@ -14,19 +14,29 @@ jobs:
           fetch-tags: true
           fetch-depth: 0
 
+      - name: Create a new tag
+        id: create-tag
+        run: |
+          current_date=$(date +"%d/%m/%Y")
+          base_tag="Backup-$current_date"
+          version=1
+          new_tag="${base_tag}(v${version})"
+
+          while git tag -l | grep -q "^${new_tag}$"; do
+            version=$((version + 1))
+            new_tag="${base_tag}(v${version})"
+          done
+
+          git tag $new_tag
+          git push origin $new_tag
+          echo "Created tag: $new_tag"
+
       - name: Get all tags
         id: get-tags
         run: |
           tags=$(git tag -l | sort -V)
           tags=$(echo $tags | tr '\n' ' ')
           echo "::set-output name=tags::$tags"
-
-      - name: Create a new tag
-        run: |
-          current_date=$(date +"%d/%m/%Y")
-          new_tag="Backup-$current_date"
-          git tag $new_tag
-          git push origin $new_tag
 
       - name: Delete oldest tag if there are more than 5 tags
         run: |
