@@ -71,7 +71,7 @@ jobs:
       - name: Test
         run: |
           export DISPLAY=:99
-          mvn -X test -Dtest=com.test.automation.BrowserSetupTest
+          mvn -X test -Dtest=com.test.automation.ExampleTest
 
 
       - uses: actions/upload-artifact@v3
