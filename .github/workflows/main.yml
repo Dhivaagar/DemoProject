@@ -1,66 +1,28 @@
-name: Get list from YAML
+name: Convert yml to single line
 
 on:
   workflow_dispatch:
 
-#jobs:
-#  build:
-#    runs-on: ubuntu-latest
-#    outputs:
-#      matrix: ${{ steps.read-yaml.outputs.result }}
-#
-#    steps:
-#      - name: Checkout repository
-#        uses: actions/checkout@v2
-#
-#      - name: Set up Node.js
-#        uses: actions/setup-node@v3
-#        with:
-#          node-version: '14'
-#
-#      - name: Install dependencies
-#        run: |
-#          npm install
-#          npm install js-yaml
-#          npm install fs
-#
-#      - name: Read list from YAML
-#        id: read-yaml
-#        uses: actions/github-script@v6
-#        with:
-#          script: |
-#            const fs = require('fs');
-#            const yaml = require('js-yaml');
-#            const fileContents = fs.readFileSync('cm3.yml', 'utf8');
-#            const data = yaml.load(fileContents);
-#            console.log(JSON.stringify(JSON.parse(JSON.stringify(data.items))));
-#            return JSON.stringify(JSON.parse(JSON.stringify(data.items)));
-
 jobs:
   build:
     runs-on: ubuntu-latest
-    outputs:
-      matrix: ${{ steps.read-list.outputs.MY_LIST }}
-    steps:
-      - name: Read list from YAML
-        id: read-list
-        run: |
-          MY_LIST=$(yq '.items' list.yml)
-          ECHO 
-          echo "MY_LIST=$MY_LIST" >> $GITHUB_OUTPUT
-
-  test:
-    runs-on: ubuntu-latest
-
-    strategy:
-      fail-fast: false
-      matrix:
-        item: ${{ fromJson(needs.build.outputs.matrix) }}
-
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
-      - name: Run tests
-        run: |
-          echo "Running tests for ${{ matrix.item }}"
+      - name: convert YAML to single line
+        id: convert
+        run: |          
+          # Update buildspec
+          sudo wget https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 -O /usr/local/bin/yq
+          sudo chmod +x /usr/local/bin/yq
+          sudo wget https://github.com/stedolan/jq/releases/download/jq-1.6/jq-linux64 -O /usr/local/bin/jq
+          sudo chmod +x /usr/local/bin/jq
+          build_spec_content=$(yq -o=json '.' scripts/commonBuildSpec.yml | jq -c '.')
+          echo "::set-output name=updated-buildspec::$build_spec_content"
+          echo "-------------------------------------------------------------------------------------"
+          echo "${build_spec_content}"
+          echo "-------------------------------------------------------------------------------------"
+
+      - name: Print buildspec
+        run: echo "${{ steps.convert.outputs.updated-buildspec }}"
