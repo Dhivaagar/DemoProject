@@ -10,6 +10,13 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Check if YAML file exists
+        run: |
+          if [ ! -f "scripts/commonBuildSpec.yml" ]; then
+            echo "YAML file not found!"
+            exit 1
+          fi
+
       - name: convert YAML to single line
         id: convert
         run: |
@@ -22,7 +29,10 @@ jobs:
           # Convert YAML to JSON and then to a single line
           build_spec_content=$(yq -o=json '.' scripts/commonBuildSpec.yml | jq -c '.')
 
-          # Set the output value
+          # Debug: Print content to check for issues
+          echo "build_spec_content: $build_spec_content"
+
+          # Set the output value (use GITHUB_OUTPUT for GitHub Actions)
           echo "updated-buildspec=$build_spec_content" >> $GITHUB_OUTPUT
 
           # Optional: Print the result to verify
@@ -31,4 +41,6 @@ jobs:
           echo "-------------------------------------------------------------------------------------"
 
       - name: Print buildspec
-        run: echo "${{ steps.convert.outputs.updated-buildspec }}" | cat
+        run: |
+          echo "Printing the updated buildspec..."
+          echo "${{ steps.convert.outputs.updated-buildspec }}" | cat
