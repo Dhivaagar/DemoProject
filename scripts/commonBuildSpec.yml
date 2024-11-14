@@ -1,0 +1,151 @@
+version: 0.2
+env:
+  secrets-manager:
+    MVN_SETTINGS: ${MVN_SETTINGS}
+    ARTIFACTORY_KEY_USER: ${ARTIFACTORY_KEY_USER}
+    ARTIFACTORY_KEY_TOKEN: ${ARTIFACTORY_KEY_TOKEN}
+  exported-variables:
+    - SL_SESSIONID
+phases:
+  install:
+    runtime-versions:
+      java: corretto8
+    commands:
+      - echo "$MVN_SETTINGS" > ~/.m2/settings.xml
+  build:
+    commands:
+      - echo "print mvn settings key; ${MVN_SETTINGS}"
+      - cat ~/.m2/settings.xml
+      - echo "artifactory key user; ${ARTIFACTORY_KEY_USER}"
+      - echo "artifactory key token; ${ARTIFACTORY_KEY_TOKEN}"
+      - mvn -version
+      - export MAVEN_VERSION=3.8.5  # Set desired Maven version
+      - wget -q "https://archive.apache.org/dist/maven/maven-3/$MAVEN_VERSION/binaries/apache-maven-$MAVEN_VERSION-bin.tar.gz"
+      - tar -xzf "apache-maven-$MAVEN_VERSION-bin.tar.gz"
+      - export PATH="$PWD/apache-maven-$MAVEN_VERSION/bin:$PATH"
+      - ls
+      - |
+        if [ "${project}" = "n7" ] || [ "${project}" = "statusboard" ] || [ "${project}" = "companies" ]; then
+          project="config7"
+        fi
+      - |
+        if [ "${project}" = "mp8" ]; then
+          echo "Set browser as chromeEmulator for MP8"
+          browser="chromeEmulator"
+          project="cp8"
+        fi
+      - |
+        if [ ! -f "${project}/src/test/resources/testdata/suite/${suiteName}.xml" ]; then
+          echo "Suite '${suiteName}' not found in the '${project}' module"
+          if [ -f "multiPortal/src/test/resources/testdata/suite/${suiteName}.xml" ]; then
+            project="multiPortal"
+            echo "Suite '${suiteName}' found in the ${project} module"
+          else
+            echo "Suite '${suiteName}' is not found in ${project} module also!!"
+            exit 0
+          fi
+        fi
+
+      - mvn -T 16 -DgroupId=com.xtime.automation -DartifactId=${project} -Dversion=${artifact}-SNAPSHOT -DrepoUrl="https://artifactory.coxautoinc.com/artifactory/xtime-maven-snapshots" dependency:get -Dclassifier=test-jar-with-dependencies -DoutputDirectory=./ -Ddest=./${project}-${artifact}-SNAPSHOT-test-jar-with-dependencies.jar -Dmaven.artifact.threads=30
+      - mvn -T 16 -DgroupId=com.xtime.automation -DartifactId=${project} -Dversion=${artifact}-SNAPSHOT -DrepoUrl="https://artifactory.coxautoinc.com/artifactory/xtime-maven-snapshots" dependency:get -Dclassifier=tests -DoutputDirectory=./ -Ddest=./${project}-${artifact}-SNAPSHOT-tests.jar -Dmaven.artifact.threads=30
+      - mvn -T 16 -DgroupId=com.xtime.automation -DartifactId=${project} -Dversion=${artifact}-SNAPSHOT -DrepoUrl="https://artifactory.coxautoinc.com/artifactory/xtime-maven-snapshots" dependency:get -DoutputDirectory=./ -Ddest=./${project}-${artifact}-SNAPSHOT.jar -Dmaven.artifact.threads=30
+      - mvn -T 16 -DgroupId=com.xtime.automation -DartifactId=api -Dversion=${artifact}-SNAPSHOT -DrepoUrl="https://artifactory.coxautoinc.com/artifactory/xtime-maven-snapshots" dependency:get -Dclassifier=tests -DoutputDirectory=./ -Ddest=./api-${artifact}-SNAPSHOT-tests.jar -Dmaven.artifact.threads=30
+      - mvn -T 16 -DgroupId=com.xtime.automation -DartifactId=api -Dversion=${artifact}-SNAPSHOT -DrepoUrl="https://artifactory.coxautoinc.com/artifactory/xtime-maven-snapshots" dependency:get -Dclassifier=test-jar-with-dependencies -DoutputDirectory=./ -Ddest=./api-${artifact}-SNAPSHOT-test-jar-with-dependencies.jar -Dmaven.artifact.threads=30
+      - ls
+      - |
+        random_number=$(shuf -i 100000-999999 -n 1)
+        if [ "${Lambda}" = "false" ]; then
+          sh ./buildspec/scripts/install_chrome_driver.sh
+          export DISPLAY=:99
+        else
+          wget https://downloads.lambdatest.com/tunnel/v3/linux/64bit/LT_Linux.zip
+          unzip LT_Linux.zip
+          chmod +x LT
+          nohup ./LT --user ${LAMBDATEST_USERNAME} --key ${LAMBDATEST_ACCESS_KEY}  	--tunnelName  XtimeAutomation-${project}${suiteName}${random_number} > ./output.log &
+          ps -ef | grep LT
+          ls -la
+        fi
+      - nohup sleep 30
+      - |
+        if [ "${browser}" = "chromeEmulator" ]; then
+          jar xf ${project}-${artifact}-SNAPSHOT-tests.jar testdata/suite/properties/${suiteName}MP8.properties
+        else
+          jar xf ${project}-${artifact}-SNAPSHOT-tests.jar testdata/suite/properties/${suiteName}.properties
+        fi
+      - |
+        if [ "${suiteName}" = "ConsumerPortalSanityTestEnhanced" ]; then
+          enhanced=true
+        fi
+      - |
+        set +e
+        JAVA_EXIT_CODE=0
+        if [ -n "${methodName}" ]; then
+          fullMethodName="com.xtime.automation.${project}.test.${suiteName}.${methodName}"
+          echo "Running specific test method: ${fullMethodName}"
+          java -cp ${project}-${artifact}-SNAPSHOT-test-jar-with-dependencies.jar:${project}-${artifact}-SNAPSHOT.jar:${project}-${artifact}-SNAPSHOT-tests.jar -Dschema=${schema} -Denv=${env} -DartifactId=${project} -Dbrowser=${browser} -DisMFAUser=true -DenableNewDomain=true -Denhanced=${enhanced} -DLambda=${Lambda} -DLambdaTunnelName=XtimeAutomation-${project}${suiteName}${random_number} -DTestEnv=${TestEnv}  -DlambdaUserName=${LAMBDATEST_USERNAME} -DlambdaSecret=${LAMBDATEST_ACCESS_KEY} -Dpriority=All -Dwebdriver.chrome.driver=/usr/bin/chromedriver org.testng.TestNG -methods com.xtime.automation.${project}.test.${suiteName}.${methodName}
+        else
+          java -cp ${project}-${artifact}-SNAPSHOT-test-jar-with-dependencies.jar:${project}-${artifact}-SNAPSHOT.jar:${project}-${artifact}-SNAPSHOT-tests.jar -Dschema=${schema} -Denv=${env} -DartifactId=${project} -Dbrowser=${browser} -DisMFAUser=true -DenableNewDomain=true -Denhanced=${enhanced} -DLambda=${Lambda} -DLambdaTunnelName=XtimeAutomation-${project}${suiteName}${random_number} -DTestEnv=${TestEnv}  -DlambdaUserName=${LAMBDATEST_USERNAME} -DlambdaSecret=${LAMBDATEST_ACCESS_KEY} -Dpriority=All -Dwebdriver.chrome.driver=/usr/bin/chromedriver org.testng.TestNG -testjar ${project}-${artifact}-SNAPSHOT-tests.jar -xmlpathinjar testdata/suite/${suiteName}.xml
+        fi
+        JAVA_EXIT_CODE=$?
+        echo "JAVA_EXIT_CODE: ${JAVA_EXIT_CODE}"
+        set -e
+      # publish the results to Rally based on the values of ${rallyTestSet} and ${rallyBuildNo}
+      - |
+        if [ ! -z "${rallyTestSet}" ] && [ ! -z "${rallyBuildNo}" ]; then
+          if [ "${browser}" = "chromeEmulator" ]; then
+            java -cp api-${artifact}-SNAPSHOT-test-jar-with-dependencies.jar:api-${artifact}-SNAPSHOT-tests.jar -Dschema=${schema} -DartifactId=api  -DrallyBuildNo=${rallyBuildNo}  -DrallyTestSet=${rallyTestSet} -DrallyApiKey=${rallyApiKey} -DsuiteName=${suiteName}MP8 -DjenkinsUrl=${jobFullUrl} org.testng.TestNG -methods com.xtime.automation.rally.test.RallyApiTest.publishResults
+          else
+            java -cp api-${artifact}-SNAPSHOT-test-jar-with-dependencies.jar:api-${artifact}-SNAPSHOT-tests.jar -Dschema=${schema} -DartifactId=api  -DrallyBuildNo=${rallyBuildNo}  -DrallyTestSet=${rallyTestSet} -DrallyApiKey=${rallyApiKey} -DsuiteName=${suiteName} -DjenkinsUrl=${jobFullUrl} org.testng.TestNG -methods com.xtime.automation.rally.test.RallyApiTest.publishResults
+          fi
+        fi
+      - ls -la
+      - cd ./test-output/
+      - ls -la
+      - cd ../
+      - echo "Reports.."
+      - echo "Build number :" ${GITHUB_RUN_NUMBER}
+
+      - mkdir -p ${GITHUB_RUN_NUMBER}
+      - cd ./${GITHUB_RUN_NUMBER}
+      - mkdir -p ${GITHUB_RUN_ID}
+      - cd ./${GITHUB_RUN_ID}
+      - mkdir -p allure-results
+      - mkdir -p ${portalName}
+      - cd ./${portalName}
+      - mkdir -p reports
+      - cd ./reports
+      - mkdir -p ${suiteName}
+      - cd ./${suiteName}
+      - mkdir -p screenshots
+      - cd ../../../../../
+      - ls -la
+      - |
+        if [ -d ./test-output ]; then
+          cp ./test-output/*.html ./${GITHUB_RUN_NUMBER}/${GITHUB_RUN_ID}/${portalName}/reports/${suiteName}/
+        fi
+      - |
+        if [ -d ./testresult/screenshots ]; then
+          cp ./testresult/screenshots/* ./${GITHUB_RUN_NUMBER}/${GITHUB_RUN_ID}/${portalName}/reports/${suiteName}/screenshots
+        fi
+      - |
+        if [ -d ./allure-results ]; then
+          cp -r ./allure-results/* ./${GITHUB_RUN_NUMBER}/${GITHUB_RUN_ID}/allure-results
+        fi
+
+  post_build:
+    commands:
+      - echo "Post build phase executing"
+      - |
+        if [ $JAVA_EXIT_CODE -ne 0 ]; then
+          echo "Java command failed with exit code $JAVA_EXIT_CODE"
+          exit $JAVA_EXIT_CODE
+        fi
+
+artifacts:
+  files:
+    - ./${GITHUB_RUN_NUMBER}/${GITHUB_RUN_ID}/allure-results/*
+    - ./${GITHUB_RUN_NUMBER}/${GITHUB_RUN_ID}/${portalName}/reports/${suiteName}/*
+    - ./${GITHUB_RUN_NUMBER}/${GITHUB_RUN_ID}/${portalName}/reports/${suiteName}/screenshots/*
+cache:
+  paths:
+    - ~/.m2/
