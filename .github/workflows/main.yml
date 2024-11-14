@@ -12,17 +12,23 @@ jobs:
 
       - name: convert YAML to single line
         id: convert
-        run: |          
-          # Update buildspec
+        run: |
+          # Install yq and jq
           sudo wget https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 -O /usr/local/bin/yq
           sudo chmod +x /usr/local/bin/yq
           sudo wget https://github.com/stedolan/jq/releases/download/jq-1.6/jq-linux64 -O /usr/local/bin/jq
           sudo chmod +x /usr/local/bin/jq
+
+          # Convert YAML to JSON and then to a single line
           build_spec_content=$(yq -o=json '.' scripts/commonBuildSpec.yml | jq -c '.')
-          echo "::set-output name=updated-buildspec::$build_spec_content"
+
+          # Set the output value
+          echo "updated-buildspec=$build_spec_content" >> $GITHUB_OUTPUT
+
+          # Optional: Print the result to verify
           echo "-------------------------------------------------------------------------------------"
           echo "${build_spec_content}"
           echo "-------------------------------------------------------------------------------------"
 
       - name: Print buildspec
-        run: echo "${{ steps.convert.outputs.updated-buildspec }}"
+        run: echo "${{ steps.convert.outputs.updated-buildspec }}" | cat
